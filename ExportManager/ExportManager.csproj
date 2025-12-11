@@ -1,0 +1,476 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{435572FA-D2A2-48CA-B905-4A7899337063}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ExportManager</RootNamespace>
+    <AssemblyName>ExportManager</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helper\BaseCommand.cs" />
+    <Compile Include="Models\Addresses.cs">
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CarrierTypes.cs">
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Categories.cs">
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Clients.cs">
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Colors.cs">
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Countries.cs">
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Cultivations.cs">
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntitiesForView\AddressesListView.cs" />
+    <Compile Include="Models\EntitiesForView\ClientsListView.cs" />
+    <Compile Include="Models\EntitiesForView\GrowersListView.cs" />
+    <Compile Include="Models\EntitiesForView\ProductsListView.cs" />
+    <Compile Include="Models\Extensions\HasIsActive..cs" />
+    <Compile Include="Models\Extensions\StringExtensions.cs" />
+    <Compile Include="Models\Growers.cs">
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Invoices.cs">
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OrderItems.cs">
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Orders.cs">
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PaymentMethods.cs">
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PotplantsModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PotplantsModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PotplantsModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PotplantsModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PotplantsModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Products.cs">
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Qualities.cs">
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagrams_Result.cs">
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StockItems.cs">
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StockMovements.cs">
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagrams.cs">
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TrayTypes.cs">
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Abstract\AllViewModel.cs" />
+    <Compile Include="Models\Extensions\IHasIsActive.cs" />
+    <Compile Include="ViewModels\Abstract\NewItemViewModelBase.cs" />
+    <Compile Include="ViewModels\Abstract\NewItemViewModel.cs" />
+    <Compile Include="ViewModels\AllAddressesViewModel.cs" />
+    <Compile Include="ViewModels\AllBatchesViewModel.cs" />
+    <Compile Include="ViewModels\AllCarrierTypesViewModel.cs" />
+    <Compile Include="ViewModels\AllCategoriesViewModel.cs" />
+    <Compile Include="ViewModels\AllClientsViewModel.cs" />
+    <Compile Include="ViewModels\AllColorsViewModel.cs" />
+    <Compile Include="ViewModels\AllCountriesViewModel.cs" />
+    <Compile Include="ViewModels\AllCultivationsViewModel.cs" />
+    <Compile Include="ViewModels\AllGrowersViewModel.cs" />
+    <Compile Include="ViewModels\AllInStockViewModel.cs" />
+    <Compile Include="ViewModels\AllInvoicesViewModel.cs" />
+    <Compile Include="ViewModels\AllOrdersViewModel.cs" />
+    <Compile Include="ViewModels\AllPaymentMethodsViewModel.cs" />
+    <Compile Include="ViewModels\AllQualitiesViewModel.cs" />
+    <Compile Include="ViewModels\AllTrayTypesViewModel.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\CommandViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\NewAddressViewModel.cs" />
+    <Compile Include="ViewModels\NewCarrierTypeViewModel.cs" />
+    <Compile Include="ViewModels\NewCategoryViewModel.cs" />
+    <Compile Include="ViewModels\NewClientViewModel.cs" />
+    <Compile Include="ViewModels\NewColorViewModel.cs" />
+    <Compile Include="ViewModels\NewCountryViewModel.cs" />
+    <Compile Include="ViewModels\NewCultivationViewModel.cs" />
+    <Compile Include="ViewModels\NewPaymentMethodViewModel.cs" />
+    <Compile Include="ViewModels\NewProductViewModel.cs" />
+    <Compile Include="ViewModels\NewQualityTypeViewModel.cs" />
+    <Compile Include="ViewModels\AllProductsViewModel.cs" />
+    <Compile Include="ViewModels\AllOrderItemsViewModel.cs" />
+    <Compile Include="ViewModels\NewTrayTypeViewModel.cs" />
+    <Compile Include="ViewModels\WorkspaceViewModel.cs" />
+    <Compile Include="Views\AllAddressesView.xaml.cs">
+      <DependentUpon>AllAddressesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AllBatchesView.xaml.cs">
+      <DependentUpon>AllBatchesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AllCarrierTypesView.xaml.cs">
+      <DependentUpon>AllCarrierTypesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AllCategoriesView.xaml.cs">
+      <DependentUpon>AllCategoriesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AllClientsView.xaml.cs">
+      <DependentUpon>AllClientsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AllColorsView.xaml.cs">
+      <DependentUpon>AllColorsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AllCountriesView.xaml.cs">
+      <DependentUpon>AllCountriesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AllCultivationsView.xaml.cs">
+      <DependentUpon>AllCultivationsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AllGrowersView.xaml.cs">
+      <DependentUpon>AllGrowersView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AllInStockView.xaml.cs">
+      <DependentUpon>AllInStockView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AllInvoicesView.xaml.cs">
+      <DependentUpon>AllInvoicesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AllOrdersView.xaml.cs">
+      <DependentUpon>AllOrdersView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AllPaymentMethodsView.xaml.cs">
+      <DependentUpon>AllPaymentMethodsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AllProductsView.xaml.cs">
+      <DependentUpon>AllProductsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AllQualitiesView.xaml.cs">
+      <DependentUpon>AllQualitiesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AllTrayTypesView.xaml.cs">
+      <DependentUpon>AllTrayTypesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AllViewBase.cs" />
+    <Compile Include="Views\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewAddressView.xaml.cs">
+      <DependentUpon>NewAddressView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewCarrierTypeView.xaml.cs">
+      <DependentUpon>NewCarrierTypeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewCategoryView.xaml.cs">
+      <DependentUpon>NewCategoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewClientView.xaml.cs">
+      <DependentUpon>NewClientView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewColorView.xaml.cs">
+      <DependentUpon>NewColorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewCountryView.xaml.cs">
+      <DependentUpon>NewCountryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewCultivationView.xaml.cs">
+      <DependentUpon>NewCultivationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewItemViewBase.cs" />
+    <Compile Include="Views\NewPaymentMethodView.xaml.cs">
+      <DependentUpon>NewPaymentMethodView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewProductView.xaml.cs">
+      <DependentUpon>NewProductView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AllOrderItemsView.xaml.cs">
+      <DependentUpon>AllOrderItemsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewQualityTypeView.xaml.cs">
+      <DependentUpon>NewQualityTypeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewTrayTypeView.xaml.cs">
+      <DependentUpon>NewTrayTypeView.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <EntityDeploy Include="Models\PotplantsModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PotplantsModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Models\PotplantsModel.edmx.diagram">
+      <DependentUpon>PotplantsModel.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AllAddressesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AllBatchesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AllCarrierTypesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AllCategoriesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AllClientsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AllColorsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AllCountriesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AllCultivationsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AllGrowersView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AllInStockView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AllInvoicesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AllOrdersView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AllPaymentMethodsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AllProductsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AllQualitiesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AllTrayTypesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainWindowResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewAddressView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewCarrierTypeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewCategoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewClientView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewColorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewCountryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewCultivationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewPaymentMethodView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewProductView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AllOrderItemsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewQualityTypeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewTrayTypeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Models\PotplantsModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PotplantsModel.edmx</DependentUpon>
+      <LastGenOutput>PotplantsModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\PotplantsModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PotplantsModel.edmx</DependentUpon>
+      <LastGenOutput>PotplantsModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Ten projekt zawiera odwołania do pakietów NuGet, których nie ma na tym komputerze. Użyj przywracania pakietów NuGet, aby je pobrać. Aby uzyskać więcej informacji, zobacz http://go.microsoft.com/fwlink/?LinkID=322105. Brakujący plik: {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

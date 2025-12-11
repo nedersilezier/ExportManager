@@ -1,0 +1,91 @@
+﻿<Window x:Class="ExportManager.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  
+        Title="ExportManager" Height="300" Width="300" WindowState="Maximized"
+        xmlns:vm="clr-namespace:ExportManager.Views"
+        >
+    <Window.Resources>
+        <ResourceDictionary Source="MainWindowResources.xaml"  />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <!--Menu on the top-->
+        <Menu Grid.Row="0" Margin="2, 0, 2, 0" Padding="0, 6, 0, 4">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Exit"
+                          Click="Exit_Click"/>
+            </MenuItem>
+
+            <MenuItem Header="_Database">
+                <!--<MenuItem Header="_Basic data"
+                  ItemsSource="{Binding DatabaseDictionaryCommands}"
+                ItemTemplate="{StaticResource BasicDataTemplate}" />-->
+                <MenuItem Header="_Basic data"
+                          ItemsSource="{Binding DatabaseDictionaryCommands}"
+                          ItemTemplate="{StaticResource BasicDataTemplate}">
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <Setter Property="Command"     Value="{Binding Command}" />
+                            <Setter Property="ItemsSource" Value="{Binding Children}" />
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
+                <MenuItem Header="Manage addresses"
+                    Command="{Binding AddressCommand.Command}"/>
+                <MenuItem Header="_Manage entities"
+                    ItemsSource="{Binding EntityCommands}"
+                    ItemTemplate="{StaticResource BasicDataTemplate}">
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <Setter Property="Command" Value="{Binding Command}"/>
+                            <Setter Property="ItemsSource" Value="{Binding Children}"/>
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Finances"/>
+            <MenuItem Header="_Reports"/>
+        </Menu>
+        <!--Buttons-->
+        <ItemsControl ItemsSource="{Binding GlobalCommands}" Grid.Row="1" Grid.ColumnSpan="2" Margin="0, 4, 0, 0">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Command="{Binding Command}"
+                    Content="{Binding DisplayName}"
+                    Padding="0,0"
+                    Margin="0, 0, 0, 0"
+                    Style="{StaticResource CustomButtonStyle}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <!--Header-->
+        <Border Grid.Row="2">
+            <HeaderedContentControl 
+                Header="Workspace"
+                Content="{Binding Path=Workspaces}"
+                ContentTemplate="{StaticResource WorkspacesTemplate}"
+                Style="{StaticResource MainHCCStyle}"
+            />
+        </Border>
+        <!--Status bar-->
+        <StatusBar Grid.Row="3" Grid.ColumnSpan="2">
+            <StatusBarItem>
+                <TextBlock>TEXTBLOCK!</TextBlock>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem>
+                <TextBlock>TEXTBLOCK2!</TextBlock>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

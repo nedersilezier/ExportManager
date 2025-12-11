@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c747df1923754b1685b2541c0dbda6eb" Name="Diagram1" ZoomLevel="54">
+        <EntityTypeShape EntityType="PotplantsModel.Addresses" Width="1.5" PointX="3" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PotplantsModel.CarrierTypes" Width="1.5" PointX="5.25" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PotplantsModel.Categories" Width="1.5" PointX="13.25" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PotplantsModel.Clients" Width="1.5" PointX="5.25" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PotplantsModel.Colors" Width="1.5" PointX="13.25" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PotplantsModel.Countries" Width="1.5" PointX="0.75" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PotplantsModel.Cultivations" Width="1.5" PointX="8" PointY="14.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PotplantsModel.Growers" Width="1.5" PointX="10.25" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PotplantsModel.Invoices" Width="1.5" PointX="12.75" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="PotplantsModel.OrderItems" Width="1.5" PointX="9.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PotplantsModel.Orders" Width="1.5" PointX="7.5" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PotplantsModel.PaymentMethods" Width="1.5" PointX="10.5" PointY="14" IsExpanded="true" />
+        <EntityTypeShape EntityType="PotplantsModel.Products" Width="1.5" PointX="15.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PotplantsModel.Qualities" Width="1.5" PointX="13.25" PointY="18" IsExpanded="true" />
+        <EntityTypeShape EntityType="PotplantsModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PotplantsModel.TrayTypes" Width="1.5" PointX="13.25" PointY="22" IsExpanded="true" />
+        <AssociationConnector Association="PotplantsModel.FK_Addresses_Countries" ManuallyRouted="false" />
+        <AssociationConnector Association="PotplantsModel.FK_Clients_Addresses" ManuallyRouted="false" />
+        <AssociationConnector Association="PotplantsModel.FK_Growers_Addresses" ManuallyRouted="false" />
+        <AssociationConnector Association="PotplantsModel.FK_Orders_Addresses" ManuallyRouted="false" />
+        <AssociationConnector Association="PotplantsModel.FK_Orders_CarrierTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="PotplantsModel.FK_Products_Categories" ManuallyRouted="false" />
+        <AssociationConnector Association="PotplantsModel.FK_Orders_Clients" ManuallyRouted="false" />
+        <AssociationConnector Association="PotplantsModel.FK_Products_Colors" ManuallyRouted="false" />
+        <AssociationConnector Association="PotplantsModel.FK_Invoices_Orders" ManuallyRouted="false" />
+        <AssociationConnector Association="PotplantsModel.FK_Invoices_PaymentMethods" ManuallyRouted="false" />
+        <AssociationConnector Association="PotplantsModel.FK_OrderItems_Orders" ManuallyRouted="false" />
+        <AssociationConnector Association="PotplantsModel.GrowerCultivations" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="PotplantsModel.StockItems" Width="1.5" PointX="17.75" PointY="14" />
+        <EntityTypeShape EntityType="PotplantsModel.StockMovements" Width="1.5" PointX="16" PointY="1.5" />
+        <AssociationConnector Association="PotplantsModel.FK_StockItems_Growers" />
+        <AssociationConnector Association="PotplantsModel.FK_OrderItems_StockItems" />
+        <AssociationConnector Association="PotplantsModel.FK_StockMovements_OrderItems" />
+        <AssociationConnector Association="PotplantsModel.FK_StockItems_Products" />
+        <AssociationConnector Association="PotplantsModel.FK_StockItems_Qualities" />
+        <AssociationConnector Association="PotplantsModel.FK_StockItems_TrayTypes" />
+        <AssociationConnector Association="PotplantsModel.FK_StockMovements_StockItems" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

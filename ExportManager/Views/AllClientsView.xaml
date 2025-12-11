@@ -1,0 +1,32 @@
+﻿<local:AllViewBase x:Class="ExportManager.Views.AllClientsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ExportManager.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto">
+        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding List, IsAsync=True}" SelectedItem="{Binding SelectedItem}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Binding="{Binding ClientId}" MinWidth="40" Width="SizeToCells"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding ClientName}" MinWidth="200"  Width="SizeToCells"/>
+                <DataGridTextColumn Header="Client code" Binding="{Binding ClientCode}" MinWidth="70" Width="SizeToCells"/>
+                <DataGridTextColumn Header="Contact person" Binding="{Binding ContactPerson}" MinWidth="150"  Width="SizeToCells"/>
+                <DataGridTextColumn Header="Phone number" Binding="{Binding PhoneNumber}" MinWidth="150" Width="SizeToCells"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding EmailAddress}" MinWidth="150" Width="SizeToCells"/>
+                <DataGridTextColumn Header="Country" Binding="{Binding Country}" MinWidth="100" Width="SizeToCells"/>
+                <DataGridTextColumn Header="City" Binding="{Binding City}" MinWidth="100" Width="SizeToCells"/>
+                <DataGridTextColumn Header="Street" Binding="{Binding Street}" MinWidth="100" Width="SizeToCells"/>
+                <DataGridTextColumn Header="House number" Binding="{Binding HouseNumber}" MinWidth="100" Width="SizeToCells"/>
+                <DataGridTextColumn Header="Apartment number" Binding="{Binding ApartmentNumber}" MinWidth="120" Width="SizeToCells"/>
+                <DataGridTextColumn Header="Zip code" Binding="{Binding ZipCode}" MinWidth="60" Width="SizeToCells"/>
+                <DataGridTextColumn Header="Tax ID" Binding="{Binding TaxId}" MinWidth="100" Width="SizeToCells"/>
+                <DataGridTextColumn Header="Registration No" Binding="{Binding RegistrationNumber}" MinWidth="100" Width="SizeToCells"/>
+                <DataGridTextColumn Header="Remarks" Binding="{Binding Remarks}" MinWidth="60" Width="SizeToCells"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        </ScrollViewer>
+    </Grid>
+</local:AllViewBase>
