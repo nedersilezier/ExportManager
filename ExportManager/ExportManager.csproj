@@ -443,6 +443,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="DBScript\Potplants.sql" />
     <Content Include="Models\PotplantsModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>PotplantsModel.edmx</DependentUpon>
