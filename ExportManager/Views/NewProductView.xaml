@@ -36,11 +36,7 @@
         <ComboBox Grid.Row="5" Grid.Column="1" Margin="0, 2, 0, 2" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name}">
-                        <TextBlock.ToolTip>
-                            <ToolTip Content="{Binding Remarks}"/>
-                        </TextBlock.ToolTip>
-                    </TextBlock>
+                    <TextBlock Text="{Binding Value}"/>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
@@ -49,11 +45,7 @@
         <ComboBox Grid.Row="6" Grid.Column="1" Margin="0, 2, 0, 2" ItemsSource="{Binding Colors}" SelectedItem="{Binding SelectedColor}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name}">
-                        <TextBlock.ToolTip>
-                            <ToolTip Content="{Binding Remarks}"/>
-                        </TextBlock.ToolTip>
-                    </TextBlock>
+                    <TextBlock Text="{Binding Value}"/>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>

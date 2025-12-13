@@ -14,7 +14,7 @@ namespace ExportManager.Models.EntitiesForView
         public decimal? Potsize { get; set; }
         public decimal? Height { get; set; }
         public decimal? Weight { get; set; }
-        public bool? IsCites { get; set; }
+        public bool IsCites { get; set; }
         public string Cites 
         { 
             get

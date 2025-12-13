@@ -68,11 +68,7 @@
                           Margin="0, 2, 0, 2">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Name}">
-                                <TextBlock.ToolTip>
-                                    <ToolTip Content="{Binding Remarks}"/>
-                                </TextBlock.ToolTip>
-                            </TextBlock>
+                            <TextBlock Text="{Binding Value}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
@@ -84,7 +80,7 @@
                           Margin="0, 2, 0, 2">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding FullAddress}"/>
+                            <TextBlock Text="{Binding Value}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>

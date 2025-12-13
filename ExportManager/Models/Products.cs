@@ -34,7 +34,7 @@ namespace ExportManager.Models
         public Nullable<System.DateTime> DeletedAt { get; set; }
         public string DeletedBy { get; set; }
         public string Remarks { get; set; }
-        public Nullable<bool> IsCites { get; set; }
+        public bool IsCites { get; set; }
         public Nullable<decimal> Weight { get; set; }
     
         public virtual Categories Categories { get; set; }

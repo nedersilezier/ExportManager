@@ -9,25 +9,44 @@ using ExportManager.Helper;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Windows;
+using ExportManager.Models.EntitiesForView;
+using ExportManager.Models.BusinessLogic;
 
 namespace ExportManager.ViewModels
 {
     public class NewAddressViewModel: NewItemViewModel<Addresses>
     {
         private BaseCommand _NewCountryCommand;
-        private Countries _SelectedCountry;
-        public ObservableCollection<Countries> Countries { get; set; }
+        private KeyAndValue _SelectedCountry;
+        public ObservableCollection<KeyAndValue> _Countries;
         #region Constructor
         public NewAddressViewModel()
             : base()
         {
             base.DisplayName = "New address";
             item = new Addresses();
-            Countries = new ObservableCollection<Countries>(potplantsEntities.Countries.Where(t => t.IsActive == true).ToList());
+            Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
         }
         #endregion
         #region Properties
-        public Countries SelectedCountry
+        public ObservableCollection<KeyAndValue> Countries
+        {
+            get
+            {
+                if (_Countries == null)
+                    _Countries = new ObservableCollection<KeyAndValue>();
+                return _Countries;
+            }
+            set
+            {
+                if (_Countries != value)
+                {
+                    _Countries = value;
+                    OnPropertyChanged(() => Countries);
+                }
+            }
+        }
+        public KeyAndValue SelectedCountry
         {
             get { return _SelectedCountry; }
             set
@@ -109,7 +128,8 @@ namespace ExportManager.ViewModels
             {
                 throw new Exception("No country chosen.");
             }
-            item.CountryId = SelectedCountry.CountryId;
+            var selectedCountry = potplantsEntities.Countries.FirstOrDefault(t=>t.CountryId==SelectedCountry.Key);
+            item.CountryId = selectedCountry.CountryId;
             item.IsActive = true;
             potplantsEntities.Addresses.Add(item);
             potplantsEntities.SaveChanges();
@@ -136,7 +156,7 @@ namespace ExportManager.ViewModels
         }
         private void RefreshCountries()
         {
-            Countries = new ObservableCollection<Countries>(potplantsEntities.Countries.Where(t => t.IsActive == true).ToList());
+            Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
             OnPropertyChanged(() => Countries);
         }
         #endregion

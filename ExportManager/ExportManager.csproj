@@ -78,6 +78,10 @@
     <Compile Include="Models\Addresses.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\BusinessLogic\AddressesForEntities.cs" />
+    <Compile Include="Models\BusinessLogic\CategoriesForProducts.cs" />
+    <Compile Include="Models\BusinessLogic\ColorsForProducts.cs" />
+    <Compile Include="Models\BusinessLogic\CountriesForEntities.cs" />
     <Compile Include="Models\BusinessLogic\DatabaseClass.cs" />
     <Compile Include="Models\BusinessLogic\CultivationsForGrowers.cs" />
     <Compile Include="Models\CarrierTypes.cs">

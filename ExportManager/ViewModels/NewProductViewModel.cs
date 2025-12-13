@@ -10,6 +10,8 @@ using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using ExportManager.Helper;
 using System.Windows.Input;
+using ExportManager.Models.EntitiesForView;
+using ExportManager.Models.BusinessLogic;
 
 namespace ExportManager.ViewModels
 {
@@ -17,23 +19,57 @@ namespace ExportManager.ViewModels
     {
         private BaseCommand _NewCategoryCommand;
         private BaseCommand _NewColorCommand;
-        private Categories _SelectedCategory;
-        private Colors _SelectedColor;
-        public ObservableCollection<Categories> Categories { get; set; }
-        public ObservableCollection<Colors> Colors { get; set; }
+        private KeyAndValue _SelectedCategory;
+        private KeyAndValue _SelectedColor;
+        public ObservableCollection<KeyAndValue> _Categories;
+        public ObservableCollection<KeyAndValue> _Colors;
         #region Constructor
         public NewProductViewModel()
             : base()
         {
             base.DisplayName = "New product";
             item = new Products();
-            Categories = new ObservableCollection<Categories>(potplantsEntities.Categories.Where(t => t.IsActive == true).ToList());
-            Colors = new ObservableCollection<Colors>(potplantsEntities.Colors.Where(t => t.IsActive == true).ToList());
+            //Categories = new CategoriesForProducts(potplantsEntities).GetCategoriesListItems();
+            //Colors = new ColorsForProducts(potplantsEntities).GetColorsListItems();
         }
         #endregion
         #region Properties
+        public ObservableCollection<KeyAndValue> Categories
+        {
+            get 
+            { 
+                if(_Categories == null)
+                    _Categories = new CategoriesForProducts(potplantsEntities).GetCategoriesListItems();
+                return _Categories; 
+            }
+            set
+            {
+                if(_Categories!=null)
+                {
+                    _Categories = value;
+                    OnPropertyChanged(()=>Categories);
+                }
+            }
+        }
+        public ObservableCollection<KeyAndValue> Colors
+        {
+            get
+            {
+                if (_Colors == null)
+                    _Colors = new ColorsForProducts(potplantsEntities).GetColorsListItems();
+                return _Colors;
+            }
+            set
+            {
+                if( _Colors!=value)
+                {
+                    _Colors = value;
+                    OnPropertyChanged(()=>Colors);
+                }
+            }
+        }
         
-        public Categories SelectedCategory
+        public KeyAndValue SelectedCategory
         {
             get { return _SelectedCategory; }
             set
@@ -41,11 +77,12 @@ namespace ExportManager.ViewModels
                 if (value != _SelectedCategory)
                 {
                     _SelectedCategory = value;
+                    OnPropertyChanged(() => SelectedCategory);
                 }
-                OnPropertyChanged(() => SelectedCategory);
+                
             }
         }
-        public Colors SelectedColor
+        public KeyAndValue SelectedColor
         {
             get { return _SelectedColor; }
             set
@@ -53,8 +90,8 @@ namespace ExportManager.ViewModels
                 if (value != _SelectedColor)
                 {
                     _SelectedColor = value;
+                    OnPropertyChanged(() => SelectedColor);
                 }
-                OnPropertyChanged(() => SelectedColor);
             }
         }
         public string Name
@@ -96,7 +133,7 @@ namespace ExportManager.ViewModels
                 OnPropertyChanged(() => Weight);
             }
         }
-        public bool? Cites {
+        public bool Cites {
             get { return item.IsCites; }
             set
             {
@@ -120,8 +157,10 @@ namespace ExportManager.ViewModels
         {
             if(SelectedCategory == null || SelectedColor == null) 
                 throw new Exception("No category or color selected.");
-            item.CategoryId = SelectedCategory.CategoryId;
-            item.ColorId = SelectedColor.ColorId;
+            var selectedColor = potplantsEntities.Colors.FirstOrDefault(c => c.ColorId == SelectedColor.Key);
+            item.ColorId = selectedColor.ColorId;
+            var selectedCategory = potplantsEntities.Categories.FirstOrDefault(c => c.CategoryId == SelectedCategory.Key);
+            item.CategoryId = selectedCategory.CategoryId;
             item.IsActive = true;
             potplantsEntities.Products.Add(item);
             potplantsEntities.SaveChanges();
@@ -165,12 +204,12 @@ namespace ExportManager.ViewModels
         }
         private void RefreshCategories()
         {
-            Categories = new ObservableCollection<Categories>(potplantsEntities.Categories.Where(t => t.IsActive == true).ToList());
+            Categories = new CategoriesForProducts(potplantsEntities).GetCategoriesListItems();
             OnPropertyChanged(() => Categories);
         }
         private void RefreshColors()
         {
-            Colors = new ObservableCollection<Colors>(potplantsEntities.Colors.Where(t => t.IsActive == true).ToList());
+            Colors = new ColorsForProducts(potplantsEntities).GetColorsListItems();
             OnPropertyChanged(() => Colors);
         }
         #endregion

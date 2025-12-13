@@ -16,19 +16,6 @@ namespace ExportManager.ViewModels
 {
     public class NewGrowerViewModel: NewItemViewModel<Growers>
     {
-        private BaseCommand _AddCultivationCommand;
-        private BaseCommand _RemoveCultivationCommand;
-        private BaseCommand _NewCountryCommand;
-        private Countries _SelectedCountry;
-        private BaseCommand _NewAddressCommand;
-        private Addresses _SelectedAddress;
-        public ObservableCollection<Countries> Countries { get; set; }
-        public ObservableCollection<Addresses> Addresses { get; set; }
-        private ObservableCollection<KeyAndValue> _AllCultivations;
-        private ObservableCollection<KeyAndValue> _SelectedCultivations;
-        private Addresses newGrowerAddress;
-        public bool _IsAddressesNeeded;
-        public bool _IsNotAddressesNeeded;
         #region Constructor
         public NewGrowerViewModel()
             : base()
@@ -36,11 +23,24 @@ namespace ExportManager.ViewModels
             base.DisplayName = "New grower";
             item = new Growers();
             newGrowerAddress = new Addresses();
-            Countries = new ObservableCollection<Countries>(potplantsEntities.Countries.Where(t => t.IsActive == true).ToList());
+            Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
             IsNotAddressesNeeded = true;
         }
         #endregion
-        #region Properties
+        #region Properties and Fields
+        //Fields
+        private BaseCommand _AddCultivationCommand;
+        private BaseCommand _RemoveCultivationCommand;
+        private BaseCommand _NewCountryCommand;
+        private KeyAndValue _SelectedCountry;
+        private KeyAndValue _SelectedAddress;
+        public ObservableCollection<KeyAndValue> _Countries;
+        public ObservableCollection<KeyAndValue> _Addresses;
+        private ObservableCollection<KeyAndValue> _AllCultivations;
+        private ObservableCollection<KeyAndValue> _SelectedCultivations;
+        private Addresses newGrowerAddress;
+        public bool _IsAddressesNeeded;
+        public bool _IsNotAddressesNeeded;
         //Address related
         public bool IsAddressesNeeded
         {
@@ -55,10 +55,8 @@ namespace ExportManager.ViewModels
                         IsNotAddressesNeeded = false;
                         if (Addresses == null)
                         {
-                            Addresses = new ObservableCollection<Addresses>(potplantsEntities.Addresses.Where(t => t.IsActive == true).ToList());
+                            Addresses = new AddressesForEntities(potplantsEntities).GetAddressesListItems();
                             OnPropertyChanged(() => Addresses);
-                            //foreach(Addresses address  in Addresses)
-                            //    Console.WriteLine(address.FullAddress + "\n");
                         }
                     }
                     OnPropertyChanged(() => IsAddressesNeeded);
@@ -131,7 +129,41 @@ namespace ExportManager.ViewModels
                 OnPropertyChanged(() => City);
             }
         }
-        public Countries SelectedCountry
+        public ObservableCollection<KeyAndValue> Countries
+        {
+            get
+            {
+                if(_Countries == null)
+                    _Countries = new ObservableCollection<KeyAndValue>();
+                return _Countries;
+            }
+            set
+            {
+                if(_Countries != value)
+                {
+                    _Countries = value;
+                    OnPropertyChanged(() => Countries);
+                }
+            }
+        }
+        public ObservableCollection<KeyAndValue> Addresses
+        {
+            get
+            {
+                //if (_Addresses == null)
+                //    _Addresses = new ObservableCollection<KeyAndValue>();
+                return _Addresses;
+            }
+            set
+            {
+                if (_Addresses != value)
+                {
+                    _Addresses = value;
+                    OnPropertyChanged(() => Addresses);
+                }
+            }
+        }
+        public KeyAndValue SelectedCountry
         {
             get { return _SelectedCountry; }
             set
@@ -143,7 +175,7 @@ namespace ExportManager.ViewModels
                 }
             }
         }
-        public Addresses SelectedAddress
+        public KeyAndValue SelectedAddress
         {
             get { return _SelectedAddress; }
             set
@@ -309,13 +341,15 @@ namespace ExportManager.ViewModels
             {
                 if (SelectedAddress == null)
                     throw new Exception("No address selected");
-                item.AddressId = SelectedAddress.AddressId;
+                var selectedAddress = potplantsEntities.Addresses.FirstOrDefault(t=>t.AddressId==SelectedAddress.Key);
+                item.AddressId = selectedAddress.AddressId;
             }
             else
             {
                 if (SelectedCountry == null)
                     throw new Exception("No country selected");
-                newGrowerAddress.CountryId = SelectedCountry.CountryId;
+                var selectedCountry = potplantsEntities.Countries.FirstOrDefault(t=>t.CountryId==SelectedCountry.Key);
+                newGrowerAddress.CountryId = selectedCountry.CountryId;
                 newGrowerAddress.IsActive = true;
                 potplantsEntities.Addresses.Add(newGrowerAddress);
                 potplantsEntities.SaveChanges();
@@ -373,7 +407,7 @@ namespace ExportManager.ViewModels
         }
         private void RefreshCountries()
         {
-            Countries = new ObservableCollection<Countries>(potplantsEntities.Countries.Where(t => t.IsActive == true).ToList());
+            Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
             OnPropertyChanged(() => Countries);
         }
         private void onAddCultivation()

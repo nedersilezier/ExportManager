@@ -260,7 +260,7 @@
           <Property Name="DeletedAt" Type="datetime2" Precision="0" />
           <Property Name="DeletedBy" Type="nvarchar" MaxLength="100" />
           <Property Name="Remarks" Type="nvarchar(max)" />
-          <Property Name="IsCites" Type="bit" />
+          <Property Name="IsCites" Type="bit" Nullable="false" />
           <Property Name="Weight" Type="decimal" Precision="5" Scale="2" />
         </EntityType>
         <EntityType Name="Qualities">
@@ -1005,7 +1005,7 @@
           <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Categories" Relationship="Self.FK_Products_Categories" FromRole="Products" ToRole="Categories" />
           <NavigationProperty Name="Colors" Relationship="Self.FK_Products_Colors" FromRole="Products" ToRole="Colors" />
-          <Property Name="IsCites" Type="Boolean" />
+          <Property Name="IsCites" Type="Boolean" Nullable="false" />
           <Property Name="Weight" Type="Decimal" Precision="5" Scale="2" />
           <NavigationProperty Name="StockItems" Relationship="PotplantsModel.FK_StockItems_Products" FromRole="Products" ToRole="StockItems" />
         </EntityType>

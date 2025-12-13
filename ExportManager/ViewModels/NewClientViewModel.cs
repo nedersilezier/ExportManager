@@ -8,17 +8,18 @@ using ExportManager.Models;
 using ExportManager.Helper;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using ExportManager.Models.EntitiesForView;
+using ExportManager.Models.BusinessLogic;
 
 namespace ExportManager.ViewModels
 {
     public class NewClientViewModel: NewItemViewModel<Clients>
     {
         private BaseCommand _NewCountryCommand;
-        private Countries _SelectedCountry;
-        private BaseCommand _NewAddressCommand;
-        private Addresses _SelectedAddress;
-        public ObservableCollection<Countries> Countries { get; set; }
-        public ObservableCollection<Addresses> Addresses { get; set; }
+        private KeyAndValue _SelectedCountry;
+        private KeyAndValue _SelectedAddress;
+        public ObservableCollection<KeyAndValue> _Countries;
+        public ObservableCollection<KeyAndValue> _Addresses;
         private Addresses newClientAddress;
         public bool _IsAddressesNeeded;
         public bool _IsNotAddressesNeeded;
@@ -29,7 +30,7 @@ namespace ExportManager.ViewModels
             base.DisplayName = "New client";
             item = new Clients();
             newClientAddress = new Addresses();
-            Countries = new ObservableCollection<Countries>(potplantsEntities.Countries.Where(t => t.IsActive==true).ToList());
+            Countries = Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
             IsNotAddressesNeeded = true;
         }
         #endregion
@@ -48,7 +49,7 @@ namespace ExportManager.ViewModels
                         IsNotAddressesNeeded = false;
                         if (Addresses == null)
                         {
-                            Addresses = new ObservableCollection<Addresses>(potplantsEntities.Addresses.Where(t => t.IsActive == true).ToList());
+                            Addresses = new AddressesForEntities(potplantsEntities).GetAddressesListItems();
                             OnPropertyChanged(() => Addresses);
                             //foreach(Addresses address  in Addresses)
                             //    Console.WriteLine(address.FullAddress + "\n");
@@ -69,6 +70,40 @@ namespace ExportManager.ViewModels
                     if (value == true)
                         IsAddressesNeeded = false;
                     OnPropertyChanged(() => IsNotAddressesNeeded);
+                }
+            }
+        }
+        public ObservableCollection<KeyAndValue> Countries
+        {
+            get
+            {
+                if (_Countries == null)
+                    _Countries = new ObservableCollection<KeyAndValue>();
+                return _Countries;
+            }
+            set
+            {
+                if (_Countries != value)
+                {
+                    _Countries = value;
+                    OnPropertyChanged(() => Countries);
+                }
+            }
+        }
+        public ObservableCollection<KeyAndValue> Addresses
+        {
+            get
+            {
+                //if (_Addresses == null)
+                //    _Addresses = new ObservableCollection<KeyAndValue>();
+                return _Addresses;
+            }
+            set
+            {
+                if (_Addresses != value)
+                {
+                    _Addresses = value;
+                    OnPropertyChanged(() => Addresses);
                 }
             }
         }
@@ -124,7 +159,7 @@ namespace ExportManager.ViewModels
                 OnPropertyChanged(() => City);
             }
         }
-        public Countries SelectedCountry
+        public KeyAndValue SelectedCountry
         {
             get { return _SelectedCountry; }
             set
@@ -136,7 +171,7 @@ namespace ExportManager.ViewModels
                 }
             }
         }
-        public Addresses SelectedAddress
+        public KeyAndValue SelectedAddress
         {
             get { return _SelectedAddress; }
             set
@@ -277,13 +312,15 @@ namespace ExportManager.ViewModels
             {
                 if (SelectedAddress == null)
                     throw new Exception("No address selected");
-                item.AddressId = SelectedAddress.AddressId;
+                var selectedAddress = potplantsEntities.Addresses.FirstOrDefault(t=>t.AddressId==SelectedAddress.Key);
+                item.AddressId = selectedAddress.AddressId;
             }
             else
             {
                 if (SelectedCountry == null)
                     throw new Exception("No country selected");
-                newClientAddress.CountryId = SelectedCountry.CountryId;
+                var selectedCountry = potplantsEntities.Countries.FirstOrDefault(t=>t.CountryId==SelectedCountry.Key);
+                newClientAddress.CountryId = selectedCountry.CountryId;
                 newClientAddress.IsActive = true;
                 potplantsEntities.Addresses.Add(newClientAddress);
                 potplantsEntities.SaveChanges();
@@ -315,7 +352,7 @@ namespace ExportManager.ViewModels
         }
         private void RefreshCountries()
         {
-            Countries = new ObservableCollection<Countries>(potplantsEntities.Countries.Where(t => t.IsActive == true).ToList());
+            Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
             OnPropertyChanged(() => Countries);
         }
         #endregion
