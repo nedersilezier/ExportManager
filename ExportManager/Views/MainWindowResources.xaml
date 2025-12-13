@@ -100,6 +100,9 @@
     <DataTemplate DataType="{x:Type vm:NewClientViewModel}">
         <vw:NewClientView/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:NewGrowerViewModel}">
+        <vw:NewGrowerView/>
+    </DataTemplate>
     <!--Own button style-->
     <Style x:Key="CustomButtonStyle" TargetType="Button">
         <Setter Property="Foreground" Value="Black"/>

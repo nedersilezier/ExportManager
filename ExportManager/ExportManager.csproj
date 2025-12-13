@@ -78,6 +78,8 @@
     <Compile Include="Models\Addresses.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\BusinessLogic\DatabaseClass.cs" />
+    <Compile Include="Models\BusinessLogic\CultivationsForGrowers.cs" />
     <Compile Include="Models\CarrierTypes.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
@@ -99,6 +101,7 @@
     <Compile Include="Models\EntitiesForView\AddressesListView.cs" />
     <Compile Include="Models\EntitiesForView\ClientsListView.cs" />
     <Compile Include="Models\EntitiesForView\GrowersListView.cs" />
+    <Compile Include="Models\EntitiesForView\KeyAndValue.cs" />
     <Compile Include="Models\EntitiesForView\ProductsListView.cs" />
     <Compile Include="Models\Extensions\HasIsActive..cs" />
     <Compile Include="Models\Extensions\StringExtensions.cs" />
@@ -185,6 +188,7 @@
     <Compile Include="ViewModels\NewColorViewModel.cs" />
     <Compile Include="ViewModels\NewCountryViewModel.cs" />
     <Compile Include="ViewModels\NewCultivationViewModel.cs" />
+    <Compile Include="ViewModels\NewGrowerViewModel.cs" />
     <Compile Include="ViewModels\NewPaymentMethodViewModel.cs" />
     <Compile Include="ViewModels\NewProductViewModel.cs" />
     <Compile Include="ViewModels\NewQualityTypeViewModel.cs" />
@@ -264,6 +268,9 @@
     </Compile>
     <Compile Include="Views\NewCultivationView.xaml.cs">
       <DependentUpon>NewCultivationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewGrowerView.xaml.cs">
+      <DependentUpon>NewGrowerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NewItemViewBase.cs" />
     <Compile Include="Views\NewPaymentMethodView.xaml.cs">
@@ -420,6 +427,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\NewGrowerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\NewPaymentMethodView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -444,6 +455,8 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="DBScript\Potplants.sql" />
+    <Resource Include="Icons\left-arrow.png" />
+    <Resource Include="Icons\right-arrow.png" />
     <Content Include="Models\PotplantsModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>PotplantsModel.edmx</DependentUpon>

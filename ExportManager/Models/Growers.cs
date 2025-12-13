@@ -26,7 +26,7 @@ namespace ExportManager.Models
         public string ContactPerson { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
-        public Nullable<int> AddressId { get; set; }
+        public int AddressId { get; set; }
         public string TaxId { get; set; }
         public string RegistrationNo { get; set; }
         public bool IsActive { get; set; }

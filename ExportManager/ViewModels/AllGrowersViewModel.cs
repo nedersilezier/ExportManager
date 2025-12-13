@@ -50,7 +50,7 @@ namespace ExportManager.ViewModels
         #region Functions
         public override void OnAdd()
         {
-            return;
+            AddNew<NewGrowerViewModel>();
         }
         public override void OnEdit()
         {

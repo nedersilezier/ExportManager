@@ -142,7 +142,7 @@
           <Property Name="ContactPerson" Type="nvarchar" MaxLength="100" />
           <Property Name="Phone" Type="nvarchar" MaxLength="20" />
           <Property Name="Email" Type="nvarchar" MaxLength="100" />
-          <Property Name="AddressId" Type="int" />
+          <Property Name="AddressId" Type="int" Nullable="false" />
           <Property Name="TaxId" Type="nvarchar" MaxLength="20" />
           <Property Name="RegistrationNo" Type="nvarchar" MaxLength="20" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
@@ -404,7 +404,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Growers_Addresses">
-          <End Role="Addresses" Type="Self.Addresses" Multiplicity="0..1" />
+          <End Role="Addresses" Type="Self.Addresses" Multiplicity="1" />
           <End Role="Growers" Type="Self.Growers" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Addresses">
@@ -871,7 +871,7 @@
           <Property Name="ContactPerson" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="AddressId" Type="Int32" />
+          <Property Name="AddressId" Type="Int32" Nullable="false" />
           <Property Name="TaxId" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="RegistrationNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
@@ -1082,7 +1082,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Growers_Addresses">
-          <End Role="Addresses" Type="Self.Addresses" Multiplicity="0..1" />
+          <End Role="Addresses" Type="Self.Addresses" Multiplicity="1" />
           <End Role="Growers" Type="Self.Growers" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Addresses">
