@@ -18,6 +18,7 @@ namespace ExportManager.Models
         public CarrierTypes()
         {
             this.Orders = new HashSet<Orders>();
+            this.Carriers = new HashSet<Carriers>();
         }
     
         public int CarrierTypeId { get; set; }
@@ -38,5 +39,7 @@ namespace ExportManager.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Orders> Orders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Carriers> Carriers { get; set; }
     }
 }

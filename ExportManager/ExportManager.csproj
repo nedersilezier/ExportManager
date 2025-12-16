@@ -79,11 +79,17 @@
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\BusinessLogic\AddressesForEntities.cs" />
+    <Compile Include="Models\BusinessLogic\CarrierTypesForReports.cs" />
     <Compile Include="Models\BusinessLogic\CategoriesForProducts.cs" />
+    <Compile Include="Models\BusinessLogic\ClientsForReports.cs" />
     <Compile Include="Models\BusinessLogic\ColorsForProducts.cs" />
     <Compile Include="Models\BusinessLogic\CountriesForEntities.cs" />
     <Compile Include="Models\BusinessLogic\DatabaseClass.cs" />
     <Compile Include="Models\BusinessLogic\CultivationsForGrowers.cs" />
+    <Compile Include="Models\BusinessLogic\VolumeCalculator.cs" />
+    <Compile Include="Models\Carriers.cs">
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CarrierTypes.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
@@ -110,6 +116,12 @@
     <Compile Include="Models\Extensions\HasIsActive..cs" />
     <Compile Include="Models\Extensions\StringExtensions.cs" />
     <Compile Include="Models\Growers.cs">
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\InvoiceItems.cs">
+      <DependentUpon>PotplantsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\InvoiceParties.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Invoices.cs">
@@ -199,6 +211,7 @@
     <Compile Include="ViewModels\AllProductsViewModel.cs" />
     <Compile Include="ViewModels\AllOrderItemsViewModel.cs" />
     <Compile Include="ViewModels\NewTrayTypeViewModel.cs" />
+    <Compile Include="ViewModels\VolumeReportViewModel.cs" />
     <Compile Include="ViewModels\WorkspaceViewModel.cs" />
     <Compile Include="Views\AllAddressesView.xaml.cs">
       <DependentUpon>AllAddressesView.xaml</DependentUpon>
@@ -291,6 +304,9 @@
     </Compile>
     <Compile Include="Views\NewTrayTypeView.xaml.cs">
       <DependentUpon>NewTrayTypeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\VolumeReportView.xaml.cs">
+      <DependentUpon>VolumeReportView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -452,6 +468,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NewTrayTypeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\VolumeReportView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

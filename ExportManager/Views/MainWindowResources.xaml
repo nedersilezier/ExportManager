@@ -103,6 +103,10 @@
     <DataTemplate DataType="{x:Type vm:NewGrowerViewModel}">
         <vw:NewGrowerView/>
     </DataTemplate>
+    <!--Report views-->
+    <DataTemplate DataType="{x:Type vm:VolumeReportViewModel}">
+        <vw:VolumeReportView/>
+    </DataTemplate>
     <!--Own button style-->
     <Style x:Key="CustomButtonStyle" TargetType="Button">
         <Setter Property="Foreground" Value="Black"/>

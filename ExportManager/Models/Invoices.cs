@@ -14,6 +14,13 @@ namespace ExportManager.Models
     
     public partial class Invoices
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Invoices()
+        {
+            this.InvoiceItems = new HashSet<InvoiceItems>();
+            this.InvoiceParties = new HashSet<InvoiceParties>();
+        }
+    
         public int InvoiceId { get; set; }
         public int OrderId { get; set; }
         public string InvoiceNo { get; set; }
@@ -33,8 +40,14 @@ namespace ExportManager.Models
         public Nullable<System.DateTime> DeletedAt { get; set; }
         public string DeletedBy { get; set; }
         public string Remarks { get; set; }
+        public decimal TotalGross { get; set; }
+        public decimal TotalTax { get; set; }
     
         public virtual Orders Orders { get; set; }
         public virtual PaymentMethods PaymentMethods { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<InvoiceItems> InvoiceItems { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<InvoiceParties> InvoiceParties { get; set; }
     }
 }

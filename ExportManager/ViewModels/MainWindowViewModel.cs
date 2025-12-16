@@ -22,6 +22,7 @@ namespace ExportManager.ViewModels
         private CommandViewModel _AddressCommand;
         private CommandViewModel _ProductsCommand;
         private ReadOnlyCollection<CommandViewModel> _EntityCommands;
+        private ReadOnlyCollection<CommandViewModel> _ReportCommands;
         private ObservableCollection<WorkspaceViewModel> _Workspaces;
         #endregion
 
@@ -72,6 +73,18 @@ namespace ExportManager.ViewModels
                         this.CreateEntityCommands());
                 }
                 return _EntityCommands;
+            }
+        }
+        public ReadOnlyCollection<CommandViewModel> ReportCommands
+        {
+            get
+            {
+                if (_ReportCommands == null)
+                {
+                    _ReportCommands = new ReadOnlyCollection<CommandViewModel>(
+                        this.CreateReportCommands());
+                }
+                return _ReportCommands;
             }
         }
         public CommandViewModel AddressCommand
@@ -150,6 +163,13 @@ namespace ExportManager.ViewModels
             {
                 new CommandViewModel("Clients", new BaseCommand(() => this.ShowAll<AllClientsViewModel>())),
                 new CommandViewModel("Growers", new BaseCommand(() => this.ShowAll<AllGrowersViewModel>()))
+            };
+        }
+        private List<CommandViewModel> CreateReportCommands()
+        {
+            return new List<CommandViewModel>
+            {
+                new CommandViewModel("Volume per client per period", new BaseCommand(() => this.ShowAll<VolumeReportViewModel>()))
             };
         }
         #endregion

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:ExportManager.Views"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <Label Content="All order items"></Label>
-    </Grid>
+    <DataGrid AutoGenerateColumns="True" ItemsSource="{Binding List, IsAsync=True}">
+        
+    </DataGrid>
 </local:AllViewBase>

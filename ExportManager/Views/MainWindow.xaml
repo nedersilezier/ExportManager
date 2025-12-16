@@ -49,7 +49,14 @@
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="_Finances"/>
-            <MenuItem Header="_Reports"/>
+            <MenuItem Header="_Reports" ItemsSource="{Binding ReportCommands}" ItemTemplate="{StaticResource BasicDataTemplate}">
+                <MenuItem.ItemContainerStyle>
+                    <Style TargetType="MenuItem">
+                        <Setter Property="Command" Value="{Binding Command}"/>
+                        <Setter Property="ItemsSource" Value="{Binding Children}"/>
+                    </Style>
+                </MenuItem.ItemContainerStyle>
+            </MenuItem>
         </Menu>
         <!--Buttons-->
         <ItemsControl ItemsSource="{Binding GlobalCommands}" Grid.Row="1" Grid.ColumnSpan="2" Margin="0, 4, 0, 0">

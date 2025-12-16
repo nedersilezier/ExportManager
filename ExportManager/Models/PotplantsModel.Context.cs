@@ -45,6 +45,9 @@ namespace ExportManager.Models
         public virtual DbSet<TrayTypes> TrayTypes { get; set; }
         public virtual DbSet<StockItems> StockItems { get; set; }
         public virtual DbSet<StockMovements> StockMovements { get; set; }
+        public virtual DbSet<InvoiceItems> InvoiceItems { get; set; }
+        public virtual DbSet<InvoiceParties> InvoiceParties { get; set; }
+        public virtual DbSet<Carriers> Carriers { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

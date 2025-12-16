@@ -34,17 +34,17 @@ namespace ExportManager.ViewModels.Abstract
             {
                 potplantsEntities.SaveChanges();
             }
-            catch (DbEntityValidationException dbex)
-            {
-                string message = string.Empty;
-                foreach (var efex in dbex.EntityValidationErrors)
-                {
-                    message += "Type " + efex.Entry.Entity.GetType().Name + " in state " + efex.Entry.State + " has errors: \n";
-                    foreach (var errormsg in efex.ValidationErrors)
-                        message += "\tProperty: " + errormsg.PropertyName + ", error: " + errormsg.ErrorMessage + "/n";
-                }
-                MessageBox.Show(message);
-            }
+            //catch (DbEntityValidationException dbex)
+            //{
+            //    string message = string.Empty;
+            //    foreach (var efex in dbex.EntityValidationErrors)
+            //    {
+            //        message += "Type " + efex.Entry.Entity.GetType().Name + " in state " + efex.Entry.State + " has errors: \n";
+            //        foreach (var errormsg in efex.ValidationErrors)
+            //            message += "\tProperty: " + errormsg.PropertyName + ", error: " + errormsg.ErrorMessage + "/n";
+            //    }
+            //    MessageBox.Show(message);
+            //}
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);

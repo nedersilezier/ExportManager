@@ -25,6 +25,23 @@
           <Property Name="DeletedAt" Type="datetime2" Precision="0" />
           <Property Name="Remarks" Type="nvarchar" MaxLength="500" />
         </EntityType>
+        <EntityType Name="Carriers">
+          <Key>
+            <PropertyRef Name="CarrierId" />
+          </Key>
+          <Property Name="CarrierId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderId" Type="int" Nullable="false" />
+          <Property Name="CarrierTypeId" Type="int" Nullable="false" />
+          <Property Name="AmountOfShelfs" Type="int" Nullable="false" />
+          <Property Name="AmountOfExtensions" Type="int" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="UpdatedAt" Type="datetime2" Precision="7" />
+          <Property Name="DeletedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="DeletedAt" Type="datetime2" Precision="7" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="CarrierTypes">
           <Key>
             <PropertyRef Name="CarrierTypeId" />
@@ -154,6 +171,53 @@
           <Property Name="DeletedAt" Type="datetime2" Precision="0" />
           <Property Name="Remarks" Type="nvarchar" MaxLength="500" />
         </EntityType>
+        <EntityType Name="InvoiceItems">
+          <Key>
+            <PropertyRef Name="InvoiceItemId" />
+          </Key>
+          <Property Name="InvoiceItemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InvoiceId" Type="int" Nullable="false" />
+          <Property Name="ItemNo" Type="int" Nullable="false" />
+          <Property Name="NameSnapshot" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="PotSizeSnapshot" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="HeightSnapshot" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="UnitPriceSnapshot" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TaxRateSnapshot" Type="decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="NetAmount" Type="decimal" Precision="29" Scale="2" StoreGeneratedPattern="Computed" />
+          <Property Name="TaxAmount" Type="decimal" Precision="38" Scale="7" StoreGeneratedPattern="Computed" />
+          <Property Name="GrossAmount" Type="decimal" Precision="38" Scale="6" StoreGeneratedPattern="Computed" />
+          <Property Name="ProductId" Type="int" />
+          <Property Name="StockItemId" Type="int" />
+          <Property Name="SourceOrderItemId" Type="int" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="UpdatedAt" Type="datetime2" Precision="7" />
+          <Property Name="DeletedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="DeletedAt" Type="datetime2" Precision="7" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="InvoiceParties">
+          <Key>
+            <PropertyRef Name="InvoicePartyId" />
+          </Key>
+          <Property Name="InvoicePartyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InvoiceId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="TaxId" Type="nvarchar" MaxLength="50" />
+          <Property Name="Street" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="City" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="PostalCode" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="CountryCode" Type="nvarchar" MaxLength="2" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="UpdatedAt" Type="datetime2" Precision="7" />
+          <Property Name="DeletedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="DeletedAt" Type="datetime2" Precision="7" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="Invoices">
           <Key>
             <PropertyRef Name="InvoiceId" />
@@ -177,6 +241,8 @@
           <Property Name="DeletedAt" Type="datetime2" Precision="0" />
           <Property Name="DeletedBy" Type="nvarchar" MaxLength="100" />
           <Property Name="Remarks" Type="nvarchar" MaxLength="500" />
+          <Property Name="TotalGross" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TotalTax" Type="decimal" Precision="18" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="OrderItems">
           <Key>
@@ -367,6 +433,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Carriers_CarrierTypes">
+          <End Role="CarrierTypes" Type="Self.CarrierTypes" Multiplicity="1" />
+          <End Role="Carriers" Type="Self.Carriers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CarrierTypes">
+              <PropertyRef Name="CarrierTypeId" />
+            </Principal>
+            <Dependent Role="Carriers">
+              <PropertyRef Name="CarrierTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Carriers_Orders">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Carriers" Type="Self.Carriers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="Carriers">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Clients_Addresses">
           <End Role="Addresses" Type="Self.Addresses" Multiplicity="1" />
           <End Role="Clients" Type="Self.Clients" Multiplicity="*" />
@@ -415,6 +507,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_InvoiceItems_Invoices">
+          <End Role="Invoices" Type="Self.Invoices" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="InvoiceItems" Type="Self.InvoiceItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoices">
+              <PropertyRef Name="InvoiceId" />
+            </Principal>
+            <Dependent Role="InvoiceItems">
+              <PropertyRef Name="InvoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InvoiceParties_Invoices">
+          <End Role="Invoices" Type="Self.Invoices" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="InvoiceParties" Type="Self.InvoiceParties" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoices">
+              <PropertyRef Name="InvoiceId" />
+            </Principal>
+            <Dependent Role="InvoiceParties">
+              <PropertyRef Name="InvoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Invoices_Orders">
           <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
           <End Role="Invoices" Type="Self.Invoices" Multiplicity="*" />
@@ -440,7 +560,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_OrderItems_Orders">
-          <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Orders">
@@ -628,6 +750,7 @@
         <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="PotplantsModelStoreContainer">
           <EntitySet Name="Addresses" EntityType="Self.Addresses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Carriers" EntityType="Self.Carriers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CarrierTypes" EntityType="Self.CarrierTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Clients" EntityType="Self.Clients" Schema="dbo" store:Type="Tables" />
@@ -636,6 +759,8 @@
           <EntitySet Name="Cultivations" EntityType="Self.Cultivations" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GrowerCultivations" EntityType="Self.GrowerCultivations" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Growers" EntityType="Self.Growers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InvoiceItems" EntityType="Self.InvoiceItems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InvoiceParties" EntityType="Self.InvoiceParties" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Invoices" EntityType="Self.Invoices" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderItems" EntityType="Self.OrderItems" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
@@ -649,6 +774,14 @@
           <AssociationSet Name="FK_Addresses_Countries" Association="Self.FK_Addresses_Countries">
             <End Role="Countries" EntitySet="Countries" />
             <End Role="Addresses" EntitySet="Addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Carriers_CarrierTypes" Association="Self.FK_Carriers_CarrierTypes">
+            <End Role="CarrierTypes" EntitySet="CarrierTypes" />
+            <End Role="Carriers" EntitySet="Carriers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Carriers_Orders" Association="Self.FK_Carriers_Orders">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="Carriers" EntitySet="Carriers" />
           </AssociationSet>
           <AssociationSet Name="FK_Clients_Addresses" Association="Self.FK_Clients_Addresses">
             <End Role="Addresses" EntitySet="Addresses" />
@@ -665,6 +798,14 @@
           <AssociationSet Name="FK_Growers_Addresses" Association="Self.FK_Growers_Addresses">
             <End Role="Addresses" EntitySet="Addresses" />
             <End Role="Growers" EntitySet="Growers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InvoiceItems_Invoices" Association="Self.FK_InvoiceItems_Invoices">
+            <End Role="Invoices" EntitySet="Invoices" />
+            <End Role="InvoiceItems" EntitySet="InvoiceItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InvoiceParties_Invoices" Association="Self.FK_InvoiceParties_Invoices">
+            <End Role="Invoices" EntitySet="Invoices" />
+            <End Role="InvoiceParties" EntitySet="InvoiceParties" />
           </AssociationSet>
           <AssociationSet Name="FK_Invoices_Orders" Association="Self.FK_Invoices_Orders">
             <End Role="Orders" EntitySet="Orders" />
@@ -775,6 +916,7 @@
           <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_CarrierTypes" FromRole="CarrierTypes" ToRole="Orders" />
           <Property Name="Weight" Type="Decimal" Precision="6" Scale="2" />
+          <NavigationProperty Name="Carriers" Relationship="PotplantsModel.FK_Carriers_CarrierTypes" FromRole="CarrierTypes" ToRole="Carriers" />
         </EntityType>
         <EntityType Name="Categories">
           <Key>
@@ -911,6 +1053,10 @@
           <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Orders" Relationship="Self.FK_Invoices_Orders" FromRole="Invoices" ToRole="Orders" />
           <NavigationProperty Name="PaymentMethods" Relationship="Self.FK_Invoices_PaymentMethods" FromRole="Invoices" ToRole="PaymentMethods" />
+          <Property Name="TotalGross" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TotalTax" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <NavigationProperty Name="InvoiceItems" Relationship="PotplantsModel.FK_InvoiceItems_Invoices" FromRole="Invoices" ToRole="InvoiceItems" />
+          <NavigationProperty Name="InvoiceParties" Relationship="PotplantsModel.FK_InvoiceParties_Invoices" FromRole="Invoices" ToRole="InvoiceParties" />
         </EntityType>
         <EntityType Name="OrderItems">
           <Key>
@@ -968,6 +1114,7 @@
           <NavigationProperty Name="Clients" Relationship="Self.FK_Orders_Clients" FromRole="Orders" ToRole="Clients" />
           <NavigationProperty Name="Invoices" Relationship="Self.FK_Invoices_Orders" FromRole="Orders" ToRole="Invoices" />
           <NavigationProperty Name="OrderItems" Relationship="Self.FK_OrderItems_Orders" FromRole="Orders" ToRole="OrderItems" />
+          <NavigationProperty Name="Carriers" Relationship="PotplantsModel.FK_Carriers_Orders" FromRole="Orders" ToRole="Carriers" />
         </EntityType>
         <EntityType Name="PaymentMethods">
           <Key>
@@ -1318,6 +1465,25 @@
             <End Role="StockItems" EntitySet="StockItems" />
             <End Role="StockMovements" EntitySet="StockMovements" />
           </AssociationSet>
+          <EntitySet Name="InvoiceItems" EntityType="PotplantsModel.InvoiceItems" />
+          <EntitySet Name="InvoiceParties" EntityType="PotplantsModel.InvoiceParties" />
+          <AssociationSet Name="FK_InvoiceItems_Invoices" Association="PotplantsModel.FK_InvoiceItems_Invoices">
+            <End Role="Invoices" EntitySet="Invoices" />
+            <End Role="InvoiceItems" EntitySet="InvoiceItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InvoiceParties_Invoices" Association="PotplantsModel.FK_InvoiceParties_Invoices">
+            <End Role="Invoices" EntitySet="Invoices" />
+            <End Role="InvoiceParties" EntitySet="InvoiceParties" />
+          </AssociationSet>
+          <EntitySet Name="Carriers" EntityType="PotplantsModel.Carriers" />
+          <AssociationSet Name="FK_Carriers_CarrierTypes" Association="PotplantsModel.FK_Carriers_CarrierTypes">
+            <End Role="CarrierTypes" EntitySet="CarrierTypes" />
+            <End Role="Carriers" EntitySet="Carriers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Carriers_Orders" Association="PotplantsModel.FK_Carriers_Orders">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="Carriers" EntitySet="Carriers" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1465,6 +1631,128 @@
             </Principal>
             <Dependent Role="StockMovements">
               <PropertyRef Name="StockItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="InvoiceItems">
+          <Key>
+            <PropertyRef Name="InvoiceItemId" />
+          </Key>
+          <Property Name="InvoiceItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InvoiceId" Type="Int32" Nullable="false" />
+          <Property Name="ItemNo" Type="Int32" Nullable="false" />
+          <Property Name="NameSnapshot" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PotSizeSnapshot" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="HeightSnapshot" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="UnitPriceSnapshot" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TaxRateSnapshot" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+          <Property Name="NetAmount" Type="Decimal" Precision="29" Scale="2" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="TaxAmount" Type="Decimal" Precision="38" Scale="7" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="GrossAmount" Type="Decimal" Precision="38" Scale="6" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ProductId" Type="Int32" />
+          <Property Name="StockItemId" Type="Int32" />
+          <Property Name="SourceOrderItemId" Type="Int32" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedAt" Type="DateTime" Precision="7" />
+          <Property Name="DeletedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedAt" Type="DateTime" Precision="7" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Invoices" Relationship="PotplantsModel.FK_InvoiceItems_Invoices" FromRole="InvoiceItems" ToRole="Invoices" />
+        </EntityType>
+        <EntityType Name="InvoiceParties">
+          <Key>
+            <PropertyRef Name="InvoicePartyId" />
+          </Key>
+          <Property Name="InvoicePartyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InvoiceId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TaxId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Street" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PostalCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CountryCode" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedAt" Type="DateTime" Precision="7" />
+          <Property Name="DeletedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedAt" Type="DateTime" Precision="7" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Invoices" Relationship="PotplantsModel.FK_InvoiceParties_Invoices" FromRole="InvoiceParties" ToRole="Invoices" />
+        </EntityType>
+        <Association Name="FK_InvoiceItems_Invoices">
+          <End Type="PotplantsModel.Invoices" Role="Invoices" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="PotplantsModel.InvoiceItems" Role="InvoiceItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoices">
+              <PropertyRef Name="InvoiceId" />
+            </Principal>
+            <Dependent Role="InvoiceItems">
+              <PropertyRef Name="InvoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InvoiceParties_Invoices">
+          <End Type="PotplantsModel.Invoices" Role="Invoices" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="PotplantsModel.InvoiceParties" Role="InvoiceParties" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoices">
+              <PropertyRef Name="InvoiceId" />
+            </Principal>
+            <Dependent Role="InvoiceParties">
+              <PropertyRef Name="InvoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Carriers">
+          <Key>
+            <PropertyRef Name="CarrierId" />
+          </Key>
+          <Property Name="CarrierId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderId" Type="Int32" Nullable="false" />
+          <Property Name="CarrierTypeId" Type="Int32" Nullable="false" />
+          <Property Name="AmountOfShelfs" Type="Int32" Nullable="false" />
+          <Property Name="AmountOfExtensions" Type="Int32" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedAt" Type="DateTime" Precision="7" />
+          <Property Name="DeletedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedAt" Type="DateTime" Precision="7" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CarrierTypes" Relationship="PotplantsModel.FK_Carriers_CarrierTypes" FromRole="Carriers" ToRole="CarrierTypes" />
+          <NavigationProperty Name="Orders" Relationship="PotplantsModel.FK_Carriers_Orders" FromRole="Carriers" ToRole="Orders" />
+        </EntityType>
+        <Association Name="FK_Carriers_CarrierTypes">
+          <End Type="PotplantsModel.CarrierTypes" Role="CarrierTypes" Multiplicity="1" />
+          <End Type="PotplantsModel.Carriers" Role="Carriers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CarrierTypes">
+              <PropertyRef Name="CarrierTypeId" />
+            </Principal>
+            <Dependent Role="Carriers">
+              <PropertyRef Name="CarrierTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Carriers_Orders">
+          <End Type="PotplantsModel.Orders" Role="Orders" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="PotplantsModel.Carriers" Role="Carriers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="Carriers">
+              <PropertyRef Name="OrderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1626,6 +1914,8 @@
           <EntitySetMapping Name="Invoices">
             <EntityTypeMapping TypeName="PotplantsModel.Invoices">
               <MappingFragment StoreEntitySet="Invoices">
+                <ScalarProperty Name="TotalTax" ColumnName="TotalTax" />
+                <ScalarProperty Name="TotalGross" ColumnName="TotalGross" />
                 <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />
                 <ScalarProperty Name="InvoiceNo" ColumnName="InvoiceNo" />
@@ -1863,6 +2153,73 @@
                 <ScalarProperty Name="OrderItemId" ColumnName="OrderItemId" />
                 <ScalarProperty Name="StockItemId" ColumnName="StockItemId" />
                 <ScalarProperty Name="StockMovementId" ColumnName="StockMovementId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InvoiceItems">
+            <EntityTypeMapping TypeName="PotplantsModel.InvoiceItems">
+              <MappingFragment StoreEntitySet="InvoiceItems">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="SourceOrderItemId" ColumnName="SourceOrderItemId" />
+                <ScalarProperty Name="StockItemId" ColumnName="StockItemId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="GrossAmount" ColumnName="GrossAmount" />
+                <ScalarProperty Name="TaxAmount" ColumnName="TaxAmount" />
+                <ScalarProperty Name="NetAmount" ColumnName="NetAmount" />
+                <ScalarProperty Name="TaxRateSnapshot" ColumnName="TaxRateSnapshot" />
+                <ScalarProperty Name="UnitPriceSnapshot" ColumnName="UnitPriceSnapshot" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="HeightSnapshot" ColumnName="HeightSnapshot" />
+                <ScalarProperty Name="PotSizeSnapshot" ColumnName="PotSizeSnapshot" />
+                <ScalarProperty Name="NameSnapshot" ColumnName="NameSnapshot" />
+                <ScalarProperty Name="ItemNo" ColumnName="ItemNo" />
+                <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
+                <ScalarProperty Name="InvoiceItemId" ColumnName="InvoiceItemId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InvoiceParties">
+            <EntityTypeMapping TypeName="PotplantsModel.InvoiceParties">
+              <MappingFragment StoreEntitySet="InvoiceParties">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="TaxId" ColumnName="TaxId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
+                <ScalarProperty Name="InvoicePartyId" ColumnName="InvoicePartyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Carriers">
+            <EntityTypeMapping TypeName="PotplantsModel.Carriers">
+              <MappingFragment StoreEntitySet="Carriers">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="AmountOfExtensions" ColumnName="AmountOfExtensions" />
+                <ScalarProperty Name="AmountOfShelfs" ColumnName="AmountOfShelfs" />
+                <ScalarProperty Name="CarrierTypeId" ColumnName="CarrierTypeId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="CarrierId" ColumnName="CarrierId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
