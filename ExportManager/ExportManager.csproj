@@ -86,6 +86,8 @@
     <Compile Include="Models\BusinessLogic\CountriesForEntities.cs" />
     <Compile Include="Models\BusinessLogic\DatabaseClass.cs" />
     <Compile Include="Models\BusinessLogic\CultivationsForGrowers.cs" />
+    <Compile Include="Models\BusinessLogic\OrdersForReports.cs" />
+    <Compile Include="Models\BusinessLogic\OrderWeightCalculator.cs" />
     <Compile Include="Models\BusinessLogic\VolumeCalculator.cs" />
     <Compile Include="Models\Carriers.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
@@ -113,6 +115,7 @@
     <Compile Include="Models\EntitiesForView\GrowersListView.cs" />
     <Compile Include="Models\EntitiesForView\KeyAndValue.cs" />
     <Compile Include="Models\EntitiesForView\ProductsListView.cs" />
+    <Compile Include="Models\EntitiesForView\WeightReportListView.cs" />
     <Compile Include="Models\Extensions\HasIsActive..cs" />
     <Compile Include="Models\Extensions\StringExtensions.cs" />
     <Compile Include="Models\Growers.cs">
@@ -212,6 +215,7 @@
     <Compile Include="ViewModels\AllOrderItemsViewModel.cs" />
     <Compile Include="ViewModels\NewTrayTypeViewModel.cs" />
     <Compile Include="ViewModels\VolumeReportViewModel.cs" />
+    <Compile Include="ViewModels\OrderWeightReportViewModel.cs" />
     <Compile Include="ViewModels\WorkspaceViewModel.cs" />
     <Compile Include="Views\AllAddressesView.xaml.cs">
       <DependentUpon>AllAddressesView.xaml</DependentUpon>
@@ -304,6 +308,9 @@
     </Compile>
     <Compile Include="Views\NewTrayTypeView.xaml.cs">
       <DependentUpon>NewTrayTypeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OrderWeightReportView.xaml.cs">
+      <DependentUpon>OrderWeightReportView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\VolumeReportView.xaml.cs">
       <DependentUpon>VolumeReportView.xaml</DependentUpon>
@@ -468,6 +475,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NewTrayTypeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\OrderWeightReportView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

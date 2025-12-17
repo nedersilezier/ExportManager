@@ -60,12 +60,22 @@ namespace ExportManager.ViewModels
                 OnPropertyChanged(() => MaxHeight);
             }
         }
-        public decimal? Weight
+        public decimal Weight
         {
             get { return item.Weight; }
             set
             {
                 if(item.Weight != value)
+                    item.Weight = value;
+                OnPropertyChanged(() => Weight);
+            }
+        }
+        public decimal ShelfWeight
+        {
+            get { return item.Weight; }
+            set
+            {
+                if (item.Weight != value)
                     item.Weight = value;
                 OnPropertyChanged(() => Weight);
             }

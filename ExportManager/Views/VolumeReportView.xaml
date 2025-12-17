@@ -10,15 +10,15 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
             <RowDefinition Height="1"/>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="37"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" Content="Volume per order" HorizontalContentAlignment="Center" Margin="0, 2, 0, 2"/>
+        <Label Grid.Row="0" Content="Volume per order per period" HorizontalContentAlignment="Center" Margin="0, 2, 0, 2"/>
         <Border Grid.Row="1"  Background="LightGray"/>
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" Margin="0, 2, 0, 2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150"/>
                 <ColumnDefinition Width="*"/>
@@ -26,8 +26,8 @@
             <Label Grid.Column="0" Content="Select client" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
             <ComboBox Grid.Column="1" Margin="2, 2, 2, 2"
                       ItemsSource="{Binding ClientsItems}"
-                      SelectedValue=""
-                      SelectedItem="{Binding SelectedClient}">
+                      SelectedItem="{Binding SelectedClient}"
+                      VerticalContentAlignment="Center">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Value}"/>
@@ -43,9 +43,9 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="From" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
-            <DatePicker Grid.Column="1" SelectedDate="{Binding FromDate}" Margin="2, 2, 2, 2" VerticalAlignment="Center"/>
+            <DatePicker Grid.Column="1" SelectedDate="{Binding FromDate}" Margin="2, 2, 2, 2" VerticalAlignment="Center" Height="30"/>
             <Label Grid.Column="2" Content="Till" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
-            <DatePicker Grid.Column="3" SelectedDate="{Binding ToDate}" Margin="2, 2, 2, 2" VerticalAlignment="Center"/>
+            <DatePicker Grid.Column="3" SelectedDate="{Binding ToDate}" Margin="2, 2, 2, 2" VerticalAlignment="Center" Height="30"/>
         </Grid>
         <Grid Grid.Row="4">
             <Grid.ColumnDefinitions>
@@ -55,7 +55,8 @@
             <Label Grid.Column="0" Content="Select unit" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
             <ComboBox Grid.Column="1" Margin="2, 2, 2, 2"
                       ItemsSource="{Binding CarrierTypesItems}"
-                      SelectedItem="{Binding SelectedCarrierType}">
+                      SelectedItem="{Binding SelectedCarrierType}"
+                      VerticalContentAlignment="Center">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Value}"/>

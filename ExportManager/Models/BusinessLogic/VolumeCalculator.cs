@@ -20,12 +20,12 @@ namespace ExportManager.Models.BusinessLogic
             DateTime dateFromIncluded = dateFrom.Date;
             DateTime dateToIncluded = dateTo.AddDays(1);
             var carrier = potplantsEntities.CarrierTypes.Where(t => t.IsActive == true && t.CarrierTypeId == carrierTypeId)
-                .Select(t => new{ t.Width, t.Length, t.MaxHeight}).FirstOrDefault();
+                .Select(t => new{ t.Area, t.MaxHeight}).FirstOrDefault();
             if (carrier == null)
                 return null;
-            if (carrier.Length == null || carrier.Width == null || carrier.MaxHeight == null)
+            if (carrier.Area == null || carrier.MaxHeight == null)
                 return null;
-            decimal? carrierVolume = carrier.Width * carrier.Length * carrier.MaxHeight;
+            decimal? carrierVolume = carrier.Area * carrier.MaxHeight;
             //Console.WriteLine("Carrier volume: " +  carrierVolume);
             var products = (
                 from order in potplantsEntities.Orders

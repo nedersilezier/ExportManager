@@ -107,6 +107,9 @@
     <DataTemplate DataType="{x:Type vm:VolumeReportViewModel}">
         <vw:VolumeReportView/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:OrderWeightReportViewModel}">
+        <vw:OrderWeightReportView/>
+    </DataTemplate>
     <!--Own button style-->
     <Style x:Key="CustomButtonStyle" TargetType="Button">
         <Setter Property="Foreground" Value="Black"/>

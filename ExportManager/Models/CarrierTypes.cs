@@ -35,7 +35,8 @@ namespace ExportManager.Models
         public Nullable<System.DateTime> DeletedAt { get; set; }
         public string DeletedBy { get; set; }
         public string Remarks { get; set; }
-        public Nullable<decimal> Weight { get; set; }
+        public decimal Weight { get; set; }
+        public decimal ShelfWeight { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Orders> Orders { get; set; }

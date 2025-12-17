@@ -13,6 +13,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -29,7 +30,9 @@
         <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Path=MaxHeight, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"/>
         <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center">Weight</Label>
         <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=Weight, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"/>
-        <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center">Remarks</Label>
-        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Path=Remarks, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+        <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center">Shelf weight</Label>
+        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Path=ShelfWeight, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"/>
+        <Label Grid.Row="6" Grid.Column="0" HorizontalAlignment="Center">Remarks</Label>
+        <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Path=Remarks, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
     </Grid>
 </local:NewItemViewBase>

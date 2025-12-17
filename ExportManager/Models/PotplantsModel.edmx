@@ -59,8 +59,9 @@
           <Property Name="DeletedAt" Type="datetime2" Precision="0" />
           <Property Name="DeletedBy" Type="nvarchar" MaxLength="100" />
           <Property Name="Remarks" Type="nvarchar" MaxLength="500" />
-          <Property Name="Weight" Type="decimal" Precision="6" Scale="2" />
+          <Property Name="Weight" Type="decimal" Precision="6" Scale="2" Nullable="false" />
           <Property Name="Area" Type="decimal" Precision="13" Scale="4" StoreGeneratedPattern="Computed" />
+          <Property Name="ShelfWeight" Type="decimal" Precision="6" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="Categories">
           <Key>
@@ -915,8 +916,9 @@
           <Property Name="DeletedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_CarrierTypes" FromRole="CarrierTypes" ToRole="Orders" />
-          <Property Name="Weight" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="Weight" Type="Decimal" Precision="6" Scale="2" Nullable="false" />
           <NavigationProperty Name="Carriers" Relationship="PotplantsModel.FK_Carriers_CarrierTypes" FromRole="CarrierTypes" ToRole="Carriers" />
+          <Property Name="ShelfWeight" Type="Decimal" Precision="6" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="Categories">
           <Key>
@@ -1786,6 +1788,7 @@
           <EntitySetMapping Name="CarrierTypes">
             <EntityTypeMapping TypeName="PotplantsModel.CarrierTypes">
               <MappingFragment StoreEntitySet="CarrierTypes">
+                <ScalarProperty Name="ShelfWeight" ColumnName="ShelfWeight" />
                 <ScalarProperty Name="Weight" ColumnName="Weight" />
                 <ScalarProperty Name="CarrierTypeId" ColumnName="CarrierTypeId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
