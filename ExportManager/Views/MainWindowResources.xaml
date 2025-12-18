@@ -110,6 +110,9 @@
     <DataTemplate DataType="{x:Type vm:OrderWeightReportViewModel}">
         <vw:OrderWeightReportView/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:InvoiceReportViewModel}">
+        <vw:InvoiceReportView/>
+    </DataTemplate>
     <!--Own button style-->
     <Style x:Key="CustomButtonStyle" TargetType="Button">
         <Setter Property="Foreground" Value="Black"/>

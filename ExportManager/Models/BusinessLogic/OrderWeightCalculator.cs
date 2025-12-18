@@ -18,49 +18,55 @@ namespace ExportManager.Models.BusinessLogic
         }
         #endregion
         #region Functions
+        //public decimal? CalculateOrderWeight(int orderId, DateTime date)
+        //{
+        //    DateTime startDate = date.Date;
+        //    DateTime endDate = startDate.Date.AddDays(1);
+        //    decimal? carriersWeight = 0;
+        //    var carriers = potplantsEntities.Carriers.Where(t => t.IsActive == true && t.OrderId == orderId)
+        //        .Select(t => new { t.CarrierTypes.Weight, t.CarrierTypes.ShelfWeight, t.AmountOfShelfs });
+        //    if (carriers != null)
+        //    {
+        //        foreach (var carrier in carriers)
+        //        {
+        //            Console.WriteLine("Carrier 1: " + carrier.Weight + " " + carrier.ShelfWeight + " " + carrier.AmountOfShelfs);
+        //            carriersWeight += carrier.Weight + carrier.ShelfWeight * carrier.AmountOfShelfs;
+        //        }
+        //    }
+        //    Console.WriteLine("Carriers weight: " + carriersWeight);
+        //    var products = (
+        //        from order in potplantsEntities.Orders
+        //        join orderitem in potplantsEntities.OrderItems on order.OrderId equals orderitem.OrderId
+        //        join product in potplantsEntities.Products on orderitem.StockItems.Products.ProductId equals product.ProductId
+        //        where order.IsActive == true
+        //        && order.PreparationDate >= startDate
+        //        && order.PreparationDate <= endDate
+        //        && orderitem.IsActive == true
+        //        group orderitem by new
+        //        {
+        //            ProductWeight = product.Weight
+        //        }
+        //        into grouped
+        //        select new
+        //        {
+        //            grouped.Key.ProductWeight,
+        //            TotalQty = grouped.Sum(t => t.Quantity)
+        //        }
+        //        ).ToList();
+        //    decimal? totalWeight = carriersWeight;
+        //    foreach (var product in products)
+        //    {
+        //        Console.WriteLine("Product amount: " + product.TotalQty);
+        //        Console.WriteLine("Product weight: " + product.ProductWeight);
+        //        totalWeight += product.TotalQty * product.ProductWeight;
+        //    }
+        //    return totalWeight;
+        //}
         public decimal? CalculateOrderWeight(int orderId, DateTime date)
         {
-            DateTime startDate = date.Date;
-            DateTime endDate = startDate.Date.AddDays(1);
-            decimal? carriersWeight = 0;
-            var carriers = potplantsEntities.Carriers.Where(t => t.IsActive == true && t.OrderId == orderId).Select(t => new {t.CarrierTypes.Weight, t.CarrierTypes.ShelfWeight, t.AmountOfShelfs});
-            if(carriers != null)
-            {
-                foreach (var carrier in carriers)
-                {
-                    Console.WriteLine("Carrier 1: " + carrier.Weight + " " + carrier.ShelfWeight + " " + carrier.AmountOfShelfs);
-                    carriersWeight += carrier.Weight + carrier.ShelfWeight * carrier.AmountOfShelfs;
-                }
-            }
-            Console.WriteLine("Carriers weight: " + carriersWeight);
-            var products = (
-                from order in potplantsEntities.Orders
-                join orderitem in potplantsEntities.OrderItems on order.OrderId equals orderitem.OrderId
-                join product in potplantsEntities.Products on orderitem.StockItems.Products.ProductId equals product.ProductId
-                where order.IsActive == true
-                && order.PreparationDate >= startDate
-                && order.PreparationDate <= endDate
-                && orderitem.IsActive == true
-                group orderitem by new
-                {
-                    ProductWeight = product.Weight
-                }
-                into grouped
-                select new
-                {
-                    ProductWeight = grouped.Key.ProductWeight,
-                    TotalQty = grouped.Sum(t => t.Quantity)
-                }
-                ).ToList();
-
-            decimal? totalWeight = carriersWeight;
-            foreach(var product in products)
-            {
-                Console.WriteLine("Product amount: " + product.TotalQty); 
-                Console.WriteLine("Product weight: " + product.ProductWeight); 
-                totalWeight += product.TotalQty * product.ProductWeight;
-            }
-            return totalWeight;
+            var carriersWeight = CarriersQuery(orderId, date).Sum(t => (decimal?)t.CarriersTotalWeight);
+            var productsWeight = ProductsQuery(orderId, date).Sum(t => (decimal?)t.ProductTotalWeight);
+            return carriersWeight + productsWeight;
         }
         private IQueryable<Orders> OrdersQuery(int orderId, DateTime date)
         {
@@ -70,7 +76,7 @@ namespace ExportManager.Models.BusinessLogic
                 t => t.IsActive 
                 && t.OrderId == orderId 
                 && t.PreparationDate >= startDate 
-                && t.PreparationDate <= endDate);
+                && t.PreparationDate < endDate);
         }
         public IQueryable<WeightReportProductListView> ProductsQuery(int orderId, DateTime date)
         {

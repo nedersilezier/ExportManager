@@ -170,7 +170,8 @@ namespace ExportManager.ViewModels
             return new List<CommandViewModel>
             {
                 new CommandViewModel("Volume per client per period", new BaseCommand(() => this.ShowAll<VolumeReportViewModel>())),
-                new CommandViewModel("Weight per order", new BaseCommand(() => this.ShowAll<OrderWeightReportViewModel>()))
+                new CommandViewModel("Weight per order", new BaseCommand(() => this.ShowAll<OrderWeightReportViewModel>())),
+                new CommandViewModel("Invoice summary", new BaseCommand(() => this.ShowAll<InvoiceReportViewModel>()))
             };
         }
         #endregion

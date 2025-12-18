@@ -86,6 +86,8 @@
     <Compile Include="Models\BusinessLogic\CountriesForEntities.cs" />
     <Compile Include="Models\BusinessLogic\DatabaseClass.cs" />
     <Compile Include="Models\BusinessLogic\CultivationsForGrowers.cs" />
+    <Compile Include="Models\BusinessLogic\InvoiceCalculator.cs" />
+    <Compile Include="Models\BusinessLogic\InvoicesForReports.cs" />
     <Compile Include="Models\BusinessLogic\OrdersForReports.cs" />
     <Compile Include="Models\BusinessLogic\OrderWeightCalculator.cs" />
     <Compile Include="Models\BusinessLogic\VolumeCalculator.cs" />
@@ -113,6 +115,7 @@
     <Compile Include="Models\EntitiesForView\AddressesListView.cs" />
     <Compile Include="Models\EntitiesForView\ClientsListView.cs" />
     <Compile Include="Models\EntitiesForView\GrowersListView.cs" />
+    <Compile Include="Models\EntitiesForView\InvoiceReportItemsListView.cs" />
     <Compile Include="Models\EntitiesForView\KeyAndValue.cs" />
     <Compile Include="Models\EntitiesForView\ProductsListView.cs" />
     <Compile Include="Models\EntitiesForView\WeightReportListView.cs" />
@@ -199,6 +202,7 @@
     <Compile Include="ViewModels\AllTrayTypesViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\CommandViewModel.cs" />
+    <Compile Include="ViewModels\InvoiceReportViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\NewAddressViewModel.cs" />
     <Compile Include="ViewModels\NewCarrierTypeViewModel.cs" />
@@ -266,6 +270,9 @@
       <DependentUpon>AllTrayTypesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AllViewBase.cs" />
+    <Compile Include="Views\InvoiceReportView.xaml.cs">
+      <DependentUpon>InvoiceReportView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -415,6 +422,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AllTrayTypesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\InvoiceReportView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
