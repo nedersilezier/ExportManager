@@ -32,7 +32,7 @@ namespace ExportManager.Models.BusinessLogic
                 where order.IsActive == true
                       && order.ClientId == clientId
                       && order.OrderDate >= dateFromIncluded
-                      && order.OrderDate <= dateToIncluded
+                      && order.OrderDate < dateToIncluded
                 join orderitem in potplantsEntities.OrderItems on order.OrderId equals orderitem.OrderId
                 join stockitem in potplantsEntities.StockItems on orderitem.StockItemId equals stockitem.StockItemId
                 join traytype in potplantsEntities.TrayTypes on stockitem.TrayTypeId equals traytype.TrayTypeId
