@@ -129,6 +129,8 @@ namespace ExportManager.ViewModels
         #region Functions
         private void calculateVolumeClick()
         {
+            if (SelectedClient == null || SelectedCarrierType == null)
+                return;
             Volume = new VolumeCalculator(potplantsEntities).CalculateVolumePerClientPerPeriod(SelectedClient.Key, FromDate, ToDate, SelectedCarrierType.Key);
             Console.WriteLine(Volume);
         }

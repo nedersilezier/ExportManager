@@ -157,7 +157,14 @@ namespace ExportManager.ViewModels
         private void calculateInvoiceClick()
         {
             if (SelectedInvoice == null)
+            {
+                NetTotal = null;
+                TaxTotal = null;
+                GrossTotal = null;
+                InvoiceItemsList = null;
                 return;
+            }
+                
             NetTotal = new InvoiceCalculator(potplantsEntities).CalculateNetTotal(SelectedInvoice.Key, Date);
             TaxTotal = new InvoiceCalculator(potplantsEntities).CalculateTaxTotal(SelectedInvoice.Key, Date);
             GrossTotal = new InvoiceCalculator(potplantsEntities).CalculateGrossTotal(SelectedInvoice.Key, Date);

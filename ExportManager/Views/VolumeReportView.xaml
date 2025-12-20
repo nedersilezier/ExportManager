@@ -44,7 +44,7 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="From" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
             <DatePicker Grid.Column="1" SelectedDate="{Binding FromDate}" Margin="2, 2, 2, 2" VerticalAlignment="Center" Height="30"/>
-            <Label Grid.Column="2" Content="Till" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
+            <Label Grid.Column="2" Content="To" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
             <DatePicker Grid.Column="3" SelectedDate="{Binding ToDate}" Margin="2, 2, 2, 2" VerticalAlignment="Center" Height="30"/>
         </Grid>
         <Grid Grid.Row="4">

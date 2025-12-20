@@ -29,37 +29,37 @@ namespace ExportManager.Models.BusinessLogic
             //Console.WriteLine("Carrier volume: " +  carrierVolume);
             var products = (
                 from order in potplantsEntities.Orders
-                join orderitem in potplantsEntities.OrderItems on order.OrderId equals orderitem.OrderId
-                join stockitem in potplantsEntities.StockItems on orderitem.StockItemId equals stockitem.StockItemId
-                join traytype in potplantsEntities.TrayTypes on stockitem.TrayTypeId equals traytype.TrayTypeId
-                join product in potplantsEntities.Products on stockitem.ProductId equals product.ProductId
                 where order.IsActive == true
                       && order.ClientId == clientId
                       && order.OrderDate >= dateFromIncluded
                       && order.OrderDate <= dateToIncluded
+                join orderitem in potplantsEntities.OrderItems on order.OrderId equals orderitem.OrderId
+                join stockitem in potplantsEntities.StockItems on orderitem.StockItemId equals stockitem.StockItemId
+                join traytype in potplantsEntities.TrayTypes on stockitem.TrayTypeId equals traytype.TrayTypeId
+                join product in potplantsEntities.Products on stockitem.ProductId equals product.ProductId
                 group orderitem by new
                 {
                     traytype.Width,
                     traytype.Length,
-                    traytype.QtyPerTray,
-                    product.Height
+                    product.Height,
+                    traytype.QtyPerTray
                 }
                 into grouped
                 select new
                 {
-                    TrayWidth = grouped.Key.Width,
-                    TrayLength = grouped.Key.Length,
-                    grouped.Key.QtyPerTray,
+                    grouped.Key.Width,
+                    grouped.Key.Length,
                     grouped.Key.Height,
+                    grouped.Key.QtyPerTray,
                     TotalQty = grouped.Sum(t => t.Quantity)
                 }
                 ).ToList();
             decimal? productsVolume = 0m;
             foreach(var product in products)
             {
-                var traysNeeded = (int)Math.Ceiling(product.TotalQty / (decimal)product.QtyPerTray);
+                var traysNeeded = Math.Ceiling(product.TotalQty / (decimal)product.QtyPerTray);
                 //Console.WriteLine("Trays needed: " + traysNeeded);
-                var trayVolume = product.TrayLength * product.TrayWidth * product.Height;
+                var trayVolume = product.Length * product.Width * product.Height;
                 //Console.WriteLine("Length: " + product.TrayLength);
                 //Console.WriteLine("Width: " + product.TrayWidth);
                 //Console.WriteLine("Height: " + product.Height);

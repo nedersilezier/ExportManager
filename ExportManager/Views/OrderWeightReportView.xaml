@@ -36,13 +36,13 @@
             <ComboBox Grid.Column="1" Margin="2, 2, 2, 2"
                   ItemsSource="{Binding OrderItems}"
                   SelectedItem="{Binding SelectedOrder}"
-                  VerticalContentAlignment="Center">
-                <ComboBox.ItemTemplate>
+                  VerticalContentAlignment="Center"/>
+            <!--<ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Value}"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
-            </ComboBox>
+            </ComboBox>-->
         </Grid>
         <Button Grid.Row="4" Content="Calculate" Command="{Binding CalculateWeight}" Width="150" Margin="2, 2, 2, 2"/>
         <Grid Grid.Row="5">

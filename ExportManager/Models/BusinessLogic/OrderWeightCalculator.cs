@@ -94,15 +94,19 @@ namespace ExportManager.Models.BusinessLogic
         {
             return OrdersQuery(orderId, date).SelectMany(order => order.Carriers)
                 .Where(carrier => carrier.IsActive)
-                .GroupBy(carrier => new { carrier.CarrierTypes.CarrierTypeId, carrier.CarrierTypes.Name})
+                .GroupBy(carrier => new {
+                    carrier.CarrierTypes.CarrierTypeId, 
+                    carrier.CarrierTypes.Name, 
+                    carrier.CarrierTypes.Weight, 
+                    carrier.CarrierTypes.ShelfWeight })
                 .Select(t => new WeightReportCarrierListView
                 {
                     CarrierName = t.Key.Name,
                     CarrierTotalAmount = t.Count(),
                     CarrierTotalShelfsAmount = t.Sum(carrier => carrier.AmountOfShelfs),
                     CarriersTotalWeight = 
-                                    t.Count() * t.Select(u => u.CarrierTypes.Weight).FirstOrDefault() 
-                                    + t.Sum(carrier => carrier.AmountOfShelfs) * t.Select(u => u.CarrierTypes.ShelfWeight).FirstOrDefault()
+                                    t.Count() * t.Key.Weight 
+                                    + t.Sum(c => c.AmountOfShelfs) * t.Key.ShelfWeight
                 });
         }
         #endregion
