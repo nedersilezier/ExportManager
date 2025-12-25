@@ -31,7 +31,6 @@ namespace ExportManager.Models
         public string InternalNo { get; set; }
         public Nullable<bool> IsBlocked { get; set; }
         public Nullable<bool> IsInside { get; set; }
-        public string FlowType { get; set; }
         public bool IsActive { get; set; }
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedAt { get; set; }
@@ -40,6 +39,9 @@ namespace ExportManager.Models
         public string DeletedBy { get; set; }
         public Nullable<System.DateTime> DeletedAt { get; set; }
         public string Remarks { get; set; }
+        public Nullable<System.DateTime> ExpiryDate { get; set; }
+        public Nullable<System.DateTime> ReceivedAt { get; set; }
+        public Nullable<int> QuantityLeft { get; set; }
     
         public virtual Growers Growers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

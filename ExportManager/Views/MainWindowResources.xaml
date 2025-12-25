@@ -1,7 +1,13 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:vm="clr-namespace:ExportManager.ViewModels"
-                    xmlns:vw="clr-namespace:ExportManager.Views">
+                    xmlns:vmShow="clr-namespace:ExportManager.ViewModels.ShowAllViewModels"
+                    xmlns:vmAdd="clr-namespace:ExportManager.ViewModels.AddViewModels"
+                    xmlns:vmReport="clr-namespace:ExportManager.ViewModels.ReportViewModels"
+                    xmlns:vw="clr-namespace:ExportManager.Views"
+                    xmlns:vwShow="clr-namespace:ExportManager.Views.ShowAllViews"
+                    xmlns:vwAdd="clr-namespace:ExportManager.Views.AddViews"
+                    xmlns:vwReport="clr-namespace:ExportManager.Views.ReportViews">
     <HierarchicalDataTemplate x:Key="BasicDataTemplate" ItemsSource="{Binding Children}">
         <TextBlock Text="{Binding DisplayName}" />
     </HierarchicalDataTemplate>
@@ -16,102 +22,108 @@
         <vw:NowyTowarView/>
     </DataTemplate>-->
     <!--Main functions-->
-    <DataTemplate DataType="{x:Type vm:AllProductsViewModel}">
-        <vw:AllProductsView/>
+    <DataTemplate DataType="{x:Type vmShow:AllProductsViewModel}">
+        <vwShow:AllProductsView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:AllOrderItemsViewModel}">
-        <vw:AllOrderItemsView/>
+    <DataTemplate DataType="{x:Type vmShow:AllOrderItemsViewModel}">
+        <vwShow:AllOrderItemsView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:AllBatchesViewModel}">
-        <vw:AllBatchesView/>
+    <DataTemplate DataType="{x:Type vmShow:AllBatchesViewModel}">
+        <vwShow:AllBatchesView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:AllOrdersViewModel}">
-        <vw:AllOrdersView/>
+    <DataTemplate DataType="{x:Type vmShow:AllInStockViewModel}">
+        <vwShow:AllInStockView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:AllInvoicesViewModel}">
-        <vw:AllInvoicesView/>
+    <DataTemplate DataType="{x:Type vmShow:AllOrdersViewModel}">
+        <vwShow:AllOrdersView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vmShow:AllInvoicesViewModel}">
+        <vwShow:AllInvoicesView/>
     </DataTemplate>
     <!--Dictionary tables-->
-    <DataTemplate DataType="{x:Type vm:AllCarrierTypesViewModel}">
-        <vw:AllCarrierTypesView/>
+    <DataTemplate DataType="{x:Type vmShow:AllCarrierTypesViewModel}">
+        <vwShow:AllCarrierTypesView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:AllCategoriesViewModel}">
-        <vw:AllCategoriesView/>
+    <DataTemplate DataType="{x:Type vmShow:AllCategoriesViewModel}">
+        <vwShow:AllCategoriesView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:AllColorsViewModel}">
-        <vw:AllColorsView/>
+    <DataTemplate DataType="{x:Type vmShow:AllColorsViewModel}">
+        <vwShow:AllColorsView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:AllCountriesViewModel}">
-        <vw:AllCountriesView/>
+    <DataTemplate DataType="{x:Type vmShow:AllCountriesViewModel}">
+        <vwShow:AllCountriesView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:AllCultivationsViewModel}">
-        <vw:AllCultivationsView/>
+    <DataTemplate DataType="{x:Type vmShow:AllCultivationsViewModel}">
+        <vwShow:AllCultivationsView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:AllPaymentMethodsViewModel}">
-        <vw:AllPaymentMethodsView/>
+    <DataTemplate DataType="{x:Type vmShow:AllPaymentMethodsViewModel}">
+        <vwShow:AllPaymentMethodsView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:AllQualitiesViewModel}">
-        <vw:AllQualitiesView/>
+    <DataTemplate DataType="{x:Type vmShow:AllQualitiesViewModel}">
+        <vwShow:AllQualitiesView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:AllTrayTypesViewModel}">
-        <vw:AllTrayTypesView/>
+    <DataTemplate DataType="{x:Type vmShow:AllTrayTypesViewModel}">
+        <vwShow:AllTrayTypesView/>
     </DataTemplate>
     <!--Clients, Growers...-->
-    <DataTemplate DataType="{x:Type vm:AllAddressesViewModel}">
-        <vw:AllAddressesView/>
+    <DataTemplate DataType="{x:Type vmShow:AllAddressesViewModel}">
+        <vwShow:AllAddressesView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:AllClientsViewModel}">
-        <vw:AllClientsView/>
+    <DataTemplate DataType="{x:Type vmShow:AllClientsViewModel}">
+        <vwShow:AllClientsView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:AllGrowersViewModel}">
-        <vw:AllGrowersView/>
+    <DataTemplate DataType="{x:Type vmShow:AllGrowersViewModel}">
+        <vwShow:AllGrowersView/>
     </DataTemplate>
     <!--Creating new items-->
-    <DataTemplate DataType="{x:Type vm:NewColorViewModel}">
-        <vw:NewColorView/>
+    <DataTemplate DataType="{x:Type vmAdd:NewColorViewModel}">
+        <vwAdd:NewColorView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:NewCategoryViewModel}">
-        <vw:NewCategoryView/>
+    <DataTemplate DataType="{x:Type vmAdd:NewCategoryViewModel}">
+        <vwAdd:NewCategoryView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:NewProductViewModel}">
-        <vw:NewProductView/>
+    <DataTemplate DataType="{x:Type vmAdd:NewProductViewModel}">
+        <vwAdd:NewProductView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:NewCarrierTypeViewModel}">
-        <vw:NewCarrierTypeView/>
+    <DataTemplate DataType="{x:Type vmAdd:NewCarrierTypeViewModel}">
+        <vwAdd:NewCarrierTypeView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:NewCountryViewModel}">
-        <vw:NewCountryView/>
+    <DataTemplate DataType="{x:Type vmAdd:NewCountryViewModel}">
+        <vwAdd:NewCountryView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:NewCultivationViewModel}">
-        <vw:NewCultivationView/>
+    <DataTemplate DataType="{x:Type vmAdd:NewCultivationViewModel}">
+        <vwAdd:NewCultivationView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:NewPaymentMethodViewModel}">
-        <vw:NewPaymentMethodView/>
+    <DataTemplate DataType="{x:Type vmAdd:NewPaymentMethodViewModel}">
+        <vwAdd:NewPaymentMethodView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:NewQualityTypeViewModel}">
-        <vw:NewQualityTypeView/>
+    <DataTemplate DataType="{x:Type vmAdd:NewQualityTypeViewModel}">
+        <vwAdd:NewQualityTypeView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:NewTrayTypeViewModel}">
-        <vw:NewTrayTypeView/>
+    <DataTemplate DataType="{x:Type vmAdd:NewTrayTypeViewModel}">
+        <vwAdd:NewTrayTypeView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:NewAddressViewModel}">
-        <vw:NewAddressView/>
+    <DataTemplate DataType="{x:Type vmAdd:NewAddressViewModel}">
+        <vwAdd:NewAddressView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:NewClientViewModel}">
-        <vw:NewClientView/>
+    <DataTemplate DataType="{x:Type vmAdd:NewClientViewModel}">
+        <vwAdd:NewClientView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:NewGrowerViewModel}">
-        <vw:NewGrowerView/>
+    <DataTemplate DataType="{x:Type vmAdd:NewGrowerViewModel}">
+        <vwAdd:NewGrowerView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vmAdd:NewBatchViewModel}">
+        <vwAdd:NewBatchView/>
     </DataTemplate>
     <!--Report views-->
-    <DataTemplate DataType="{x:Type vm:VolumeReportViewModel}">
-        <vw:VolumeReportView/>
+    <DataTemplate DataType="{x:Type vmReport:VolumeReportViewModel}">
+        <vwReport:VolumeReportView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:OrderWeightReportViewModel}">
-        <vw:OrderWeightReportView/>
+    <DataTemplate DataType="{x:Type vmReport:OrderWeightReportViewModel}">
+        <vwReport:OrderWeightReportView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:InvoiceReportViewModel}">
-        <vw:InvoiceReportView/>
+    <DataTemplate DataType="{x:Type vmReport:InvoiceReportViewModel}">
+        <vwReport:InvoiceReportView/>
     </DataTemplate>
     <!--Own button style-->
     <Style x:Key="CustomButtonStyle" TargetType="Button">

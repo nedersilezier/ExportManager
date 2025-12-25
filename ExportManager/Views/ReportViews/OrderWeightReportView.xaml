@@ -1,0 +1,89 @@
+﻿<UserControl x:Class="ExportManager.Views.ReportViews.OrderWeightReportView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ExportManager.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="1"/>
+            <RowDefinition Height="37"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Content="Weight per order" HorizontalContentAlignment="Center" Margin="0, 2, 0, 2"/>
+        <Border Grid.Row="1"  Background="LightGray"/>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Select date" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
+            <DatePicker Grid.Column="1" SelectedDate="{Binding Date}" Margin="2, 2, 2, 2" VerticalAlignment="Center" Height="30"/>
+        </Grid>
+        <Grid Grid.Row="3" Margin="0, 2, 0, 2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Select order" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
+            <ComboBox Grid.Column="1" Margin="2, 2, 2, 2"
+                  ItemsSource="{Binding OrderItems}"
+                  SelectedItem="{Binding SelectedOrder}"
+                  VerticalContentAlignment="Center">
+            <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Value}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </Grid>
+        <Button Grid.Row="4" Content="Calculate" Command="{Binding CalculateWeight}" Width="150" Margin="2, 2, 2, 2"/>
+        <Grid Grid.Row="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Calculated weight" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
+            <Label Grid.Column="1" Content="{Binding Weight}" HorizontalAlignment="Left" Margin="20, 2, 2, 2"/>
+        </Grid>
+        <Grid Grid.Row="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Products" HorizontalContentAlignment="Center" Margin="2, 2, 2, 2"/>
+            <Label Grid.Column="1" Content="Carriers" HorizontalContentAlignment="Center" Margin="2, 2, 2, 2"/>
+        </Grid>
+        <Grid Grid.Row="7">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="1"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <DataGrid Grid.Column="0" ItemsSource="{Binding Path=ProductList}" AutoGenerateColumns="False" Margin="2, 0, 2, 0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Product name" Binding="{Binding ProductName}" Width="2*"/>
+                    <DataGridTextColumn Header="Total amount" Binding="{Binding ProductTotalAmount}" Width="*"/>
+                    <DataGridTextColumn Header="Total weight" Binding="{Binding ProductTotalWeight}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Border Grid.Column="1" BorderBrush="LightGray"/>
+            <DataGrid Grid.Column="2" ItemsSource="{Binding Path=CarrierList}" AutoGenerateColumns="False" Margin="2, 0, 2, 0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Carrier name" Binding="{Binding CarrierName}" Width="2*"/>
+                    <DataGridTextColumn Header="Total amount" Binding="{Binding CarrierTotalAmount}" Width="*"/>
+                    <DataGridTextColumn Header="Total shelfs" Binding="{Binding CarrierTotalShelfsAmount}" Width="*"/>
+                    <DataGridTextColumn Header="Total weight" Binding="{Binding CarriersTotalWeight}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        
+    </Grid>
+</UserControl>

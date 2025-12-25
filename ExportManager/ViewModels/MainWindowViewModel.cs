@@ -10,6 +10,8 @@ using System.ComponentModel;
 using System.Windows.Data;
 using ExportManager.ViewModels;
 using ExportManager.ViewModels.Abstract;
+using ExportManager.ViewModels.ShowAllViewModels;
+using ExportManager.ViewModels.ReportViewModels;
 
 namespace ExportManager.ViewModels
 {

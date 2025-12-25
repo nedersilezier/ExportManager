@@ -360,7 +360,6 @@
           <Property Name="InternalNo" Type="varchar" MaxLength="50" />
           <Property Name="IsBlocked" Type="bit" />
           <Property Name="IsInside" Type="bit" />
-          <Property Name="FlowType" Type="nvarchar" MaxLength="50" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
           <Property Name="CreatedAt" Type="datetime2" Precision="0" />
@@ -369,6 +368,9 @@
           <Property Name="DeletedBy" Type="nvarchar" MaxLength="100" />
           <Property Name="DeletedAt" Type="datetime2" Precision="0" />
           <Property Name="Remarks" Type="nvarchar" MaxLength="500" />
+          <Property Name="ExpiryDate" Type="datetime2" Precision="0" />
+          <Property Name="ReceivedAt" Type="datetime2" Precision="0" />
+          <Property Name="QuantityLeft" Type="int" />
         </EntityType>
         <EntityType Name="StockMovements">
           <Key>
@@ -1512,7 +1514,6 @@
           <Property Name="InternalNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="IsBlocked" Type="Boolean" />
           <Property Name="IsInside" Type="Boolean" />
-          <Property Name="FlowType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="CreatedAt" Type="DateTime" Precision="0" />
@@ -1527,6 +1528,9 @@
           <NavigationProperty Name="Qualities" Relationship="PotplantsModel.FK_StockItems_Qualities" FromRole="StockItems" ToRole="Qualities" />
           <NavigationProperty Name="TrayTypes" Relationship="PotplantsModel.FK_StockItems_TrayTypes" FromRole="StockItems" ToRole="TrayTypes" />
           <NavigationProperty Name="StockMovements" Relationship="PotplantsModel.FK_StockMovements_StockItems" FromRole="StockItems" ToRole="StockMovements" />
+          <Property Name="ExpiryDate" Type="DateTime" Precision="0" />
+          <Property Name="ReceivedAt" Type="DateTime" Precision="0" />
+          <Property Name="QuantityLeft" Type="Int32" />
         </EntityType>
         <EntityType Name="StockMovements">
           <Key>
@@ -2114,6 +2118,9 @@
           <EntitySetMapping Name="StockItems">
             <EntityTypeMapping TypeName="PotplantsModel.StockItems">
               <MappingFragment StoreEntitySet="StockItems">
+                <ScalarProperty Name="QuantityLeft" ColumnName="QuantityLeft" />
+                <ScalarProperty Name="ReceivedAt" ColumnName="ReceivedAt" />
+                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
                 <ScalarProperty Name="Remarks" ColumnName="Remarks" />
                 <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
                 <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
@@ -2122,7 +2129,6 @@
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="FlowType" ColumnName="FlowType" />
                 <ScalarProperty Name="IsInside" ColumnName="IsInside" />
                 <ScalarProperty Name="IsBlocked" ColumnName="IsBlocked" />
                 <ScalarProperty Name="InternalNo" ColumnName="InternalNo" />

@@ -78,18 +78,22 @@
     <Compile Include="Models\Addresses.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\BusinessLogic\AddressesForEntities.cs" />
-    <Compile Include="Models\BusinessLogic\CarrierTypesForReports.cs" />
-    <Compile Include="Models\BusinessLogic\CategoriesForProducts.cs" />
-    <Compile Include="Models\BusinessLogic\ClientsForReports.cs" />
-    <Compile Include="Models\BusinessLogic\ColorsForProducts.cs" />
-    <Compile Include="Models\BusinessLogic\CountriesForEntities.cs" />
+    <Compile Include="Models\BusinessLogic\ListViewsForUI\AddressesForEntities.cs" />
+    <Compile Include="Models\BusinessLogic\ListViewsForUI\CarrierTypesForReports.cs" />
+    <Compile Include="Models\BusinessLogic\ListViewsForUI\CategoriesForProducts.cs" />
+    <Compile Include="Models\BusinessLogic\ListViewsForUI\ClientsForReports.cs" />
+    <Compile Include="Models\BusinessLogic\ListViewsForUI\ColorsForProducts.cs" />
+    <Compile Include="Models\BusinessLogic\ListViewsForUI\CountriesForEntities.cs" />
     <Compile Include="Models\BusinessLogic\DatabaseClass.cs" />
-    <Compile Include="Models\BusinessLogic\CultivationsForGrowers.cs" />
+    <Compile Include="Models\BusinessLogic\ListViewsForUI\CultivationsForGrowers.cs" />
+    <Compile Include="Models\BusinessLogic\ListViewsForUI\GrowersForStockItems.cs" />
     <Compile Include="Models\BusinessLogic\InvoiceCalculator.cs" />
-    <Compile Include="Models\BusinessLogic\InvoicesForReports.cs" />
-    <Compile Include="Models\BusinessLogic\OrdersForReports.cs" />
+    <Compile Include="Models\BusinessLogic\ListViewsForUI\InvoicesForReports.cs" />
+    <Compile Include="Models\BusinessLogic\ListViewsForUI\OrdersForReports.cs" />
     <Compile Include="Models\BusinessLogic\OrderWeightCalculator.cs" />
+    <Compile Include="Models\BusinessLogic\ListViewsForUI\ProductsForStockItems.cs" />
+    <Compile Include="Models\BusinessLogic\ListViewsForUI\QualitiesForStockItems.cs" />
+    <Compile Include="Models\BusinessLogic\ListViewsForUI\TrayTypesForStockItems.cs" />
     <Compile Include="Models\BusinessLogic\VolumeCalculator.cs" />
     <Compile Include="Models\Carriers.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
@@ -118,6 +122,7 @@
     <Compile Include="Models\EntitiesForView\InvoiceReportItemsListView.cs" />
     <Compile Include="Models\EntitiesForView\KeyAndValue.cs" />
     <Compile Include="Models\EntitiesForView\ProductsListView.cs" />
+    <Compile Include="Models\EntitiesForView\StockItemsListView.cs" />
     <Compile Include="Models\EntitiesForView\WeightReportListView.cs" />
     <Compile Include="Models\Extensions\HasIsActive..cs" />
     <Compile Include="Models\Extensions\StringExtensions.cs" />
@@ -185,141 +190,145 @@
     <Compile Include="Models\Extensions\IHasIsActive.cs" />
     <Compile Include="ViewModels\Abstract\NewItemViewModelBase.cs" />
     <Compile Include="ViewModels\Abstract\NewItemViewModel.cs" />
-    <Compile Include="ViewModels\AllAddressesViewModel.cs" />
-    <Compile Include="ViewModels\AllBatchesViewModel.cs" />
-    <Compile Include="ViewModels\AllCarrierTypesViewModel.cs" />
-    <Compile Include="ViewModels\AllCategoriesViewModel.cs" />
-    <Compile Include="ViewModels\AllClientsViewModel.cs" />
-    <Compile Include="ViewModels\AllColorsViewModel.cs" />
-    <Compile Include="ViewModels\AllCountriesViewModel.cs" />
-    <Compile Include="ViewModels\AllCultivationsViewModel.cs" />
-    <Compile Include="ViewModels\AllGrowersViewModel.cs" />
-    <Compile Include="ViewModels\AllInStockViewModel.cs" />
-    <Compile Include="ViewModels\AllInvoicesViewModel.cs" />
-    <Compile Include="ViewModels\AllOrdersViewModel.cs" />
-    <Compile Include="ViewModels\AllPaymentMethodsViewModel.cs" />
-    <Compile Include="ViewModels\AllQualitiesViewModel.cs" />
-    <Compile Include="ViewModels\AllTrayTypesViewModel.cs" />
+    <Compile Include="ViewModels\ShowAllViewModels\AllAddressesViewModel.cs" />
+    <Compile Include="ViewModels\ShowAllViewModels\AllBatchesViewModel.cs" />
+    <Compile Include="ViewModels\ShowAllViewModels\AllCarrierTypesViewModel.cs" />
+    <Compile Include="ViewModels\ShowAllViewModels\AllCategoriesViewModel.cs" />
+    <Compile Include="ViewModels\ShowAllViewModels\AllClientsViewModel.cs" />
+    <Compile Include="ViewModels\ShowAllViewModels\AllColorsViewModel.cs" />
+    <Compile Include="ViewModels\ShowAllViewModels\AllCountriesViewModel.cs" />
+    <Compile Include="ViewModels\ShowAllViewModels\AllCultivationsViewModel.cs" />
+    <Compile Include="ViewModels\ShowAllViewModels\AllGrowersViewModel.cs" />
+    <Compile Include="ViewModels\ShowAllViewModels\AllInvoicesViewModel.cs" />
+    <Compile Include="ViewModels\ShowAllViewModels\AllOrdersViewModel.cs" />
+    <Compile Include="ViewModels\ShowAllViewModels\AllPaymentMethodsViewModel.cs" />
+    <Compile Include="ViewModels\ShowAllViewModels\AllQualitiesViewModel.cs" />
+    <Compile Include="ViewModels\ShowAllViewModels\AllInStockViewModel.cs" />
+    <Compile Include="ViewModels\ShowAllViewModels\AllTrayTypesViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\CommandViewModel.cs" />
-    <Compile Include="ViewModels\InvoiceReportViewModel.cs" />
+    <Compile Include="ViewModels\ReportViewModels\InvoiceReportViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\NewAddressViewModel.cs" />
-    <Compile Include="ViewModels\NewCarrierTypeViewModel.cs" />
-    <Compile Include="ViewModels\NewCategoryViewModel.cs" />
-    <Compile Include="ViewModels\NewClientViewModel.cs" />
-    <Compile Include="ViewModels\NewColorViewModel.cs" />
-    <Compile Include="ViewModels\NewCountryViewModel.cs" />
-    <Compile Include="ViewModels\NewCultivationViewModel.cs" />
-    <Compile Include="ViewModels\NewGrowerViewModel.cs" />
-    <Compile Include="ViewModels\NewPaymentMethodViewModel.cs" />
-    <Compile Include="ViewModels\NewProductViewModel.cs" />
-    <Compile Include="ViewModels\NewQualityTypeViewModel.cs" />
-    <Compile Include="ViewModels\AllProductsViewModel.cs" />
-    <Compile Include="ViewModels\AllOrderItemsViewModel.cs" />
-    <Compile Include="ViewModels\NewTrayTypeViewModel.cs" />
-    <Compile Include="ViewModels\VolumeReportViewModel.cs" />
-    <Compile Include="ViewModels\OrderWeightReportViewModel.cs" />
+    <Compile Include="ViewModels\AddViewModels\NewAddressViewModel.cs" />
+    <Compile Include="ViewModels\AddViewModels\NewBatchViewModel.cs" />
+    <Compile Include="ViewModels\AddViewModels\NewCarrierTypeViewModel.cs" />
+    <Compile Include="ViewModels\AddViewModels\NewCategoryViewModel.cs" />
+    <Compile Include="ViewModels\AddViewModels\NewClientViewModel.cs" />
+    <Compile Include="ViewModels\AddViewModels\NewColorViewModel.cs" />
+    <Compile Include="ViewModels\AddViewModels\NewCountryViewModel.cs" />
+    <Compile Include="ViewModels\AddViewModels\NewCultivationViewModel.cs" />
+    <Compile Include="ViewModels\AddViewModels\NewGrowerViewModel.cs" />
+    <Compile Include="ViewModels\AddViewModels\NewPaymentMethodViewModel.cs" />
+    <Compile Include="ViewModels\AddViewModels\NewProductViewModel.cs" />
+    <Compile Include="ViewModels\AddViewModels\NewQualityTypeViewModel.cs" />
+    <Compile Include="ViewModels\ShowAllViewModels\AllProductsViewModel.cs" />
+    <Compile Include="ViewModels\ShowAllViewModels\AllOrderItemsViewModel.cs" />
+    <Compile Include="ViewModels\AddViewModels\NewTrayTypeViewModel.cs" />
+    <Compile Include="ViewModels\ReportViewModels\VolumeReportViewModel.cs" />
+    <Compile Include="ViewModels\ReportViewModels\OrderWeightReportViewModel.cs" />
     <Compile Include="ViewModels\WorkspaceViewModel.cs" />
-    <Compile Include="Views\AllAddressesView.xaml.cs">
+    <Compile Include="Views\ShowAllViews\AllAddressesView.xaml.cs">
       <DependentUpon>AllAddressesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AllBatchesView.xaml.cs">
+    <Compile Include="Views\ShowAllViews\AllBatchesView.xaml.cs">
       <DependentUpon>AllBatchesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AllCarrierTypesView.xaml.cs">
+    <Compile Include="Views\ShowAllViews\AllCarrierTypesView.xaml.cs">
       <DependentUpon>AllCarrierTypesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AllCategoriesView.xaml.cs">
+    <Compile Include="Views\ShowAllViews\AllCategoriesView.xaml.cs">
       <DependentUpon>AllCategoriesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AllClientsView.xaml.cs">
+    <Compile Include="Views\ShowAllViews\AllClientsView.xaml.cs">
       <DependentUpon>AllClientsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AllColorsView.xaml.cs">
+    <Compile Include="Views\ShowAllViews\AllColorsView.xaml.cs">
       <DependentUpon>AllColorsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AllCountriesView.xaml.cs">
+    <Compile Include="Views\ShowAllViews\AllCountriesView.xaml.cs">
       <DependentUpon>AllCountriesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AllCultivationsView.xaml.cs">
+    <Compile Include="Views\ShowAllViews\AllCultivationsView.xaml.cs">
       <DependentUpon>AllCultivationsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AllGrowersView.xaml.cs">
+    <Compile Include="Views\ShowAllViews\AllGrowersView.xaml.cs">
       <DependentUpon>AllGrowersView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AllInStockView.xaml.cs">
+    <Compile Include="Views\ShowAllViews\AllInStockView.xaml.cs">
       <DependentUpon>AllInStockView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AllInvoicesView.xaml.cs">
+    <Compile Include="Views\ShowAllViews\AllInvoicesView.xaml.cs">
       <DependentUpon>AllInvoicesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AllOrdersView.xaml.cs">
+    <Compile Include="Views\ShowAllViews\AllOrdersView.xaml.cs">
       <DependentUpon>AllOrdersView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AllPaymentMethodsView.xaml.cs">
+    <Compile Include="Views\ShowAllViews\AllPaymentMethodsView.xaml.cs">
       <DependentUpon>AllPaymentMethodsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AllProductsView.xaml.cs">
+    <Compile Include="Views\ShowAllViews\AllProductsView.xaml.cs">
       <DependentUpon>AllProductsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AllQualitiesView.xaml.cs">
+    <Compile Include="Views\ShowAllViews\AllQualitiesView.xaml.cs">
       <DependentUpon>AllQualitiesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AllTrayTypesView.xaml.cs">
+    <Compile Include="Views\ShowAllViews\AllTrayTypesView.xaml.cs">
       <DependentUpon>AllTrayTypesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AllViewBase.cs" />
-    <Compile Include="Views\InvoiceReportView.xaml.cs">
+    <Compile Include="Views\ReportViews\InvoiceReportView.xaml.cs">
       <DependentUpon>InvoiceReportView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewAddressView.xaml.cs">
+    <Compile Include="Views\AddViews\NewAddressView.xaml.cs">
       <DependentUpon>NewAddressView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewCarrierTypeView.xaml.cs">
+    <Compile Include="Views\AddViews\NewBatchView.xaml.cs">
+      <DependentUpon>NewBatchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddViews\NewCarrierTypeView.xaml.cs">
       <DependentUpon>NewCarrierTypeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewCategoryView.xaml.cs">
+    <Compile Include="Views\AddViews\NewCategoryView.xaml.cs">
       <DependentUpon>NewCategoryView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewClientView.xaml.cs">
+    <Compile Include="Views\AddViews\NewClientView.xaml.cs">
       <DependentUpon>NewClientView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewColorView.xaml.cs">
+    <Compile Include="Views\AddViews\NewColorView.xaml.cs">
       <DependentUpon>NewColorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewCountryView.xaml.cs">
+    <Compile Include="Views\AddViews\NewCountryView.xaml.cs">
       <DependentUpon>NewCountryView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewCultivationView.xaml.cs">
+    <Compile Include="Views\AddViews\NewCultivationView.xaml.cs">
       <DependentUpon>NewCultivationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewGrowerView.xaml.cs">
+    <Compile Include="Views\AddViews\NewGrowerView.xaml.cs">
       <DependentUpon>NewGrowerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NewItemViewBase.cs" />
-    <Compile Include="Views\NewPaymentMethodView.xaml.cs">
+    <Compile Include="Views\AddViews\NewPaymentMethodView.xaml.cs">
       <DependentUpon>NewPaymentMethodView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewProductView.xaml.cs">
+    <Compile Include="Views\AddViews\NewProductView.xaml.cs">
       <DependentUpon>NewProductView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AllOrderItemsView.xaml.cs">
+    <Compile Include="Views\ShowAllViews\AllOrderItemsView.xaml.cs">
       <DependentUpon>AllOrderItemsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewQualityTypeView.xaml.cs">
+    <Compile Include="Views\AddViews\NewQualityTypeView.xaml.cs">
       <DependentUpon>NewQualityTypeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewTrayTypeView.xaml.cs">
+    <Compile Include="Views\AddViews\NewTrayTypeView.xaml.cs">
       <DependentUpon>NewTrayTypeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\OrderWeightReportView.xaml.cs">
+    <Compile Include="Views\ReportViews\OrderWeightReportView.xaml.cs">
       <DependentUpon>OrderWeightReportView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\VolumeReportView.xaml.cs">
+    <Compile Include="Views\ReportViews\VolumeReportView.xaml.cs">
       <DependentUpon>VolumeReportView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -361,71 +370,71 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AllAddressesView.xaml">
+    <Page Include="Views\ShowAllViews\AllAddressesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AllBatchesView.xaml">
+    <Page Include="Views\ShowAllViews\AllBatchesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AllCarrierTypesView.xaml">
+    <Page Include="Views\ShowAllViews\AllCarrierTypesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AllCategoriesView.xaml">
+    <Page Include="Views\ShowAllViews\AllCategoriesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AllClientsView.xaml">
+    <Page Include="Views\ShowAllViews\AllClientsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AllColorsView.xaml">
+    <Page Include="Views\ShowAllViews\AllColorsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AllCountriesView.xaml">
+    <Page Include="Views\ShowAllViews\AllCountriesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AllCultivationsView.xaml">
+    <Page Include="Views\ShowAllViews\AllCultivationsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AllGrowersView.xaml">
+    <Page Include="Views\ShowAllViews\AllGrowersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AllInStockView.xaml">
+    <Page Include="Views\ShowAllViews\AllInStockView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AllInvoicesView.xaml">
+    <Page Include="Views\ShowAllViews\AllInvoicesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AllOrdersView.xaml">
+    <Page Include="Views\ShowAllViews\AllOrdersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AllPaymentMethodsView.xaml">
+    <Page Include="Views\ShowAllViews\AllPaymentMethodsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AllProductsView.xaml">
+    <Page Include="Views\ShowAllViews\AllProductsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AllQualitiesView.xaml">
+    <Page Include="Views\ShowAllViews\AllQualitiesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AllTrayTypesView.xaml">
+    <Page Include="Views\ShowAllViews\AllTrayTypesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\InvoiceReportView.xaml">
+    <Page Include="Views\ReportViews\InvoiceReportView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -437,70 +446,73 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewAddressView.xaml">
+    <Page Include="Views\AddViews\NewAddressView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewCarrierTypeView.xaml">
+    <Page Include="Views\AddViews\NewBatchView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewCategoryView.xaml">
+    <Page Include="Views\AddViews\NewCarrierTypeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewClientView.xaml">
+    <Page Include="Views\AddViews\NewCategoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewColorView.xaml">
+    <Page Include="Views\AddViews\NewClientView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewCountryView.xaml">
+    <Page Include="Views\AddViews\NewColorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewCultivationView.xaml">
+    <Page Include="Views\AddViews\NewCountryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewGrowerView.xaml">
+    <Page Include="Views\AddViews\NewCultivationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewPaymentMethodView.xaml">
+    <Page Include="Views\AddViews\NewGrowerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewProductView.xaml">
+    <Page Include="Views\AddViews\NewPaymentMethodView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AllOrderItemsView.xaml">
+    <Page Include="Views\AddViews\NewProductView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewQualityTypeView.xaml">
+    <Page Include="Views\ShowAllViews\AllOrderItemsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewTrayTypeView.xaml">
+    <Page Include="Views\AddViews\NewQualityTypeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\OrderWeightReportView.xaml">
+    <Page Include="Views\AddViews\NewTrayTypeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\VolumeReportView.xaml">
+    <Page Include="Views\ReportViews\OrderWeightReportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ReportViews\VolumeReportView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="DBScript\Potplants.sql" />
     <Resource Include="Icons\left-arrow.png" />
     <Resource Include="Icons\right-arrow.png" />
     <Content Include="Models\PotplantsModel.Context.tt">

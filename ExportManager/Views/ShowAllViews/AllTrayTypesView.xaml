@@ -1,0 +1,24 @@
+﻿<local:AllViewBase x:Class="ExportManager.Views.ShowAllViews.AllTrayTypesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ExportManager.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding List, IsAsync=True}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="200"/>
+                <DataGridTextColumn Header="Fitting pot size" Binding="{Binding FittingPotSize}" Width="Auto"/>
+                <DataGridTextColumn Header="Qty per tray" Binding="{Binding QtyPerTray}" Width="Auto"/>
+                <DataGridTextColumn Header="Width" Binding="{Binding Width}" Width="Auto"/>
+                <DataGridTextColumn Header="Length" Binding="{Binding Length}" Width="Auto"/>
+                <DataGridTextColumn Header="Area" Binding="{Binding Area}" Width="Auto"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding Remarks}" Width="600"/>
+                <DataGridTextColumn Header="Last updated" Binding="{Binding UpdatedAt}" Width="*"/>
+                <DataGridTextColumn Header="Last updated by" Binding="{Binding UpdatedBy}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</local:AllViewBase>

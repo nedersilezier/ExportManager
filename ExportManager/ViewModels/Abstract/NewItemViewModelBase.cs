@@ -9,6 +9,7 @@ using System.Windows.Input;
 using ExportManager.ViewModels;
 using System.Windows;
 using System.Data.Entity.Validation;
+using System.Data.Entity.Infrastructure;
 
 namespace ExportManager.ViewModels.Abstract
 {

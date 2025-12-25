@@ -45,6 +45,14 @@ namespace ExportManager.ViewModels.Abstract
             //    }
             //    MessageBox.Show(message);
             //}
+            //catch (System.Data.Entity.Infrastructure.DbUpdateException ex)
+            //{
+            //    var msg = ex.InnerException?.InnerException?.Message
+            //              ?? ex.InnerException?.Message
+            //              ?? ex.Message;
+
+            //    throw new Exception(msg, ex);
+            //}
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
