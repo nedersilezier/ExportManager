@@ -88,7 +88,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Functions
         public override void OnAdd()
         {
-            AddNew<NewBatchViewModel>();
+            OpenNewTab<NewBatchViewModel>(Load);
         }
         public override void OnEdit()
         {

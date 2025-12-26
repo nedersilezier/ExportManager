@@ -44,7 +44,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Functions
         public override void OnAdd()
         {
-            AddNew<NewAddressViewModel>();
+            OpenNewTab<NewAddressViewModel>(Load);
         }
         public override void OnEdit()
         {

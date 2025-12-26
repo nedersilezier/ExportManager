@@ -28,7 +28,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Functions
         public override void OnAdd()
         {
-            AddNew<NewColorViewModel>();
+            OpenNewTab<NewColorViewModel>(Load);
         }
         public override void OnEdit()
         {

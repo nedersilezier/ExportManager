@@ -296,32 +296,20 @@ namespace ExportManager.ViewModels.AddViewModels
         }
         public void OpenNewProductTab()
         {
-            var viewModel = new NewProductViewModel();
-            viewModel.Added += RefreshProducts;
-            var mainWindowViewModel = (MainWindowViewModel)App.Current.MainWindow.DataContext;
-            mainWindowViewModel.CreateView(viewModel);
+            OpenNewTab<NewProductViewModel>(RefreshProducts);
         }
 
         public void OpenNewGrowerTab()
         {
-            var viewModel = new NewGrowerViewModel();
-            viewModel.Added += RefreshGrowers;
-            var mainWindowViewModel = (MainWindowViewModel)App.Current.MainWindow.DataContext;
-            mainWindowViewModel.CreateView(viewModel);
+            OpenNewTab<NewGrowerViewModel>(RefreshGrowers);
         }
         public void openNewQualityTab()
         {
-            var viewModel = new NewQualityTypeViewModel();
-            viewModel.Added += RefreshQualities;
-            var mainWindowViewModel = (MainWindowViewModel)App.Current.MainWindow.DataContext;
-            mainWindowViewModel.CreateView(viewModel);
+            OpenNewTab<NewQualityTypeViewModel>(RefreshQualities);
         }
         public void OpenNewTrayTypeTab()
         {
-            var viewModel = new NewTrayTypeViewModel();
-            viewModel.Added += RefreshTrayTypes;
-            var mainWindowViewModel = (MainWindowViewModel)App.Current.MainWindow.DataContext;
-            mainWindowViewModel.CreateView(viewModel);
+            OpenNewTab<NewTrayTypeViewModel>(RefreshTrayTypes);
         }
         private void RefreshProducts()
         {

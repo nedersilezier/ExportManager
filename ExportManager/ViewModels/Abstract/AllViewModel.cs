@@ -84,13 +84,20 @@ namespace ExportManager.ViewModels.Abstract
         
         #endregion
         #region Functions
-        protected void AddNew<T2>() where T2: NewItemViewModelBase, new()
-        {
-            var viewModel = new T2();
-            viewModel.Added += Load;
-            var mainViewModel = (MainWindowViewModel)App.Current.MainWindow.DataContext;
-            mainViewModel.CreateView(viewModel);
-        }
+        //protected void AddNew<T2>() where T2: NewItemViewModelBase, new()
+        //{
+        //    var viewModel = new T2();
+        //    if(viewModel is NewItemViewModelBase newitemViewModelBase)
+        //    {
+        //        void handler()
+        //        {
+        //            Load();
+        //            newitemViewModelBase.Added -= handler;
+        //        }
+        //        newitemViewModelBase.Added += handler;
+        //    }
+        //    OnRequestOpen(viewModel);
+        //}
         public abstract void Load();
         public abstract void OnAdd();
         public abstract void OnEdit();

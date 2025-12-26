@@ -51,7 +51,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Functions
         public override void OnAdd()
         {
-            AddNew<NewGrowerViewModel>();
+            OpenNewTab<NewGrowerViewModel>(Load);
         }
         public override void OnEdit()
         {

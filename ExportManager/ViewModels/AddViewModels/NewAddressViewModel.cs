@@ -150,15 +150,11 @@ namespace ExportManager.ViewModels.AddViewModels
         #region Functions
         private void OpenNewCountryTab()
         {
-            var viewModel = new NewCountryViewModel();
-            viewModel.Added += RefreshCountries;
-            var mainViewModel = (MainWindowViewModel)App.Current.MainWindow.DataContext;
-            mainViewModel.CreateView(viewModel);
+            OpenNewTab<NewCountryViewModel>(RefreshCountries);
         }
         private void RefreshCountries()
         {
             Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
-            OnPropertyChanged(() => Countries);
         }
         #endregion
     }

@@ -10,6 +10,7 @@ using ExportManager.ViewModels;
 using System.Windows;
 using System.Data.Entity.Validation;
 using System.Data.Entity.Infrastructure;
+using ExportManager.ViewModels.AddViewModels;
 
 namespace ExportManager.ViewModels.Abstract
 {
@@ -36,6 +37,9 @@ namespace ExportManager.ViewModels.Abstract
                 return _SaveAndCloseCommand;
             }
         }
+
+        #endregion
+        #region Functions
         public abstract void Save();
         private void saveAndClose()
         {
@@ -54,6 +58,20 @@ namespace ExportManager.ViewModels.Abstract
         {
             Added?.Invoke();
         }
+        //protected void OpenNewTab<T>(Action refreshEvent) where T: WorkspaceViewModel, new()
+        //{
+        //    var viewModel = new T();
+        //    if(viewModel is NewItemViewModelBase newItemViewModel)
+        //    {
+        //        void handler()
+        //        {
+        //            refreshEvent();
+        //            newItemViewModel.Added -= handler;
+        //        }
+        //        newItemViewModel.Added += handler;
+        //    }
+        //    OnRequestOpen(viewModel);
+        //}
         #endregion
     }
 }

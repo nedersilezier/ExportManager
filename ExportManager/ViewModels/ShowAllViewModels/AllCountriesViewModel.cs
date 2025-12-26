@@ -51,7 +51,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Functions
         public override void OnAdd()
         {
-            AddNew<NewCountryViewModel>();
+            OpenNewTab<NewCountryViewModel>(Load);
         }
         public override void OnEdit()
         {

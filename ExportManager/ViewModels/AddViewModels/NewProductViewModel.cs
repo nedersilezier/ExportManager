@@ -188,30 +188,21 @@ namespace ExportManager.ViewModels.AddViewModels
             potplantsEntities.Products.Add(item);
             potplantsEntities.SaveChanges();
         }
-        //fuj. Powtarzajacy sie kod! W wolnym czasie przemyslec.
         private void OpenNewCategoryTab()
         {
-            var viewModel = new NewCategoryViewModel();
-            viewModel.Added += RefreshCategories;
-            var mainViewModel = (MainWindowViewModel)App.Current.MainWindow.DataContext;
-            mainViewModel.CreateView(viewModel);
+            OpenNewTab<NewCategoryViewModel>(RefreshCategories);
         }
         private void OpenNewColorTab()
         {
-            var viewModel = new NewColorViewModel();
-            viewModel.Added += RefreshColors;
-            var mainViewModel = (MainWindowViewModel)App.Current.MainWindow.DataContext;
-            mainViewModel.CreateView(viewModel);
+            OpenNewTab<NewColorViewModel>(RefreshColors);
         }
         private void RefreshCategories()
         {
             Categories = new CategoriesForProducts(potplantsEntities).GetCategoriesListItems();
-            OnPropertyChanged(() => Categories);
         }
         private void RefreshColors()
         {
             Colors = new ColorsForProducts(potplantsEntities).GetColorsListItems();
-            OnPropertyChanged(() => Colors);
         }
         #endregion
     }

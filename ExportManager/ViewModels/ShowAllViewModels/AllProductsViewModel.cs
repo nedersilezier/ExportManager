@@ -59,7 +59,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Functions
         public override void OnAdd()
         {
-            AddNew<NewProductViewModel>();
+            OpenNewTab<NewProductViewModel>(Load);
         }
         public override void OnEdit()
         {

@@ -27,7 +27,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Functions
         public override void OnAdd()
         {
-            AddNew<NewCultivationViewModel>();
+            OpenNewTab<NewCultivationViewModel>(Load);
         }
         public override void OnEdit()
         {

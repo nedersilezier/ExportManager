@@ -28,7 +28,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Functions
         public override void OnAdd()
         {
-            AddNew<NewPaymentMethodViewModel>();
+            OpenNewTab<NewPaymentMethodViewModel>(Load);
         }
         public override void OnEdit()
         {

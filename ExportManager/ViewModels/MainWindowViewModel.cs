@@ -195,27 +195,29 @@ namespace ExportManager.ViewModels
         {
             if (e.NewItems != null && e.NewItems.Count != 0)
                 foreach (WorkspaceViewModel workspace in e.NewItems)
+                {
                     workspace.RequestClose += this.OnWorkspaceRequestClose;
-
+                    workspace.OpenWorkspaceRequested += OnWorkspaceRequestOpen;
+                }
             if (e.OldItems != null && e.OldItems.Count != 0)
                 foreach (WorkspaceViewModel workspace in e.OldItems)
+                {
                     workspace.RequestClose -= this.OnWorkspaceRequestClose;
+                    workspace.OpenWorkspaceRequested -= OnWorkspaceRequestOpen;
+                }      
         }
         private void OnWorkspaceRequestClose(object sender, EventArgs e)
         {
             WorkspaceViewModel workspace = sender as WorkspaceViewModel;
-            //workspace.Dispos();
             this.Workspaces.Remove(workspace);
+        }
+        private void OnWorkspaceRequestOpen(object sender, WorkspaceViewModel workspace)
+        {
+            this.CreateView(workspace);
         }
         #endregion // Workspaces
 
         #region Private Helpers
-        //private void CreateTowar()
-        //{
-        //    NowyTowarViewModel workspace = new NowyTowarViewModel();
-        //    this.Workspaces.Add(workspace);
-        //    this.SetActiveWorkspace(workspace);
-        //}
         public void ShowAll<T>() where T:WorkspaceViewModel, new()
         {
             T workspace =
