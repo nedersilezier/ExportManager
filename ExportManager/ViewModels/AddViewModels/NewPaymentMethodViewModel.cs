@@ -17,6 +17,13 @@ namespace ExportManager.ViewModels.AddViewModels
             base.DisplayName = "New payment method";
             item = new PaymentMethods();
         }
+        public NewPaymentMethodViewModel(int paymentMethodId)
+            : base()
+        {
+            base.DisplayName = "Edit payment method";
+            _IsEditMode = true;
+            item = potplantsEntities.PaymentMethods.FirstOrDefault(t => t.PaymentMethodId == paymentMethodId);
+        }
         #endregion
         #region Properties
         public string Name

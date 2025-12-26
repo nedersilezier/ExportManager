@@ -8,19 +8,23 @@ using ExportManager.ViewModels.Abstract;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using ExportManager.ViewModels.AddViewModels;
+using ExportManager.Models;
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
-    public class AllCategoriesViewModel: AllViewModel<dynamic>
+    public class AllCategoriesViewModel : AllViewModel<Categories>
     {
         #region List
         public override void Load()
         {
-            List = new ObservableCollection<dynamic>(potplantsEntities.Categories.Where(t => t.IsActive == true).ToList());
+            using (var shortLivedPotplantsEntities = new PotplantsEntities())
+            {
+                List = new ObservableCollection<Categories>(shortLivedPotplantsEntities.Categories.Where(t => t.IsActive == true).ToList());
+            }
         }
         #endregion
         #region Constructor
-        public AllCategoriesViewModel() 
-        :base()
+        public AllCategoriesViewModel()
+        : base()
         {
             base.DisplayName = "Categories";
         }
@@ -28,11 +32,13 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Functions
         public override void OnAdd()
         {
-            OpenNewTab<NewCategoryViewModel>(Load);
+            OpenNewTab(() => new NewCategoryViewModel(), Load);
         }
         public override void OnEdit()
         {
-            return;
+            if (SelectedItem == null)
+                return;
+            OpenNewTab(() => new NewCategoryViewModel(SelectedItem.CategoryId), Load);
         }
         public override void OnRemove()
         {

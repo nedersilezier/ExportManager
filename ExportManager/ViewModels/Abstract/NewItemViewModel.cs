@@ -15,6 +15,9 @@ namespace ExportManager.ViewModels.Abstract
 {
     public abstract class NewItemViewModel<T>: NewItemViewModelBase where T: class, IHasIsActive, new()
     {
+        #region Fields
+        protected bool _IsEditMode = false;
+        #endregion
         #region Database
         protected T item;
         #endregion
@@ -28,31 +31,18 @@ namespace ExportManager.ViewModels.Abstract
         #region Commands
         public override void Save()
         {
-            item.IsActive = true;
-            potplantsEntities.Set<T>().Add(item);
+            Console.WriteLine("Save called from NewItemViewModel");
+            if (!_IsEditMode)
+            {
+                Console.WriteLine("Weszlo?????");
+                item.IsActive = true;
+                potplantsEntities.Set<T>().Add(item);
+            }
             try
             {
+                Console.WriteLine("Item name: " + item);
                 potplantsEntities.SaveChanges();
             }
-            //catch (DbEntityValidationException dbex)
-            //{
-            //    string message = string.Empty;
-            //    foreach (var efex in dbex.EntityValidationErrors)
-            //    {
-            //        message += "Type " + efex.Entry.Entity.GetType().Name + " in state " + efex.Entry.State + " has errors: \n";
-            //        foreach (var errormsg in efex.ValidationErrors)
-            //            message += "\tProperty: " + errormsg.PropertyName + ", error: " + errormsg.ErrorMessage + "/n";
-            //    }
-            //    MessageBox.Show(message);
-            //}
-            //catch (System.Data.Entity.Infrastructure.DbUpdateException ex)
-            //{
-            //    var msg = ex.InnerException?.InnerException?.Message
-            //              ?? ex.InnerException?.Message
-            //              ?? ex.Message;
-
-            //    throw new Exception(msg, ex);
-            //}
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);

@@ -26,7 +26,15 @@ namespace ExportManager.ViewModels.AddViewModels
         {
             base.DisplayName = "New address";
             item = new Addresses();
-            Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
+            
+        }
+        public NewAddressViewModel(int addressId)
+            : base()
+        {
+            base.DisplayName = "Edit address";
+            _IsEditMode = true;
+            item = potplantsEntities.Addresses.FirstOrDefault(t => t.AddressId == addressId);
+            SelectedCountry = Countries.FirstOrDefault(t => t.Key == item.CountryId);
         }
         #endregion
         #region Properties
@@ -35,7 +43,7 @@ namespace ExportManager.ViewModels.AddViewModels
             get
             {
                 if (_Countries == null)
-                    _Countries = new ObservableCollection<KeyAndValue>();
+                    _Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
                 return _Countries;
             }
             set
@@ -131,8 +139,11 @@ namespace ExportManager.ViewModels.AddViewModels
             }
             var selectedCountry = potplantsEntities.Countries.FirstOrDefault(t=>t.CountryId==SelectedCountry.Key);
             item.CountryId = selectedCountry.CountryId;
-            item.IsActive = true;
-            potplantsEntities.Addresses.Add(item);
+            if(!_IsEditMode)
+            {
+                item.IsActive = true;
+                potplantsEntities.Addresses.Add(item);
+            }
             potplantsEntities.SaveChanges();
         }
         public ICommand NewCountryCommand
@@ -150,7 +161,7 @@ namespace ExportManager.ViewModels.AddViewModels
         #region Functions
         private void OpenNewCountryTab()
         {
-            OpenNewTab<NewCountryViewModel>(RefreshCountries);
+            OpenNewTab(()=> new NewCountryViewModel(), RefreshCountries);
         }
         private void RefreshCountries()
         {

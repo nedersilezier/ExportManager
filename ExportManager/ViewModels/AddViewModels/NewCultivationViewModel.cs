@@ -17,6 +17,13 @@ namespace ExportManager.ViewModels.AddViewModels
             base.DisplayName = "New cultivation type";
             item = new Cultivations();
         }
+        public NewCultivationViewModel(int cultivationId)
+            : base()
+        {
+            base.DisplayName = "Edit cultivation type";
+            _IsEditMode = true;
+            item = potplantsEntities.Cultivations.FirstOrDefault(t => t.CultivationId == cultivationId);
+        }
         #endregion
         #region Properties
         public string Name

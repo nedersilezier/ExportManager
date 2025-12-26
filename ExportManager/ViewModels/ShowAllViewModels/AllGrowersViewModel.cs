@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using ExportManager.Models.EntitiesForView;
 using ExportManager.ViewModels.AddViewModels;
+using ExportManager.Models;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
@@ -15,27 +16,30 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region List
         public override void Load()
         {
-            var growers = potplantsEntities.Growers.Where(t => t.IsActive==true).ToList();
-            List = new ObservableCollection<dynamic>(
-                growers.Select(grower => new GrowersListView
-                {
-                    GrowerId = grower.GrowerId,
-                    GrowerName = grower.Name,
-                    ContactPerson = grower.ContactPerson,
-                    PhoneNumber = grower.Phone,
-                    EmailAddress = grower.Email,
-                    Cultivations = string.Join(", ", grower.Cultivations.Select(c => c.Name)),
-                    City = grower.Addresses.City,
-                    Street = grower.Addresses.Street,
-                    HouseNumber = grower.Addresses.HouseNumber,
-                    ApartmentNumber = grower.Addresses.ApartmentNumber,
-                    ZipCode = grower.Addresses.ZipCode,
-                    Country = grower.Addresses.Countries.Name,
-                    TaxId = grower.TaxId,
-                    RegistrationNumber = grower.RegistrationNo,
-                    Remarks = grower.Remarks
-                }
-                ));
+            using (var shortLivedPotplantsEntities = new PotplantsEntities())
+            {
+                var growers = shortLivedPotplantsEntities.Growers.Where(t => t.IsActive == true).ToList();
+                List = new ObservableCollection<dynamic>(
+                    growers.Select(grower => new GrowersListView
+                    {
+                        GrowerId = grower.GrowerId,
+                        GrowerName = grower.Name,
+                        ContactPerson = grower.ContactPerson,
+                        PhoneNumber = grower.Phone,
+                        EmailAddress = grower.Email,
+                        Cultivations = string.Join(", ", grower.Cultivations.Select(c => c.Name)),
+                        City = grower.Addresses.City,
+                        Street = grower.Addresses.Street,
+                        HouseNumber = grower.Addresses.HouseNumber,
+                        ApartmentNumber = grower.Addresses.ApartmentNumber,
+                        ZipCode = grower.Addresses.ZipCode,
+                        Country = grower.Addresses.Countries.Name,
+                        TaxId = grower.TaxId,
+                        RegistrationNumber = grower.RegistrationNo,
+                        Remarks = grower.Remarks
+                    }
+                    ));
+            }
         }
         #endregion
         #region Constructor
@@ -51,11 +55,11 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Functions
         public override void OnAdd()
         {
-            OpenNewTab<NewGrowerViewModel>(Load);
+            OpenNewTab(() => new NewGrowerViewModel(), Load);
         }
         public override void OnEdit()
         {
-            return;
+            OpenNewTab(() => new NewGrowerViewModel(SelectedItem.GrowerId), Load);
         }
         public override void OnRemove()
         {

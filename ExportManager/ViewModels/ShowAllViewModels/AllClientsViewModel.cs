@@ -52,11 +52,11 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Functions
         public override void OnAdd()
         {
-            OpenNewTab<NewClientViewModel>(Load);
+            OpenNewTab(() => new NewClientViewModel(), Load);
         }
         public override void OnEdit()
         {
-            return;
+            OpenNewTab(() => new NewClientViewModel(SelectedItem.ClientId), Load);
         }
         public override void OnRemove()
         {

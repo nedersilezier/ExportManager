@@ -24,7 +24,28 @@ namespace ExportManager.ViewModels.AddViewModels
             base.DisplayName = "New grower";
             item = new Growers();
             newGrowerAddress = new Addresses();
-            Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
+            //Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
+            IsNotAddressesNeeded = true;
+        }
+        public NewGrowerViewModel(int growerId)
+            : base()
+        {
+            base.DisplayName = "Edit grower";
+            _IsEditMode = true;
+            item = potplantsEntities.Growers.FirstOrDefault(t => t.GrowerId == growerId);
+            newGrowerAddress = potplantsEntities.Addresses.FirstOrDefault(t => t.AddressId == item.AddressId);
+            //Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
+            SelectedCountry = Countries.FirstOrDefault(t => t.Key == item.Addresses.CountryId);
+            SelectedAddress = Addresses.FirstOrDefault(t => t.Key == item.AddressId);
+            var selectedCultivationsIds = item.Cultivations.Select(t => t.CultivationId).ToList();
+            SelectedCultivations = new ObservableCollection<KeyAndValue>
+            (
+                AllCultivations.Where(t => selectedCultivationsIds.Contains(t.Key)).ToList()
+            );
+            AllCultivations = new ObservableCollection<KeyAndValue>
+            (
+                AllCultivations.Where(t => !selectedCultivationsIds.Contains(t.Key)).ToList()
+            );
             IsNotAddressesNeeded = true;
         }
         #endregion
@@ -135,7 +156,8 @@ namespace ExportManager.ViewModels.AddViewModels
             get
             {
                 if(_Countries == null)
-                    _Countries = new ObservableCollection<KeyAndValue>();
+                    _Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
+                //_Countries = new ObservableCollection<KeyAndValue>();
                 return _Countries;
             }
             set
@@ -153,6 +175,8 @@ namespace ExportManager.ViewModels.AddViewModels
             {
                 //if (_Addresses == null)
                 //    _Addresses = new ObservableCollection<KeyAndValue>();
+                if(_Addresses == null)
+                    _Addresses = new AddressesForEntities(potplantsEntities).GetAddressesListItems();
                 return _Addresses;
             }
             set
@@ -342,26 +366,31 @@ namespace ExportManager.ViewModels.AddViewModels
             {
                 if (SelectedAddress == null)
                     throw new Exception("No address selected");
-                var selectedAddress = potplantsEntities.Addresses.FirstOrDefault(t=>t.AddressId==SelectedAddress.Key);
-                item.AddressId = selectedAddress.AddressId;
+                item.AddressId = SelectedAddress.Key;
             }
             else
             {
                 if (SelectedCountry == null)
                     throw new Exception("No country selected");
-                var selectedCountry = potplantsEntities.Countries.FirstOrDefault(t=>t.CountryId==SelectedCountry.Key);
-                newGrowerAddress.CountryId = selectedCountry.CountryId;
-                newGrowerAddress.IsActive = true;
-                potplantsEntities.Addresses.Add(newGrowerAddress);
+                newGrowerAddress.CountryId = SelectedCountry.Key;
+                if(!_IsEditMode)
+                {
+                    newGrowerAddress.IsActive = true;
+                    potplantsEntities.Addresses.Add(newGrowerAddress);
+                }
                 potplantsEntities.SaveChanges();
                 item.AddressId = newGrowerAddress.AddressId;
             }
-            item.IsActive = true;
-            var selectedCultivationIds = SelectedCultivations.Select(t => t.Key).ToList();
-            var cultivations = potplantsEntities.Cultivations.Where(t => selectedCultivationIds.Contains(t.CultivationId)).ToList();
-            foreach(var cultivation in cultivations)
+            item.Cultivations.Clear();
+            var selectedCultivationsIds = SelectedCultivations.Select(t => t.Key);
+            var cultivations = potplantsEntities.Cultivations.Where(t => selectedCultivationsIds.Contains(t.CultivationId));
+            foreach (var cultivation in cultivations)
                 item.Cultivations.Add(cultivation);
-            potplantsEntities.Growers.Add(item);
+            if (!_IsEditMode)
+            {
+                item.IsActive = true;
+                potplantsEntities.Growers.Add(item);
+            }
             potplantsEntities.SaveChanges();
         }
         public ICommand NewCountryCommand
@@ -401,7 +430,7 @@ namespace ExportManager.ViewModels.AddViewModels
         #region Functions
         private void OpenNewCountryTab()
         {
-            OpenNewTab<NewCountryViewModel>(RefreshCountries);
+            OpenNewTab(() => new NewCountryViewModel(), RefreshCountries);
         }
         private void RefreshCountries()
         {

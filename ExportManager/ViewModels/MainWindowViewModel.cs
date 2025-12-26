@@ -236,14 +236,14 @@ namespace ExportManager.ViewModels
         {
             this.CreateView(workspace);
         } 
-        private void OnWorkspaceLoadingStarted()
+        private void OnWorkspaceLoadingStarted(object sender, EventArgs e)
         {
             LoadingCounter++;
             this.IsLoading = true;
             OnPropertyChanged(() => IsLoading);
             Console.WriteLine(IsLoading);
         }
-        private void OnWorkspaceLoadingEnded()
+        private void OnWorkspaceLoadingEnded(object sender, EventArgs e)
         {
             LoadingCounter--;
             if (LoadingCounter <= 0)

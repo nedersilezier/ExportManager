@@ -16,7 +16,9 @@ namespace ExportManager.ViewModels.Abstract
 {
     public abstract class NewItemViewModelBase: WorkspaceViewModel
     {
+        #region Events
         public event Action Added;
+        #endregion
         #region Database
         protected PotplantsEntities potplantsEntities;
         #endregion
@@ -51,7 +53,7 @@ namespace ExportManager.ViewModels.Abstract
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.ToString());
             }
         }
         protected void RaiseAdded()

@@ -8,6 +8,7 @@ namespace ExportManager.Models.EntitiesForView
 {
     public class ProductsListView
     {
+        public int ProductId { get; set; }
         public string Name { get; set; }
         public string ColorName{ get; set; }
         public string ColorRemarks { get; set; }

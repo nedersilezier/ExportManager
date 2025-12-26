@@ -31,6 +31,15 @@ namespace ExportManager.ViewModels.AddViewModels
             base.DisplayName = "New product";
             item = new Products();
         }
+        public NewProductViewModel(int productId)
+            :base()
+        {
+            base.DisplayName = "Edit product";
+            _IsEditMode = true;
+            item = potplantsEntities.Products.FirstOrDefault(p => p.ProductId == productId);
+            SelectedCategory = Categories.FirstOrDefault(c => c.Key == item.CategoryId);
+            SelectedColor = Colors.FirstOrDefault(c => c.Key == item.ColorId);
+        }
         #endregion
         #region Properties
         public ObservableCollection<KeyAndValue> Categories
@@ -101,8 +110,8 @@ namespace ExportManager.ViewModels.AddViewModels
                 if (item.Name != value)
                 {
                     item.Name = value;
+                    OnPropertyChanged(() => Name);
                 }
-                OnPropertyChanged(() => Name);
             }
         }
         public decimal? Potsize {
@@ -110,8 +119,10 @@ namespace ExportManager.ViewModels.AddViewModels
             set
             {
                 if(item.Potsize != value)
+                {
                     item.Potsize = value;
-                OnPropertyChanged(() => Potsize);
+                    OnPropertyChanged(() => Potsize);
+                }
             }
         }
         public decimal? Height {
@@ -119,8 +130,10 @@ namespace ExportManager.ViewModels.AddViewModels
             set
             {
                 if (item.Height != value)
+                {
                     item.Height = value;
-                OnPropertyChanged(() => Height);
+                    OnPropertyChanged(() => Height);
+                }
             }
         }
         public decimal? Weight {
@@ -128,8 +141,10 @@ namespace ExportManager.ViewModels.AddViewModels
             set
             {
                 if(item.Weight != value)
+                {
                     item.Weight = value;
-                OnPropertyChanged(() => Weight);
+                    OnPropertyChanged(() => Weight);
+                }
             }
         }
         public bool Cites {
@@ -137,8 +152,10 @@ namespace ExportManager.ViewModels.AddViewModels
             set
             {
                 if (item.IsCites != value)
+                {
                     item.IsCites = value;
-                OnPropertyChanged(() => Cites);
+                    OnPropertyChanged(() => Cites);
+                }
             }
         }
         public string Remarks {
@@ -146,8 +163,10 @@ namespace ExportManager.ViewModels.AddViewModels
             set
             {
                 if(item.Remarks != value)
+                {
                     item.Remarks = value;
-                OnPropertyChanged(() => Remarks);
+                    OnPropertyChanged(() => Remarks);
+                }
             }
         }
         #endregion
@@ -178,21 +197,22 @@ namespace ExportManager.ViewModels.AddViewModels
         {
             if (SelectedCategory == null || SelectedColor == null)
                 throw new Exception("No category or color selected.");
-            var selectedColor = potplantsEntities.Colors.FirstOrDefault(c => c.ColorId == SelectedColor.Key);
-            item.ColorId = selectedColor.ColorId;
-            var selectedCategory = potplantsEntities.Categories.FirstOrDefault(c => c.CategoryId == SelectedCategory.Key);
-            item.CategoryId = selectedCategory.CategoryId;
-            item.IsActive = true;
-            potplantsEntities.Products.Add(item);
+            item.ColorId = SelectedColor.Key;
+            item.CategoryId = SelectedCategory.Key;
+            if (!_IsEditMode)
+            {
+                item.IsActive = true;
+                potplantsEntities.Products.Add(item);
+            }
             potplantsEntities.SaveChanges();
         }
         private void OpenNewCategoryTab()
         {
-            OpenNewTab<NewCategoryViewModel>(RefreshCategories);
+            OpenNewTab(() => new NewCategoryViewModel(), RefreshCategories);
         }
         private void OpenNewColorTab()
         {
-            OpenNewTab<NewColorViewModel>(RefreshColors);
+            OpenNewTab(() => new NewColorViewModel(), RefreshColors);
         }
         private void RefreshCategories()
         {

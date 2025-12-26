@@ -19,6 +19,13 @@ namespace ExportManager.ViewModels.AddViewModels
             base.DisplayName = "New country";
             item = new Countries();
         }
+        public NewCountryViewModel(int countryId)
+        : base()
+        {
+            base.DisplayName = "Edit country";
+            _IsEditMode = true;
+            item = potplantsEntities.Countries.FirstOrDefault(t => t.CountryId == countryId);
+        }
         #endregion
         #region Properties
         public string Name

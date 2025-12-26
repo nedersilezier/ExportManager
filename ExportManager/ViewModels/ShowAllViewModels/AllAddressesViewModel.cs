@@ -16,12 +16,12 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region List
         public override void Load()
         {
-            IsLoading = true;
             List = new ObservableCollection<dynamic>(
                 from address in potplantsEntities.Addresses
                 where address.IsActive == true
                 select new AddressesListView
                 {
+                    AddressId = address.AddressId,
                     Country = address.Countries.Name,
                     City = address.City,
                     Street = address.Street,
@@ -45,11 +45,13 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Functions
         public override void OnAdd()
         {
-            OpenNewTab<NewAddressViewModel>(Load);
+            OpenNewTab(() => new NewAddressViewModel(), Load);
         }
         public override void OnEdit()
         {
-            return;
+            if (SelectedItem == null)
+                return;
+            OpenNewTab(() => new NewAddressViewModel(SelectedItem.AddressId), Load);
         }
         public override void OnRemove()
         {

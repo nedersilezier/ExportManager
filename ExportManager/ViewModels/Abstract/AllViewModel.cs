@@ -16,7 +16,7 @@ namespace ExportManager.ViewModels.Abstract
         private T _SelectedItem;
         private ReadOnlyCollection<CommandViewModel> _ExtraCommands;
         #region Database
-        protected readonly PotplantsEntities potplantsEntities;
+        protected PotplantsEntities potplantsEntities;
         #endregion
         #region Properties
         public T SelectedItem

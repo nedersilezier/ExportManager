@@ -31,7 +31,18 @@ namespace ExportManager.ViewModels.AddViewModels
             base.DisplayName = "New client";
             item = new Clients();
             newClientAddress = new Addresses();
-            Countries = Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
+            //Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
+            IsNotAddressesNeeded = true;
+        }
+        public NewClientViewModel(int clientId)
+            : base()
+        {
+            base.DisplayName = "Edit client";
+            _IsEditMode = true;
+            item = potplantsEntities.Clients.FirstOrDefault(t => t.ClientId == clientId);
+            newClientAddress = potplantsEntities.Addresses.FirstOrDefault(t => t.AddressId == item.AddressId);
+            SelectedCountry = Countries.FirstOrDefault(t => t.Key == item.Addresses.CountryId);
+            SelectedAddress = Addresses.FirstOrDefault(t => t.Key == item.AddressId);
             IsNotAddressesNeeded = true;
         }
         #endregion
@@ -79,7 +90,7 @@ namespace ExportManager.ViewModels.AddViewModels
             get
             {
                 if (_Countries == null)
-                    _Countries = new ObservableCollection<KeyAndValue>();
+                    _Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
                 return _Countries;
             }
             set
@@ -95,8 +106,8 @@ namespace ExportManager.ViewModels.AddViewModels
         {
             get
             {
-                //if (_Addresses == null)
-                //    _Addresses = new ObservableCollection<KeyAndValue>();
+                if (_Addresses == null)
+                    _Addresses = new AddressesForEntities(potplantsEntities).GetAddressesListItems();
                 return _Addresses;
             }
             set
@@ -313,22 +324,26 @@ namespace ExportManager.ViewModels.AddViewModels
             {
                 if (SelectedAddress == null)
                     throw new Exception("No address selected");
-                var selectedAddress = potplantsEntities.Addresses.FirstOrDefault(t=>t.AddressId==SelectedAddress.Key);
-                item.AddressId = selectedAddress.AddressId;
+                item.AddressId = SelectedAddress.Key;
             }
             else
             {
                 if (SelectedCountry == null)
                     throw new Exception("No country selected");
-                var selectedCountry = potplantsEntities.Countries.FirstOrDefault(t=>t.CountryId==SelectedCountry.Key);
-                newClientAddress.CountryId = selectedCountry.CountryId;
-                newClientAddress.IsActive = true;
-                potplantsEntities.Addresses.Add(newClientAddress);
+                newClientAddress.CountryId = SelectedCountry.Key;
+                if(!_IsEditMode)
+                {
+                    newClientAddress.IsActive = true;
+                    potplantsEntities.Addresses.Add(newClientAddress);
+                }
                 potplantsEntities.SaveChanges();
                 item.AddressId = newClientAddress.AddressId;
             }
-            item.IsActive = true;
-            potplantsEntities.Clients.Add(item);
+            if (!_IsEditMode)
+            {
+                item.IsActive = true;
+                potplantsEntities.Clients.Add(item);
+            }
             potplantsEntities.SaveChanges();
         }
         public ICommand NewCountryCommand
@@ -346,7 +361,7 @@ namespace ExportManager.ViewModels.AddViewModels
         #region Functions
         private void OpenNewCountryTab()
         {
-            OpenNewTab<NewCountryViewModel>(RefreshCountries);
+            OpenNewTab(() => new NewCountryViewModel(), RefreshCountries);
         }
         private void RefreshCountries()
         {

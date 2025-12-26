@@ -18,6 +18,13 @@ namespace ExportManager.ViewModels.AddViewModels
             base.DisplayName = "New color";
             item = new Colors();
         }
+        public NewColorViewModel(int colorId)
+            : base()
+        {
+            base.DisplayName = "Edit color";
+            _IsEditMode = true;
+            item = potplantsEntities.Colors.FirstOrDefault(t => t.ColorId == colorId);
+        }
         #endregion
         #region Properties
         public string Name

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using System.Collections.ObjectModel;
 using ExportManager.ViewModels.AddViewModels;
+using ExportManager.Models;
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
     public class AllCarrierTypesViewModel: AllViewModel<dynamic>
@@ -15,7 +16,10 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region List
         public override void Load()
         {
-            List = new ObservableCollection<dynamic>(potplantsEntities.CarrierTypes.Where(t => t.IsActive == true).ToList());
+            using(var shortLivedPotplantsEntities = new PotplantsEntities())
+            {
+                List = new ObservableCollection<dynamic>(shortLivedPotplantsEntities.CarrierTypes.Where(t => t.IsActive == true).ToList());
+            }    
         }
         #endregion
         #region Constructor
@@ -28,11 +32,13 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Functions
         public override void OnAdd()
         {
-            OpenNewTab<NewCarrierTypeViewModel>(Load);
+            OpenNewTab(() => new NewCarrierTypeViewModel(), Load);
         }
         public override void OnEdit()
         {
-            return;
+            if (SelectedItem == null)
+                return;
+            OpenNewTab(() => new NewCarrierTypeViewModel(SelectedItem.CarrierTypeId), Load);
         }
         public override void OnRemove()
         {

@@ -8,7 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <!--<Label>All categories...</Label>-->
-        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding List, IsAsync=True}">
+        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding List, IsAsync=True}" SelectedItem="{Binding SelectedItem}" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Category name" Binding="{Binding Name}" Width="300"/>
                 <DataGridTextColumn Header="Description" Binding="{Binding Remarks}" Width="700"/>

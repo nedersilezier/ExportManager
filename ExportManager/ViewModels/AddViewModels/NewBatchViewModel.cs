@@ -39,6 +39,17 @@ namespace ExportManager.ViewModels.AddViewModels
             ExpiryDate = DateTime.Now;
             IsBlocked = false;
         }
+        public NewBatchViewModel(int batchId)
+            : base()
+        {
+            base.DisplayName = "Edit batch";
+            _IsEditMode = true;
+            item = potplantsEntities.StockItems.FirstOrDefault(t => t.StockItemId == batchId);
+            SelectedGrower = Growers.FirstOrDefault(g => g.Key == item.GrowerId);
+            SelectedProduct = Products.FirstOrDefault(p => p.Key == item.ProductId);
+            SelectedQuality = Qualities.FirstOrDefault(q => q.Key == item.QualityId);
+            SelectedTrayType = TrayTypes.FirstOrDefault(t => t.Key == item.TrayTypeId);
+        }
         #endregion
         #region Properties
         public ObservableCollection<KeyAndValue> Products
@@ -287,29 +298,32 @@ namespace ExportManager.ViewModels.AddViewModels
             item.GrowerId = SelectedGrower.Key;
             item.QualityId = SelectedQuality.Key;
             item.TrayTypeId = SelectedTrayType.Key;
-            item.QuantityLeft = item.Quantity;
-            item.IsActive = true;
-            var counter = potplantsEntities.Database.SqlQuery<int>("SELECT NEXT VALUE FOR dbo.Seq_InternalNo").Single();
-            item.InternalNo = counter.ToString("D7");
-            potplantsEntities.StockItems.Add(item);
+            if(!_IsEditMode)
+            {
+                item.QuantityLeft = item.Quantity;
+                item.IsActive = true;
+                var counter = potplantsEntities.Database.SqlQuery<int>("SELECT NEXT VALUE FOR dbo.Seq_InternalNo").Single();
+                item.InternalNo = counter.ToString("D7");
+                potplantsEntities.StockItems.Add(item);
+            } 
             potplantsEntities.SaveChanges();
         }
         public void OpenNewProductTab()
         {
-            OpenNewTab<NewProductViewModel>(RefreshProducts);
+            OpenNewTab(() => new NewProductViewModel(), RefreshProducts);
         }
 
         public void OpenNewGrowerTab()
         {
-            OpenNewTab<NewGrowerViewModel>(RefreshGrowers);
+            OpenNewTab(() => new NewGrowerViewModel(), RefreshGrowers);
         }
         public void openNewQualityTab()
         {
-            OpenNewTab<NewQualityTypeViewModel>(RefreshQualities);
+            OpenNewTab(() => new NewQualityTypeViewModel(), RefreshQualities);
         }
         public void OpenNewTrayTypeTab()
         {
-            OpenNewTab<NewTrayTypeViewModel>(RefreshTrayTypes);
+            OpenNewTab(() => new NewTrayTypeViewModel(), RefreshTrayTypes);
         }
         private void RefreshProducts()
         {

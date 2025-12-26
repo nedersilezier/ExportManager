@@ -19,6 +19,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             List = new ObservableCollection<dynamic>
                 (potplantsEntities.Countries.Where(t => t.IsActive == true).Select(country => new AllCountriesViewModel
                 {
+                    CountryId = country.CountryId,
                     Name = country.Name,
                     ISO2Code = country.ISO2Code,
                     PhoneCode = country.PhoneCode,
@@ -37,6 +38,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         #endregion
         #region Properties
+        public int CountryId { get; set; }
         public string Name { get; set; }
         public string ISO2Code { get; set; }
         public string PhoneCode { get; set; }
@@ -51,11 +53,11 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Functions
         public override void OnAdd()
         {
-            OpenNewTab<NewCountryViewModel>(Load);
+            OpenNewTab(() => new NewCountryViewModel(), Load);
         }
         public override void OnEdit()
         {
-            return;
+            OpenNewTab(() => new NewCountryViewModel(SelectedItem.CountryId), Load);
         }
         public override void OnRemove()
         {

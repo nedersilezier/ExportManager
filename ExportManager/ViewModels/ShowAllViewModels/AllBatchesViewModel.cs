@@ -88,11 +88,11 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Functions
         public override void OnAdd()
         {
-            OpenNewTab<NewBatchViewModel>(Load);
+            OpenNewTab(() => new NewBatchViewModel(), Load);
         }
         public override void OnEdit()
         {
-            return;
+            OpenNewTab(() => new NewBatchViewModel(SelectedItem.StockItemId), Load);
         }
         public override void OnRemove()
         {

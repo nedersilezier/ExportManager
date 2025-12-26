@@ -17,6 +17,13 @@ namespace ExportManager.ViewModels.AddViewModels
             base.DisplayName = "New tray type";
             item = new TrayTypes();
         }
+        public NewTrayTypeViewModel(int trayTypeId)
+            : base()
+        {
+            base.DisplayName = "Edit tray type";
+            _IsEditMode = true;
+            item = potplantsEntities.TrayTypes.FirstOrDefault(t => t.TrayTypeId == trayTypeId);
+        }
         #endregion
         #region Properties
         public string Name

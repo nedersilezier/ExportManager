@@ -23,6 +23,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 where product.IsActive == true
                 select new ProductsListView
                 {
+                    ProductId = product.ProductId,
                     Name = product.Name,
                     ColorName = product.Colors.Name,
                     ColorRemarks = product.Colors.Remarks,
@@ -59,11 +60,13 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Functions
         public override void OnAdd()
         {
-            OpenNewTab<NewProductViewModel>(Load);
+            OpenNewTab(() => new NewProductViewModel(), Load);
         }
         public override void OnEdit()
         {
-            return;
+            if(SelectedItem == null)
+                return;
+            OpenNewTab(() => new NewProductViewModel(SelectedItem.ProductId), Load);
         }
         public override void OnRemove()
         {

@@ -10,13 +10,19 @@ namespace ExportManager.ViewModels.AddViewModels
 {
     public class NewCategoryViewModel: NewItemViewModel<Categories>
     {
-        public event Action CategoryAdded;
         #region Constructor
         public NewCategoryViewModel()
             : base()
         {
             base.DisplayName = "New category";
             item = new Categories();
+        }
+        public NewCategoryViewModel(int categoryId)
+            : base()
+        {
+            base.DisplayName = "Edit category";
+            _IsEditMode = true;
+            item = potplantsEntities.Categories.FirstOrDefault(t => t.CategoryId == categoryId);
         }
         #endregion
         #region Properties

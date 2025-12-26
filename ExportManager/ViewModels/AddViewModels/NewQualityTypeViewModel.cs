@@ -17,6 +17,13 @@ namespace ExportManager.ViewModels.AddViewModels
             base.DisplayName = "New quality type";
             item = new Qualities();
         }
+        public NewQualityTypeViewModel(int qualityTypeId)
+            : base()
+        {
+            base.DisplayName = "Edit quality type";
+            _IsEditMode = true;
+            item = potplantsEntities.Qualities.FirstOrDefault(t => t.QualityId == qualityTypeId);
+        }
         #endregion
         #region Properties
         public string Name

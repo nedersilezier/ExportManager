@@ -8,15 +8,21 @@ using System.Threading.Tasks;
 
 namespace ExportManager.ViewModels.AddViewModels
 {
-    internal class NewCarrierTypeViewModel: NewItemViewModel<CarrierTypes>
+    public class NewCarrierTypeViewModel: NewItemViewModel<CarrierTypes>
     {
-        public event Action CarrierTypeAdded;
         #region Constructor
         public NewCarrierTypeViewModel()
         : base()
         {
             base.DisplayName = "New carrier type";
             item = new CarrierTypes();
+        }
+        public NewCarrierTypeViewModel(int carrierTypeId)
+        : base()
+        {
+            base.DisplayName = "Edit carrier type";
+            _IsEditMode = true;
+            item = potplantsEntities.CarrierTypes.FirstOrDefault(t => t.CarrierTypeId == carrierTypeId);
         }
         #endregion
         #region Properties

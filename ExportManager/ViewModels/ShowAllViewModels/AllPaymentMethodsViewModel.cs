@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 
 using ExportManager.ViewModels.Abstract;
 using ExportManager.ViewModels.AddViewModels;
+using ExportManager.Models;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
@@ -15,7 +16,10 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region List
         public override void Load()
         {
-            List = new ObservableCollection<dynamic>(potplantsEntities.PaymentMethods.Where(t => t.IsActive == true).ToList());
+            using(var shortLivedPotplantsEntities = new PotplantsEntities())
+            {
+                List = new ObservableCollection<dynamic>(shortLivedPotplantsEntities.PaymentMethods.Where(t => t.IsActive == true).ToList());
+            }
         }
         #endregion
         #region Constructor
@@ -28,11 +32,11 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Functions
         public override void OnAdd()
         {
-            OpenNewTab<NewPaymentMethodViewModel>(Load);
+            OpenNewTab(() => new NewPaymentMethodViewModel(), Load);
         }
         public override void OnEdit()
         {
-            return;
+            OpenNewTab(() => new NewPaymentMethodViewModel(SelectedItem.PaymentMethodId), Load);
         }
         public override void OnRemove()
         {

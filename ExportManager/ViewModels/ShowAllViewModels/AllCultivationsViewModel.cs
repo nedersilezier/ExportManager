@@ -1,4 +1,5 @@
-﻿using ExportManager.ViewModels.Abstract;
+﻿using ExportManager.Models;
+using ExportManager.ViewModels.Abstract;
 using ExportManager.ViewModels.AddViewModels;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,10 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region List
         public override void Load()
         {
-            List = new ObservableCollection<dynamic>(potplantsEntities.Cultivations.Where(t => t.IsActive == true).ToList());
+            using (var shortLivedPotplantsEntities = new PotplantsEntities())
+            {
+                List = new ObservableCollection<dynamic>(shortLivedPotplantsEntities.Cultivations.Where(t => t.IsActive == true).ToList());
+            }
         }
         #endregion
         #region Constructor
@@ -27,11 +31,11 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Functions
         public override void OnAdd()
         {
-            OpenNewTab<NewCultivationViewModel>(Load);
+            OpenNewTab(() => new NewCultivationViewModel(), Load);
         }
         public override void OnEdit()
         {
-            return;
+            OpenNewTab(() => new NewCultivationViewModel(SelectedItem.CultivationId), Load);
         }
         public override void OnRemove()
         {

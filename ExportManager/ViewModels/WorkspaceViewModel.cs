@@ -13,7 +13,6 @@ namespace ExportManager.ViewModels
         #region Fields
         private BaseCommand _CloseCommand;
         #endregion 
-        public bool IsLoading { get; set; }
         #region Constructor
         public WorkspaceViewModel()
         {
@@ -45,28 +44,26 @@ namespace ExportManager.ViewModels
         public event EventHandler<WorkspaceViewModel> RequestOpen;
         protected void OnRequestOpen(WorkspaceViewModel workspace)
         {
-            EventHandler<WorkspaceViewModel> handler = this.RequestOpen;
-            if(handler != null)
-                handler(this, workspace);
+            this.RequestOpen?.Invoke(this, workspace);
         }
         #endregion
         #region Loading
-        public event Action LoadingStarted;
+        public event EventHandler LoadingStarted;
         protected void OnLoadingStarted()
         {
-            LoadingStarted?.Invoke();
+            this.LoadingStarted?.Invoke(this, EventArgs.Empty);
         }
-        public event Action LoadingFinished;
+        public event EventHandler LoadingFinished;
         protected void OnLoadingFinished()
         {
-            LoadingFinished?.Invoke();
+            this.LoadingFinished?.Invoke(this, EventArgs.Empty);
         }
         #endregion
         #endregion
         #region Functions
-        protected void OpenNewTab<T>(Action refreshEvent) where T : WorkspaceViewModel, new()
+        protected void OpenNewTab(Func<WorkspaceViewModel> constructor, Action refreshEvent)
         {
-            var viewModel = new T();
+            var viewModel = constructor();
             if (viewModel is NewItemViewModelBase newItemViewModel)
             {
                 void handler()
@@ -78,6 +75,20 @@ namespace ExportManager.ViewModels
             }
             OnRequestOpen(viewModel);
         }
+        //protected void OpenNewTab<T>(Action refreshEvent) where T : WorkspaceViewModel, new()
+        //{
+        //    var viewModel = new T();
+        //    if (viewModel is NewItemViewModelBase newItemViewModel)
+        //    {
+        //        void handler()
+        //        {
+        //            refreshEvent();
+        //            newItemViewModel.Added -= handler;
+        //        }
+        //        newItemViewModel.Added += handler;
+        //    }
+        //    OnRequestOpen(viewModel);
+        //}
         #endregion
 
     }
