@@ -76,18 +76,29 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
         <!--Header-->
-        <Border Grid.Row="2">
+        <!--<Border Grid.Row="2">
             <HeaderedContentControl 
                 Header="Workspace"
                 Content="{Binding Path=Workspaces}"
                 ContentTemplate="{StaticResource WorkspacesTemplate}"
                 Style="{StaticResource MainHCCStyle}"
             />
-        </Border>
+        </Border>-->
+        <Grid Grid.Row="2">
+            <Border>
+                <HeaderedContentControl Header="Workspace"
+                                        Content="{Binding Workspaces}"
+                                        ContentTemplate="{StaticResource WorkspacesTemplate}"
+                                        Style="{StaticResource MainHCCStyle}"/>
+            </Border>
+            <Border Background="#80000000" Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}">
+                <ProgressBar IsIndeterminate="True" Width="240" Height="14"/>
+            </Border>
+        </Grid>
         <!--Status bar-->
         <StatusBar Grid.Row="3" Grid.ColumnSpan="2">
             <StatusBarItem>
-                <TextBlock>TEXTBLOCK!</TextBlock>
+                <TextBlock>TEXTBLOCK1!</TextBlock>
             </StatusBarItem>
             <Separator/>
             <StatusBarItem>

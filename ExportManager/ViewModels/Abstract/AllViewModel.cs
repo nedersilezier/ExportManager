@@ -114,7 +114,11 @@ namespace ExportManager.ViewModels.Abstract
             get
             {
                 if (_List == null)
+                {
+                    OnLoadingStarted();
                     Load();
+                    OnLoadingFinished();
+                }
                 return _List;
             }
             set

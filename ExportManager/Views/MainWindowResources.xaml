@@ -8,19 +8,11 @@
                     xmlns:vwShow="clr-namespace:ExportManager.Views.ShowAllViews"
                     xmlns:vwAdd="clr-namespace:ExportManager.Views.AddViews"
                     xmlns:vwReport="clr-namespace:ExportManager.Views.ReportViews">
+    <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
     <HierarchicalDataTemplate x:Key="BasicDataTemplate" ItemsSource="{Binding Children}">
         <TextBlock Text="{Binding DisplayName}" />
     </HierarchicalDataTemplate>
     
-    <!--<HierarchicalDataTemplate x:Key="BasicDataTemplate" ItemsSource="{Binding Children}">
-        <MenuItem Header="{Binding DisplayName}" Command="{Binding Command}" />
-    </HierarchicalDataTemplate>-->
-    <!--<DataTemplate DataType="{x:Type vm:WszystkieTowaryViewModel}">
-        <vw:WszystkieTowaryView/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:NowyTowarViewModel}">
-        <vw:NowyTowarView/>
-    </DataTemplate>-->
     <!--Main functions-->
     <DataTemplate DataType="{x:Type vmShow:AllProductsViewModel}">
         <vwShow:AllProductsView/>

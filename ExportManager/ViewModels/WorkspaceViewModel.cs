@@ -13,7 +13,7 @@ namespace ExportManager.ViewModels
         #region Fields
         private BaseCommand _CloseCommand;
         #endregion 
-        
+        public bool IsLoading { get; set; }
         #region Constructor
         public WorkspaceViewModel()
         {
@@ -42,10 +42,24 @@ namespace ExportManager.ViewModels
         }
         #endregion
         #region RequestOpen
-        public event EventHandler<WorkspaceViewModel> OpenWorkspaceRequested;
+        public event EventHandler<WorkspaceViewModel> RequestOpen;
         protected void OnRequestOpen(WorkspaceViewModel workspace)
         {
-            OpenWorkspaceRequested?.Invoke(this, workspace);
+            EventHandler<WorkspaceViewModel> handler = this.RequestOpen;
+            if(handler != null)
+                handler(this, workspace);
+        }
+        #endregion
+        #region Loading
+        public event Action LoadingStarted;
+        protected void OnLoadingStarted()
+        {
+            LoadingStarted?.Invoke();
+        }
+        public event Action LoadingFinished;
+        protected void OnLoadingFinished()
+        {
+            LoadingFinished?.Invoke();
         }
         #endregion
         #endregion

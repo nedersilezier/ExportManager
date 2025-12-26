@@ -16,6 +16,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region List
         public override void Load()
         {
+            IsLoading = true;
             List = new ObservableCollection<dynamic>(
                 from address in potplantsEntities.Addresses
                 where address.IsActive == true

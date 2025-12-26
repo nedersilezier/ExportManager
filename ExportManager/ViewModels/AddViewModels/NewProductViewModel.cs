@@ -30,8 +30,6 @@ namespace ExportManager.ViewModels.AddViewModels
         {
             base.DisplayName = "New product";
             item = new Products();
-            //Categories = new CategoriesForProducts(potplantsEntities).GetCategoriesListItems();
-            //Colors = new ColorsForProducts(potplantsEntities).GetColorsListItems();
         }
         #endregion
         #region Properties

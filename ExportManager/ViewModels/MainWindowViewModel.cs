@@ -26,8 +26,25 @@ namespace ExportManager.ViewModels
         private ReadOnlyCollection<CommandViewModel> _EntityCommands;
         private ReadOnlyCollection<CommandViewModel> _ReportCommands;
         private ObservableCollection<WorkspaceViewModel> _Workspaces;
+        private bool _IsLoading;
+        public bool IsLoading
+        {
+            get { return _IsLoading; }
+            set
+            {
+                _IsLoading = value;
+            }
+        }
+        private int _LoadingCounter = 0;
+        public int LoadingCounter
+        {
+            get { return _LoadingCounter; }
+            set
+            {
+                _LoadingCounter = value;
+            }
+        }
         #endregion
-
         #region Commands
         public ReadOnlyCollection<CommandViewModel> Commands
         {
@@ -197,13 +214,17 @@ namespace ExportManager.ViewModels
                 foreach (WorkspaceViewModel workspace in e.NewItems)
                 {
                     workspace.RequestClose += this.OnWorkspaceRequestClose;
-                    workspace.OpenWorkspaceRequested += OnWorkspaceRequestOpen;
+                    workspace.RequestOpen += OnWorkspaceRequestOpen;
+                    workspace.LoadingStarted += OnWorkspaceLoadingStarted;
+                    workspace.LoadingFinished += OnWorkspaceLoadingEnded;
                 }
             if (e.OldItems != null && e.OldItems.Count != 0)
                 foreach (WorkspaceViewModel workspace in e.OldItems)
                 {
                     workspace.RequestClose -= this.OnWorkspaceRequestClose;
-                    workspace.OpenWorkspaceRequested -= OnWorkspaceRequestOpen;
+                    workspace.RequestOpen -= OnWorkspaceRequestOpen;
+                    workspace.LoadingStarted -= OnWorkspaceLoadingStarted;
+                    workspace.LoadingFinished -= OnWorkspaceLoadingEnded;
                 }      
         }
         private void OnWorkspaceRequestClose(object sender, EventArgs e)
@@ -214,6 +235,24 @@ namespace ExportManager.ViewModels
         private void OnWorkspaceRequestOpen(object sender, WorkspaceViewModel workspace)
         {
             this.CreateView(workspace);
+        } 
+        private void OnWorkspaceLoadingStarted()
+        {
+            LoadingCounter++;
+            this.IsLoading = true;
+            OnPropertyChanged(() => IsLoading);
+            Console.WriteLine(IsLoading);
+        }
+        private void OnWorkspaceLoadingEnded()
+        {
+            LoadingCounter--;
+            if (LoadingCounter <= 0)
+            {
+                LoadingCounter = 0;
+                this.IsLoading = false;
+                OnPropertyChanged(() => IsLoading);
+                Console.WriteLine(IsLoading);
+            }
         }
         #endregion // Workspaces
 
