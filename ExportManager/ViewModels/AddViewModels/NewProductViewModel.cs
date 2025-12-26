@@ -13,6 +13,7 @@ using System.Windows.Input;
 using ExportManager.Models.EntitiesForView;
 using ExportManager.Models.BusinessLogic;
 using ExportManager.Models.BusinessLogic.ListViewsForUI;
+using Microsoft.Win32;
 
 namespace ExportManager.ViewModels.AddViewModels
 {
@@ -20,6 +21,8 @@ namespace ExportManager.ViewModels.AddViewModels
     {
         private BaseCommand _NewCategoryCommand;
         private BaseCommand _NewColorCommand;
+        private BaseCommand _SelectImageCommand;
+        private BaseCommand _RemoveImageCommand;
         private KeyAndValue _SelectedCategory;
         private KeyAndValue _SelectedColor;
         public ObservableCollection<KeyAndValue> _Categories;
@@ -169,6 +172,18 @@ namespace ExportManager.ViewModels.AddViewModels
                 }
             }
         }
+        public byte[] Image
+        {
+            get { return item.Image; }
+            set
+            {
+                if (item.Image != value)
+                {
+                    item.Image = value;
+                    OnPropertyChanged(() => Image);
+                }
+            }
+        }
         #endregion
         #region Commands
         public ICommand NewCategoryCommand
@@ -189,6 +204,24 @@ namespace ExportManager.ViewModels.AddViewModels
                 if (_NewColorCommand == null)
                     _NewColorCommand = new BaseCommand(OpenNewColorTab);
                 return _NewColorCommand;
+            }
+        }
+        public ICommand SelectImageCommand
+        {
+            get
+            {
+                if(_SelectImageCommand == null)
+                    _SelectImageCommand = new BaseCommand(SelectImageDialog);
+                return _SelectImageCommand;
+            }
+        }
+        public ICommand RemoveImageCommand
+        {
+            get
+            {
+                if (_RemoveImageCommand == null)
+                    _RemoveImageCommand = new BaseCommand(RemoveImage);
+                return _RemoveImageCommand;
             }
         }
         #endregion
@@ -221,6 +254,19 @@ namespace ExportManager.ViewModels.AddViewModels
         private void RefreshColors()
         {
             Colors = new ColorsForProducts(potplantsEntities).GetColorsListItems();
+        }
+        private void SelectImageDialog()
+        {
+            var dialogWindow = new OpenFileDialog { Filter = "Image files (*jpg;*.jpeg;*.png)|*.jpg;*.jpeg;*.png"};
+            if(dialogWindow.ShowDialog() == true)
+            {
+                string selectedFileName = dialogWindow.FileName;
+                Image = System.IO.File.ReadAllBytes(selectedFileName);
+            }
+        }
+        private void RemoveImage()
+        {
+            Image = null;
         }
         #endregion
     }

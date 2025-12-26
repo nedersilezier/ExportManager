@@ -36,6 +36,7 @@ namespace ExportManager.Models
         public string Remarks { get; set; }
         public bool IsCites { get; set; }
         public Nullable<decimal> Weight { get; set; }
+        public byte[] Image { get; set; }
     
         public virtual Categories Categories { get; set; }
         public virtual Colors Colors { get; set; }
