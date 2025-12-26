@@ -9,6 +9,7 @@ using ExportManager.Helper;
 using System.Windows.Input;
 using System.Windows;
 using ExportManager.ViewModels.AddViewModels;
+using ExportManager.Models;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
@@ -70,7 +71,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         public override void OnRemove()
         {
-            return;
+            SoftDelete<Products>(SelectedItem.ProductId);
         }
         public void Test()
         {

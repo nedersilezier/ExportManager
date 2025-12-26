@@ -40,7 +40,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         public override void OnRemove()
         {
-            return;
+            SoftDelete<Colors>(SelectedItem.ColorId);
         }
         #endregion
     }

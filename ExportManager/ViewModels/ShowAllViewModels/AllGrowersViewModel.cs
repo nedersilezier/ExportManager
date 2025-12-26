@@ -63,7 +63,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         public override void OnRemove()
         {
-            return;
+            SoftDelete<Growers>(SelectedItem.GrowerId);
         }
         #endregion
     }

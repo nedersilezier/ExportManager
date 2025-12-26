@@ -61,7 +61,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         public override void OnRemove()
         {
-            return;
+            SoftDelete<Countries>(SelectedItem.CountryId);
         }
         #endregion
     }

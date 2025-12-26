@@ -102,6 +102,16 @@ namespace ExportManager.ViewModels.Abstract
         public abstract void OnAdd();
         public abstract void OnEdit();
         public abstract void OnRemove();
+        protected void SoftDelete<T>(int itemId) where T: class, IHasIsActive
+        {
+            var item = potplantsEntities.Set<T>().Find(itemId);
+            if (item == null)
+                return;
+            item.IsActive = false;
+            potplantsEntities.SaveChanges();
+            Load();
+        }
+        
         public virtual IList<CommandViewModel> CreateExtraCommands()
         {
             return new List<CommandViewModel>();

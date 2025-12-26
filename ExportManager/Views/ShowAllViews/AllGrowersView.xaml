@@ -8,7 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <ScrollViewer HorizontalScrollBarVisibility="Auto">
-            <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding List, IsAsync=True}" SelectedItem="{Binding SelectedItem}">
+            <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding List, IsAsync=True}" SelectedItem="{Binding SelectedItem}" IsReadOnly="True">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id" Binding="{Binding GrowerId}" MinWidth="40" Width="SizeToCells"/>
                     <DataGridTextColumn Header="Name" Binding="{Binding GrowerName}" MinWidth="200"  Width="SizeToCells"/>

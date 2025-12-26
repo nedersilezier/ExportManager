@@ -39,7 +39,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         public override void OnRemove()
         {
-            return;
+            SoftDelete<TrayTypes>(SelectedItem.TrayTypeId);
         }
         #endregion
     }

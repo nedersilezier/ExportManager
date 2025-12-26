@@ -10,6 +10,7 @@ using ExportManager.Models.EntitiesForView;
 using ExportManager.ViewModels.Abstract;
 using static System.Net.Mime.MediaTypeNames;
 using ExportManager.ViewModels.AddViewModels;
+using ExportManager.Models;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
@@ -96,7 +97,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         public override void OnRemove()
         {
-            return;
+            SoftDelete<StockItems>(SelectedItem.StockItemId);
         }
         public void Unblock()
         {

@@ -42,7 +42,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         public override void OnRemove()
         {
-            return;
+            SoftDelete<CarrierTypes>(SelectedItem.CarrierTypeId);
         }
         #endregion
     }

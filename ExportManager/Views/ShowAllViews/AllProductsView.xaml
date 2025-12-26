@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding List, IsAsync=True}" SelectedItem="{Binding SelectedItem}" Margin="2,0,2,0">
+        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding List, IsAsync=True}" SelectedItem="{Binding SelectedItem}" IsReadOnly="True" Margin="2,0,2,0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding ProductId}" Width="40"/>
                 <DataGridTextColumn Header="Product name" Binding="{Binding Name}" Width="400">

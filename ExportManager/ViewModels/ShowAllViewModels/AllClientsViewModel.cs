@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using ExportManager.Models.EntitiesForView;
 using ExportManager.ViewModels.AddViewModels;
+using ExportManager.Models;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
@@ -60,7 +61,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         public override void OnRemove()
         {
-            return;
+            SoftDelete<Clients>(SelectedItem.ClientId);
         }
         #endregion
     }
