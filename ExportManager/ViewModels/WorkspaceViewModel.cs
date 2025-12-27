@@ -5,6 +5,8 @@ using System.Text;
 using ExportManager.Helper;
 using System.Windows.Input;
 using ExportManager.ViewModels.Abstract;
+using System.Windows;
+using ExportManager.ViewModels.Windows;
 
 namespace ExportManager.ViewModels
 {
@@ -45,6 +47,11 @@ namespace ExportManager.ViewModels
         protected void OnRequestOpen(WorkspaceViewModel workspace)
         {
             this.RequestOpen?.Invoke(this, workspace);
+        }
+        public event EventHandler<ImageWindowEventArgs> RequestImageWindow;
+        protected void OnRequestImageWindow(ImageWindowEventArgs e)
+        {
+            this.RequestImageWindow?.Invoke(this, e);
         }
         #endregion
         #region Loading

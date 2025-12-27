@@ -74,7 +74,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Converters\ByteToImageConverter.cs" />
     <Compile Include="Helper\BaseCommand.cs" />
     <Compile Include="Models\Addresses.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
@@ -227,6 +226,8 @@
     <Compile Include="ViewModels\AddViewModels\NewTrayTypeViewModel.cs" />
     <Compile Include="ViewModels\ReportViewModels\VolumeReportViewModel.cs" />
     <Compile Include="ViewModels\ReportViewModels\OrderWeightReportViewModel.cs" />
+    <Compile Include="ViewModels\Windows\ImageWindowEventArgs.cs" />
+    <Compile Include="ViewModels\Windows\ImageWindowViewModel.cs" />
     <Compile Include="ViewModels\WorkspaceViewModel.cs" />
     <Compile Include="Views\ShowAllViews\AllAddressesView.xaml.cs">
       <DependentUpon>AllAddressesView.xaml</DependentUpon>
@@ -331,6 +332,9 @@
     </Compile>
     <Compile Include="Views\ReportViews\VolumeReportView.xaml.cs">
       <DependentUpon>VolumeReportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\ImageWindowView.xaml.cs">
+      <DependentUpon>ImageWindowView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -511,11 +515,16 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Windows\ImageWindowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <Resource Include="Icons\left-arrow.png" />
     <Resource Include="Icons\right-arrow.png" />
+    <Resource Include="Icons\camera.png" />
     <Content Include="Models\PotplantsModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>PotplantsModel.edmx</DependentUpon>

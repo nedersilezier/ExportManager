@@ -12,6 +12,9 @@ using ExportManager.ViewModels;
 using ExportManager.ViewModels.Abstract;
 using ExportManager.ViewModels.ShowAllViewModels;
 using ExportManager.ViewModels.ReportViewModels;
+using System.Windows;
+using ExportManager.ViewModels.Windows;
+using ExportManager.Views.Windows;
 
 namespace ExportManager.ViewModels
 {
@@ -217,6 +220,7 @@ namespace ExportManager.ViewModels
                     workspace.RequestOpen += OnWorkspaceRequestOpen;
                     workspace.LoadingStarted += OnWorkspaceLoadingStarted;
                     workspace.LoadingFinished += OnWorkspaceLoadingEnded;
+                    workspace.RequestImageWindow += OnWorkspaceWindowRequest;
                 }
             if (e.OldItems != null && e.OldItems.Count != 0)
                 foreach (WorkspaceViewModel workspace in e.OldItems)
@@ -225,6 +229,7 @@ namespace ExportManager.ViewModels
                     workspace.RequestOpen -= OnWorkspaceRequestOpen;
                     workspace.LoadingStarted -= OnWorkspaceLoadingStarted;
                     workspace.LoadingFinished -= OnWorkspaceLoadingEnded;
+                    workspace.RequestImageWindow -= OnWorkspaceWindowRequest;
                 }      
         }
         private void OnWorkspaceRequestClose(object sender, EventArgs e)
@@ -253,6 +258,11 @@ namespace ExportManager.ViewModels
                 OnPropertyChanged(() => IsLoading);
                 Console.WriteLine(IsLoading);
             }
+        }
+        private void OnWorkspaceWindowRequest(object sender, ImageWindowEventArgs e)
+        {
+            var window = new ImageWindowViewModel(e.Title, e.ImageData);
+            new ImageWindowView(window).Show();
         }
         #endregion // Workspaces
 

@@ -232,6 +232,7 @@ namespace ExportManager.ViewModels.AddViewModels
                 throw new Exception("No category or color selected.");
             item.ColorId = SelectedColor.Key;
             item.CategoryId = SelectedCategory.Key;
+            item.Image = Image;
             if (!_IsEditMode)
             {
                 item.IsActive = true;

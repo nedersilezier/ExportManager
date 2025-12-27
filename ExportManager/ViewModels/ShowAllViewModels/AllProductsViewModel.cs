@@ -10,12 +10,16 @@ using System.Windows.Input;
 using System.Windows;
 using ExportManager.ViewModels.AddViewModels;
 using ExportManager.Models;
+using ExportManager.ViewModels.Windows;
+using ExportManager.Views.Windows;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
     public class AllProductsViewModel : AllViewModel<dynamic>
     {
-        private BaseCommand _TestCommand;
+        #region Fields
+        private BaseCommand _ShowPictureCommand;
+        #endregion
         #region List
         public override void Load()
         {
@@ -41,20 +45,20 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #endregion
         #region Constructor
         public AllProductsViewModel()
-            :base()
+            : base()
         {
             base.DisplayName = "Products";
 
         }
         #endregion
         #region Commands
-        public ICommand TestCommand
+        public ICommand ShowPictureCommand
         {
             get
             {
-                if (_TestCommand == null)
-                    _TestCommand = new BaseCommand(Test);
-                return _TestCommand;
+                if (_ShowPictureCommand == null)
+                    _ShowPictureCommand = new BaseCommand(OnShowPicture);
+                return _ShowPictureCommand;
             }
         }
         #endregion
@@ -65,7 +69,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         public override void OnEdit()
         {
-            if(SelectedItem == null)
+            if (SelectedItem == null)
                 return;
             OpenNewTab(() => new NewProductViewModel(SelectedItem.ProductId), Load);
         }
@@ -73,23 +77,34 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         {
             SoftDelete<Products>(SelectedItem.ProductId);
         }
-        public void Test()
+        private void OnShowPicture()
         {
-            if(SelectedItem != null && SelectedItem is ProductsListView)
-                MessageBox.Show(SelectedItem.Name);
+            if (SelectedItem != null && SelectedItem is ProductsListView)
+            {
+                int productId = SelectedItem.ProductId;
+                var image = potplantsEntities.Products.Where(t => t.ProductId == productId).Select(t => t.Image).FirstOrDefault();
+                if (image != null && image.Length > 0)
+                {
+                    OnRequestImageWindow(new ImageWindowEventArgs(image, SelectedItem.Name));
+                }
+                else
+                {
+                    MessageBox.Show("No image available for the selected product.", "Image Not Found", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
         }
         public override IList<CommandViewModel> CreateExtraCommands()
         {
-            List<CommandViewModel> TestList = new List<CommandViewModel>();
-            for(int i = 0; i < 4; i++)
-            {
-                TestList.Add(new CommandViewModel("Test button " + (i+1).ToString(), TestCommand));
-            }
-            return TestList;
-            //return new List<CommandViewModel>
+            //List<CommandViewModel> TestList = new List<CommandViewModel>();
+            //for(int i = 0; i < 4; i++)
             //{
-            //    new CommandViewModel("Test", TestCommand)
-            //};
+            //    TestList.Add(new CommandViewModel("Test button " + (i+1).ToString(), TestCommand));
+            //}
+            //return TestList;
+            return new List<CommandViewModel>
+            {
+                new CommandViewModel("Picture", ShowPictureCommand)
+            };
         }
         #endregion
 
