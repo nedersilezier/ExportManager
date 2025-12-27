@@ -108,6 +108,7 @@ namespace ExportManager.ViewModels.Abstract
             if (item == null)
                 return;
             item.IsActive = false;
+            item.DeletedAt = DateTime.Now;
             potplantsEntities.SaveChanges();
             Load();
         }

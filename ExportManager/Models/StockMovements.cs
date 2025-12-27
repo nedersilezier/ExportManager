@@ -29,8 +29,8 @@ namespace ExportManager.Models
         public System.DateTime CreatedAt { get; set; }
         public string UpdatedBy { get; set; }
         public Nullable<System.DateTime> UpdatedAt { get; set; }
-        public string RemovedBy { get; set; }
-        public Nullable<System.DateTime> RemovedAt { get; set; }
+        public Nullable<System.DateTime> DeletedAt { get; set; }
+        public string DeletedBy { get; set; }
     
         public virtual OrderItems OrderItems { get; set; }
         public virtual StockItems StockItems { get; set; }

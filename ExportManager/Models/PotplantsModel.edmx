@@ -142,6 +142,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="DeletedAt" Type="datetime2" Precision="0" />
         </EntityType>
         <EntityType Name="GrowerCultivations">
           <Key>
@@ -392,8 +393,8 @@
           <Property Name="CreatedAt" Type="datetime2" Precision="0" Nullable="false" />
           <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
           <Property Name="UpdatedAt" Type="datetime2" Precision="0" />
-          <Property Name="RemovedBy" Type="nvarchar" MaxLength="100" />
-          <Property Name="RemovedAt" Type="datetime2" Precision="0" />
+          <Property Name="DeletedBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="DeletedAt" Type="datetime2" Precision="0" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -1008,6 +1009,7 @@
           <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Growers" Relationship="Self.GrowerCultivations" FromRole="Cultivations" ToRole="Growers" />
+          <Property Name="DeletedAt" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="Growers">
           <Key>
@@ -1553,10 +1555,10 @@
           <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedAt" Type="DateTime" Precision="0" />
-          <Property Name="RemovedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="RemovedAt" Type="DateTime" Precision="0" />
           <NavigationProperty Name="OrderItems" Relationship="PotplantsModel.FK_StockMovements_OrderItems" FromRole="StockMovements" ToRole="OrderItems" />
           <NavigationProperty Name="StockItems" Relationship="PotplantsModel.FK_StockMovements_StockItems" FromRole="StockMovements" ToRole="StockItems" />
+          <Property Name="DeletedAt" Type="DateTime" Precision="0" />
+          <Property Name="DeletedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_StockItems_Growers">
           <End Type="PotplantsModel.Growers" Role="Growers" Multiplicity="0..1" />
@@ -1891,6 +1893,7 @@
           <EntitySetMapping Name="Cultivations">
             <EntityTypeMapping TypeName="PotplantsModel.Cultivations">
               <MappingFragment StoreEntitySet="Cultivations">
+                <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
                 <ScalarProperty Name="CultivationId" ColumnName="CultivationId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -2148,8 +2151,8 @@
           <EntitySetMapping Name="StockMovements">
             <EntityTypeMapping TypeName="PotplantsModel.StockMovements">
               <MappingFragment StoreEntitySet="StockMovements">
-                <ScalarProperty Name="RemovedAt" ColumnName="RemovedAt" />
-                <ScalarProperty Name="RemovedBy" ColumnName="RemovedBy" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
                 <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
                 <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
