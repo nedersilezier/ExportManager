@@ -7,14 +7,20 @@ using System.Threading.Tasks;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
-    public class SelectedItemEventArgs<T> : EventArgs
+    //public class SelectedItemEventArgs<T> : EventArgs
+    public class SelectedItemEventArgs : EventArgs
     {
-        //public int ItemId { get; private set; }
-        //public string Name { get; private set; }
-        public T SelectedItem { get; private set; }
-        public SelectedItemEventArgs(T selectedItem)
+        public int ItemId { get; private set; }
+        public string DisplayName { get; private set; }
+        //public T SelectedItem { get; private set; }
+        public SelectedItemEventArgs(int itemId, string displayName)
         {
-            SelectedItem = selectedItem;
+            ItemId = itemId;
+            DisplayName = displayName;
         }
+        //public SelectedItemEventArgs(T selectedItem)
+        //{
+        //    SelectedItem = selectedItem;
+        //}
     }
 }

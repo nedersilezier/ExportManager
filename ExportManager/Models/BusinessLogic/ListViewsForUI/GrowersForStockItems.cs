@@ -30,6 +30,13 @@ namespace ExportManager.Models.BusinessLogic.ListViewsForUI
                 }).ToList()
             );
         }
+        public string GetGrowerDisplayNamePerId(int? id)
+        {
+            return potplantsEntities.Growers.Where(t => t.IsActive == true && t.GrowerId == id).Select(t =>new GrowersListView { 
+                GrowerName = t.Name,
+                Country = t.Addresses.Countries.Name
+            }).FirstOrDefault().DisplayName;
+        }
         #endregion
     }
 }

@@ -60,7 +60,7 @@ namespace ExportManager.ViewModels.Abstract
             get
             {
                 if (_EditCommand == null)
-                    _EditCommand = new BaseCommand(OnEdit);
+                    _EditCommand = new BaseCommand(Edit);
                 return _EditCommand;
             }
         }
@@ -69,7 +69,7 @@ namespace ExportManager.ViewModels.Abstract
             get
             {
                 if (_RemoveCommand == null)
-                    _RemoveCommand = new BaseCommand(OnRemove);
+                    _RemoveCommand = new BaseCommand(Remove);
                 return _RemoveCommand;
             }
         }
@@ -103,7 +103,21 @@ namespace ExportManager.ViewModels.Abstract
         public abstract void Load();
         public abstract void OnAdd();
         public abstract void OnEdit();
+        public void Edit()
+        {
+            if (SelectedItem != null)
+            {
+                OnEdit();
+            }
+        }
         public abstract void OnRemove();
+        public void Remove()
+        {
+            if (SelectedItem != null)
+            {
+                OnRemove();
+            }
+        }
         protected void SoftDelete<T>(int itemId) where T : class, IHasIsActive
         {
             var item = potplantsEntities.Set<T>().Find(itemId);
@@ -151,17 +165,26 @@ namespace ExportManager.ViewModels.Abstract
             potplantsEntities = new PotplantsEntities();
             IsCRUDMode = true;
         }
-        public AllViewModel(Action<SelectedItemEventArgs<T>> itemSetter)
+        public AllViewModel(Action<SelectedItemEventArgs> itemSetter, Func<T, SelectedItemEventArgs> generateArgsFromSelection)
         {
             potplantsEntities = new PotplantsEntities();
             IsSelectMode = true;
             _ItemSelected = itemSetter;
+            _GenerateArgsFromSelection = generateArgsFromSelection;
         }
+        //public AllViewModel(Action<SelectedItemEventArgs<T>> itemSetter)
+        //{
+        //    potplantsEntities = new PotplantsEntities();
+        //    IsSelectMode = true;
+        //    _ItemSelected = itemSetter;
+        //}
         #endregion
         #region Select mode
         private bool _isCRUDMode;
         private bool _isSelectMode;
-        protected event Action<SelectedItemEventArgs<T>> _ItemSelected;
+        protected event Action<SelectedItemEventArgs> _ItemSelected;
+        protected Func<T, SelectedItemEventArgs> _GenerateArgsFromSelection;
+        //protected event Action<SelectedItemEventArgs<T>> _ItemSelected;
         //protected event Action<T> _ItemSelected;
         public bool IsCRUDMode
         {
@@ -206,13 +229,30 @@ namespace ExportManager.ViewModels.Abstract
         public void selectAndClose()
         {
             //_ItemSelected?.Invoke(SelectedItem);
-            _ItemSelected?.Invoke(GenerateArgsFromSelection());
+            if(SelectedItem == null)
+            {
+                throw new InvalidOperationException("No item is selected.");
+            }
+            if(_GenerateArgsFromSelection == null)
+            {
+                throw new InvalidOperationException("GenerateArgsFromSelection function is not set.");
+            }
+
+            _ItemSelected?.Invoke(_GenerateArgsFromSelection(SelectedItem));
             OnRequestClose();
         }
-        public virtual SelectedItemEventArgs<T> GenerateArgsFromSelection()
-        {
-            return new SelectedItemEventArgs<T>(SelectedItem);
-        }
+        //public virtual SelectedItemEventArgs GenerateArgsFromSelection()
+        //{
+        //    if(_GenerateArgsFromSelection == null)
+        //    {
+        //       throw new InvalidOperationException("GenerateArgsFromSelection function is not set.");
+        //    }
+        //    return _GenerateArgsFromSelection(SelectedItem);
+        //}
+        //public virtual SelectedItemEventArgs<T> GenerateArgsFromSelection()
+        //{
+        //    return new SelectedItemEventArgs<T>(SelectedItem);
+        //}
         #endregion
         #region Sorting and searching
         private BaseCommand _SortCommand;

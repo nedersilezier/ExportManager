@@ -19,5 +19,13 @@ namespace ExportManager.Models.EntitiesForView
         public string CountryISO2Code { get; set; }
         public string CountryPhoneCode { get; set; }
         public string Continent {  get; set; }
+        public string FullHouseNumber
+        {
+            get { return HouseNumber + (ApartmentNumber == null || ApartmentNumber == string.Empty ? string.Empty : "/" + ApartmentNumber); }
+        }
+        public string FullAddress
+        {
+            get { return Street + " " + FullHouseNumber + ", " + ZipCode + " " + City + "; " + Country; }
+        }
     }
 }

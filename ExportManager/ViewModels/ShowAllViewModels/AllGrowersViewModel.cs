@@ -48,6 +48,13 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         {
             base.DisplayName = "Growers";
         }
+        public AllGrowersViewModel(Action<SelectedItemEventArgs> itemSetter)
+            :base(itemSetter,
+                 generateArgsFromSelection:
+                 selectedItem => new SelectedItemEventArgs(selectedItem.GrowerId, selectedItem.DisplayName))
+        {
+               base.DisplayName = "Select the grower";
+        }
         #endregion
         #region Commands
 

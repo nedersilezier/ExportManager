@@ -79,17 +79,8 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
                 <Button Grid.Row="6" Grid.Column="2" Content="Add" Command="{Binding NewCountryCommand}" IsEnabled="{Binding IsChecked, ElementName=ManualInput}" Margin="10, 2, 10, 2"/>
+                
                 <RadioButton Grid.Row="7" Grid.Column="0" Content="Use existing address" x:Name="ExistingInput" GroupName="AddressInputType" IsChecked="{Binding IsAddressesNeeded}" Margin="0, 2, 0, 2"/>
-                <!--<ComboBox Grid.Row="8" Grid.Column="1" ItemsSource="{Binding Addresses}" 
-                          SelectedItem="{Binding SelectedAddress}" 
-                          IsEnabled="{Binding IsChecked, ElementName=ExistingInput}"
-                          Margin="0, 2, 0, 2">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Value}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>-->
                 <Grid Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Margin="0, 10, 0, 2" Visibility="{Binding IsAddressesNeeded, Converter={StaticResource BoolToVisibility}}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30"/>
@@ -98,9 +89,9 @@
                         <ColumnDefinition Width="150"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Row="0" Grid.Column="0" Content="Browse addresses" Command="{Binding SelectTestCommand}" Width="Auto" Margin="10, 0, 10, 0"/>
+                    <Button Grid.Row="0" Grid.Column="0" Content="Browse addresses" Command="{Binding SelectCommand}" Width="Auto" Margin="10, 0, 10, 0"/>
                     <TextBox Grid.Row="0" Grid.Column="1" 
-                             Text="{Binding TestAddress.Value, UpdateSourceTrigger=PropertyChanged}" 
+                             Text="{Binding SelectedAddress.Value, UpdateSourceTrigger=PropertyChanged}" 
                              IsEnabled="{Binding IsChecked, ElementName=ExistingInput}"
                              IsReadOnly="True"/>
                 </Grid>

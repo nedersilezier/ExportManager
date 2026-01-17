@@ -6,9 +6,10 @@
         xmlns:local="clr-namespace:ExportManager.Views.Windows"
         mc:Ignorable="d"
         Height="500" Width="500"
-        ResizeMode="NoResize"
+        
         BorderBrush="DarkGray"
         BorderThickness="1"
+    ResizeMode="NoResize"
         Topmost="True"
         WindowStartupLocation="CenterScreen"
         Icon="/Icons/camera.png">

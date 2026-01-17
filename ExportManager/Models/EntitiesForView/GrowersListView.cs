@@ -23,5 +23,12 @@ namespace ExportManager.Models.EntitiesForView
         public string TaxId { get; set; }
         public string RegistrationNumber { get; set; }
         public string Remarks { get; set; }
+        public string DisplayName
+        {
+            get
+            {
+                return $"{GrowerName} ({Country})";
+            }
+        }
     }
 }

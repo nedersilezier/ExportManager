@@ -24,23 +24,25 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Label Grid.Row="0" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Select product</Label>
-        <ComboBox Grid.Row="0" Grid.Column="1" Margin="0, 2, 0, 2" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Value}"/>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
-        <Button Grid.Row="0" Grid.Column="2" Margin="0, 2, 0, 2" Content="New" Command="{Binding NewProductCommand}"/>
+        <TextBox Grid.Row="0" Grid.Column="1" 
+Text="{Binding SelectedProduct.Value, UpdateSourceTrigger=PropertyChanged}"
+IsReadOnly="True"/>
+        <Button Grid.Row="0" Grid.Column="2" Content="Browse products" Command="{Binding SelectProductCommand}" Width="Auto" Margin="10, 0, 10, 0"/>
+
+        <!--<Button Grid.Row="0" Grid.Column="2" Margin="0, 2, 0, 2" Content="New" Command="{Binding NewProductCommand}"/>-->
         <Label Grid.Row="1" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Select grower</Label>
-        <ComboBox Grid.Row="1" Grid.Column="1" Margin="0, 2, 0, 2" ItemsSource="{Binding Growers}" SelectedItem="{Binding SelectedGrower}">
+        <TextBox Grid.Row="1" Grid.Column="1"
+                 Text="{Binding SelectedGrower.Value, UpdateSourceTrigger=PropertyChanged}"
+                 IsReadOnly="True"/>
+        <Button Grid.Row="1" Grid.Column="2" Content="Browse growers" Command="{Binding SelectGrowerCommand}" Width="Auto" Margin="10, 0, 10, 0"/>
+        <!--<ComboBox Grid.Row="1" Grid.Column="1" Margin="0, 2, 0, 2" ItemsSource="{Binding Growers}" SelectedItem="{Binding SelectedGrower}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Value}"/>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <Button Grid.Row="1" Grid.Column="2" Margin="0, 2, 0, 2" Content="New" Command="{Binding NewGrowerCommand}"/>
+        <Button Grid.Row="1" Grid.Column="2" Margin="0, 2, 0, 2" Content="New" Command="{Binding NewGrowerCommand}"/>-->
         <Label Grid.Row="2" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Select quality</Label>
         <ComboBox Grid.Row="2" Grid.Column="1" Margin="0, 2, 0, 2" ItemsSource="{Binding Qualities}" SelectedItem="{Binding SelectedQuality}">
             <ComboBox.ItemTemplate>

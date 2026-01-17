@@ -17,47 +17,52 @@ namespace ExportManager.ViewModels.AddViewModels
 {
     public class NewClientViewModel : NewItemViewModel<Clients>
     {
-        #region Select test
-        private BaseCommand _SelectTestCommand;
-        public ICommand SelectTestCommand
+        #region Item picker
+        private BaseCommand _SelectCommand;
+        public ICommand SelectCommand
         {
             get
             {
-                if (_SelectTestCommand == null)
+                if (_SelectCommand == null)
                 {
-                    _SelectTestCommand = new BaseCommand(openSelectTestTab);
+                    _SelectCommand = new BaseCommand(openSelectTab);
                 }
-                return _SelectTestCommand;
+                return _SelectCommand;
             }
         }
-        private KeyAndValue _TestAddress;
-        public KeyAndValue TestAddress
+        private KeyAndValue _SelectedAddress;
+        public KeyAndValue SelectedAddress
         {
             get
             {
-                if (_TestAddress == null)
+                if (_SelectedAddress == null)
                 {
-                    _TestAddress = new KeyAndValue();
+                    _SelectedAddress = new KeyAndValue();
                 }
-                return _TestAddress;
+                return _SelectedAddress;
             }
             set
             {
-                if (_TestAddress != value)
+                if (_SelectedAddress != value)
                 {
-                    _TestAddress = value;
-                    OnPropertyChanged(() => TestAddress);
+                    _SelectedAddress = value;
+                    OnPropertyChanged(() => SelectedAddress);
                 }
             }
         }
-        public void setTestAddress(SelectedItemEventArgs<dynamic> e)
+        public void setAddress(SelectedItemEventArgs e)
         {
-            string FullHouseNumber = e.SelectedItem.HouseNumber + (e.SelectedItem.ApartmentNumber == null || e.SelectedItem.ApartmentNumber == string.Empty ?
-                    string.Empty :
-                    "/" + e.SelectedItem.ApartmentNumber);
-            TestAddress.Key = e.SelectedItem.AddressId;
-            TestAddress.Value = e.SelectedItem.Street + " " + FullHouseNumber + ", " + e.SelectedItem.ZipCode + " " + e.SelectedItem.City + "; " + e.SelectedItem.Country;
+            SelectedAddress.Key = e.ItemId;
+            SelectedAddress.Value = e.DisplayName;
         }
+        //public void setTestAddress(SelectedItemEventArgs<dynamic> e)
+        //{
+        //    string FullHouseNumber = e.SelectedItem.HouseNumber + (e.SelectedItem.ApartmentNumber == null || e.SelectedItem.ApartmentNumber == string.Empty ?
+        //            string.Empty :
+        //            "/" + e.SelectedItem.ApartmentNumber);
+        //    TestAddress.Key = e.SelectedItem.AddressId;
+        //    TestAddress.Value = e.SelectedItem.Street + " " + FullHouseNumber + ", " + e.SelectedItem.ZipCode + " " + e.SelectedItem.City + "; " + e.SelectedItem.Country;
+        //}
         //public void setTestAddress(AddressesListView address)
         //{
         //    string FullHouseNumber = address.HouseNumber + (address.ApartmentNumber == null || address.ApartmentNumber == string.Empty ?
@@ -66,32 +71,24 @@ namespace ExportManager.ViewModels.AddViewModels
         //    TestAddress.Key = address.AddressId;
         //    TestAddress.Value = address.Street + " " + FullHouseNumber + ", " + address.ZipCode + " " + address.City + "; " + address.Country;
         //}
-        private void openSelectTestTab()
+        private void openSelectTab()
         {
-            OpenNewTab(() => new AllAddressesViewModel(setTestAddress), () => { });
+            OpenNewTab(() => new AllAddressesViewModel(setAddress));
         }
-        private int _SelectedTabIndex;
-        public int SelectedTabIndex
-        {
-            get => _SelectedTabIndex;
-            set
-            {
-                if (_SelectedTabIndex != value)
-                {
-                    _SelectedTabIndex = value;
-                    OnPropertyChanged(() => SelectedTabIndex);
-                }
-            }
-        }
+        
+        
         #endregion
+        #region Fields
         private BaseCommand _NewCountryCommand;
         private KeyAndValue _SelectedCountry;
-        private KeyAndValue _SelectedAddress;
+        //private KeyAndValue _SelectedAddress;
         public ObservableCollection<KeyAndValue> _Countries;
-        public ObservableCollection<KeyAndValue> _Addresses;
+        //public ObservableCollection<KeyAndValue> _Addresses;
         private Addresses newClientAddress;
         public bool _IsAddressesNeeded;
         public bool _IsNotAddressesNeeded;
+        private int _SelectedTabIndex;
+        #endregion
         #region Constructor
         public NewClientViewModel()
             : base()
@@ -110,7 +107,7 @@ namespace ExportManager.ViewModels.AddViewModels
             item = potplantsEntities.Clients.FirstOrDefault(t => t.ClientId == clientId);
             newClientAddress = potplantsEntities.Addresses.FirstOrDefault(t => t.AddressId == item.AddressId);
             SelectedCountry = Countries.FirstOrDefault(t => t.Key == item.Addresses.CountryId);
-            SelectedAddress = Addresses.FirstOrDefault(t => t.Key == item.AddressId);
+            //SelectedAddress = Addresses.FirstOrDefault(t => t.Key == item.AddressId);
             IsNotAddressesNeeded = true;
         }
         #endregion
@@ -127,13 +124,13 @@ namespace ExportManager.ViewModels.AddViewModels
                     if (value == true)
                     {
                         IsNotAddressesNeeded = false;
-                        if (Addresses == null)
-                        {
-                            Addresses = new AddressesForEntities(potplantsEntities).GetAddressesListItems();
-                            OnPropertyChanged(() => Addresses);
-                            //foreach(Addresses address  in Addresses)
-                            //    Console.WriteLine(address.FullAddress + "\n");
-                        }
+                        //if (Addresses == null)
+                        //{
+                        //    Addresses = new AddressesForEntities(potplantsEntities).GetAddressesListItems();
+                        //    OnPropertyChanged(() => Addresses);
+                        //    //foreach(Addresses address  in Addresses)
+                        //    //    Console.WriteLine(address.FullAddress + "\n");
+                        //}
                     }
                     OnPropertyChanged(() => IsAddressesNeeded);
                 }
@@ -170,23 +167,23 @@ namespace ExportManager.ViewModels.AddViewModels
                 }
             }
         }
-        public ObservableCollection<KeyAndValue> Addresses
-        {
-            get
-            {
-                if (_Addresses == null)
-                    _Addresses = new AddressesForEntities(potplantsEntities).GetAddressesListItems();
-                return _Addresses;
-            }
-            set
-            {
-                if (_Addresses != value)
-                {
-                    _Addresses = value;
-                    OnPropertyChanged(() => Addresses);
-                }
-            }
-        }
+        //public ObservableCollection<KeyAndValue> Addresses
+        //{
+        //    get
+        //    {
+        //        if (_Addresses == null)
+        //            _Addresses = new AddressesForEntities(potplantsEntities).GetAddressesListItems();
+        //        return _Addresses;
+        //    }
+        //    set
+        //    {
+        //        if (_Addresses != value)
+        //        {
+        //            _Addresses = value;
+        //            OnPropertyChanged(() => Addresses);
+        //        }
+        //    }
+        //}
         public string Street
         {
             get { return newClientAddress.Street; }
@@ -248,18 +245,6 @@ namespace ExportManager.ViewModels.AddViewModels
                 {
                     _SelectedCountry = value;
                     OnPropertyChanged(() => SelectedCountry);
-                }
-            }
-        }
-        public KeyAndValue SelectedAddress
-        {
-            get { return _SelectedAddress; }
-            set
-            {
-                if (_SelectedAddress != value)
-                {
-                    _SelectedAddress = value;
-                    OnPropertyChanged(() => SelectedAddress);
                 }
             }
         }
@@ -385,6 +370,19 @@ namespace ExportManager.ViewModels.AddViewModels
                 }
             }
         }
+        //Tab control
+        public int SelectedTabIndex
+        {
+            get => _SelectedTabIndex;
+            set
+            {
+                if (_SelectedTabIndex != value)
+                {
+                    _SelectedTabIndex = value;
+                    OnPropertyChanged(() => SelectedTabIndex);
+                }
+            }
+        }
         #endregion
         #region Commands
         public override void Save()
@@ -392,10 +390,10 @@ namespace ExportManager.ViewModels.AddViewModels
             if (IsAddressesNeeded)
             {
                 //if (SelectedAddress == null)
-                if (TestAddress == null)
+                if (SelectedAddress == null)
                     throw new Exception("No address selected");
                 //item.AddressId = SelectedAddress.Key;
-                item.AddressId = TestAddress.Key;
+                item.AddressId = SelectedAddress.Key;
             }
             else
             {

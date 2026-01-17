@@ -26,6 +26,13 @@ namespace ExportManager.Models.EntitiesForView
         public string CategoryName { get; set; }
         public string CategoryRemarks { get; set; }
         public string Remarks { get; set; }
+        public string ProductDisplayName
+        {
+            get
+            {
+                return $"{Name} d{Potsize}cm h{Height}cm";
+            }
+        }
 
     }
 }

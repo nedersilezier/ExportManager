@@ -30,6 +30,15 @@ namespace ExportManager.Models.BusinessLogic.ListViewsForUI
                 }).ToList()
             );
         }
+        public string GetProductDisplayNamePerId(int? id)
+        {
+            return potplantsEntities.Products.Where(t => t.IsActive == true && t.ProductId == id).Select(t => 
+            new ProductsListView { 
+                Name = t.Name, 
+                Potsize = t.Potsize, 
+                Height = t.Height 
+            }).FirstOrDefault().ProductDisplayName;
+        }
         #endregion
     }
 }

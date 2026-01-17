@@ -14,7 +14,7 @@ using ExportManager.Models;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
-    public class AllBatchesViewModel: AllViewModel<dynamic>
+    public class AllBatchesViewModel : AllViewModel<dynamic>
     {
         #region Fields
         private BaseCommand _UnblockCommand;
@@ -125,17 +125,23 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Sorting and searching
         public override List<string> getComboBoxSortList()
         {
-            return new List<string> { "Product name", "Cost price" };
+            return new List<string> { "Product name", "Cost price", "Potsize", "Expiry date" };
         }
         public override void Sort()
         {
-            switch(SortField)
+            switch (SortField)
             {
                 case "Product name":
                     List = new ObservableCollection<dynamic>(List.OrderBy(t => t.ProductName));
                     break;
                 case "Cost price":
                     List = new ObservableCollection<dynamic>(List.OrderBy(t => t.CostPrice));
+                    break;
+                case "Potsize":
+                    List = new ObservableCollection<dynamic>(List.OrderBy(t => t.Potsize));
+                    break;
+                case "Expiry date":
+                    List = new ObservableCollection<dynamic>(List.OrderBy(t => t.ExpiryDate));
                     break;
             }
         }

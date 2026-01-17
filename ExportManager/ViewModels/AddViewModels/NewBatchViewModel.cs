@@ -4,6 +4,7 @@ using ExportManager.Models.BusinessLogic;
 using ExportManager.Models.BusinessLogic.ListViewsForUI;
 using ExportManager.Models.EntitiesForView;
 using ExportManager.ViewModels.Abstract;
+using ExportManager.ViewModels.ShowAllViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,13 +17,102 @@ namespace ExportManager.ViewModels.AddViewModels
 {
     public class NewBatchViewModel: NewItemViewModel<StockItems>
     {
+        #region item picker
+        //product picker
+        private BaseCommand _SelectProductCommand;
+        public ICommand SelectProductCommand
+        {
+            get
+            {
+                if (_SelectProductCommand == null)
+                {
+                    _SelectProductCommand = new BaseCommand(openSelectProductTab);
+                }
+                return _SelectProductCommand;
+            }
+        }
+        private KeyAndValue _SelectedProduct
+            ;
+        public KeyAndValue SelectedProduct
+        {
+            get
+            {
+                if (_SelectedProduct == null)
+                {
+                    _SelectedProduct = new KeyAndValue();
+                }
+                return _SelectedProduct;
+            }
+            set
+            {
+                if (_SelectedProduct != value)
+                {
+                    _SelectedProduct = value;
+                    TrayTypes = new TrayTypesForStockItems(potplantsEntities).GetCompatibleTrayTypes(SelectedProduct.Key);
+                    OnPropertyChanged(() => SelectedProduct);
+                    OnPropertyChanged(() => TrayTypes);
+                }
+            }
+        }
+        public void setProduct(SelectedItemEventArgs e)
+        {
+            SelectedProduct.Key = e.ItemId;
+            SelectedProduct.Value = e.DisplayName;
+        }
+        private void openSelectProductTab()
+        {
+            OpenNewTab(() => new AllProductsViewModel(setProduct));
+        }
+        //grower picker
+        private BaseCommand _SelectGrowerCommand;
+        public ICommand SelectGrowerCommand
+        {
+            get
+            {
+                if (_SelectGrowerCommand == null)
+                {
+                    _SelectGrowerCommand = new BaseCommand(openSelectGrowerTab);
+                }
+                return _SelectGrowerCommand;
+            }
+        }
+        private KeyAndValue _SelectedGrower;
+        public KeyAndValue SelectedGrower
+        {
+            get
+            {
+                if (_SelectedGrower == null)
+                {
+                    _SelectedGrower = new KeyAndValue();
+                }
+                return _SelectedGrower;
+            }
+            set
+            {
+                if (_SelectedGrower != value)
+                {
+                    _SelectedGrower = value;
+                    OnPropertyChanged(() => SelectedGrower);
+                }
+            }
+        }
+        public void setGrower(SelectedItemEventArgs e)
+        {
+            SelectedGrower.Key = e.ItemId;
+            SelectedGrower.Value = e.DisplayName;
+        }
+        private void openSelectGrowerTab()
+        {
+            OpenNewTab(() => new AllGrowersViewModel(setGrower));
+        }
+        #endregion
         #region Fields
         private BaseCommand _NewProductCommand;
         private BaseCommand _NewGrowerCommand;
         private BaseCommand _NewQualityCommand;
         private BaseCommand _NewTrayTypeCommand;
-        private KeyAndValue _SelectedProduct;
-        private KeyAndValue _SelectedGrower;
+        //private KeyAndValue _SelectedProduct;
+        //private KeyAndValue _SelectedGrower;
         private KeyAndValue _SelectedQuality;
         private KeyAndValue _SelectedTrayType;
         public ObservableCollection<KeyAndValue> _Products;
@@ -45,47 +135,57 @@ namespace ExportManager.ViewModels.AddViewModels
             base.DisplayName = "Edit batch";
             _IsEditMode = true;
             item = potplantsEntities.StockItems.FirstOrDefault(t => t.StockItemId == batchId);
-            SelectedGrower = Growers.FirstOrDefault(g => g.Key == item.GrowerId);
-            SelectedProduct = Products.FirstOrDefault(p => p.Key == item.ProductId);
+            //SelectedGrower = Growers.FirstOrDefault(g => g.Key == item.GrowerId);
+            SelectedGrower = new KeyAndValue
+            {
+                Key = (int)item.GrowerId,
+                Value = new GrowersForStockItems(potplantsEntities).GetGrowerDisplayNamePerId(item.GrowerId)
+            };
+            //SelectedProduct = Products.FirstOrDefault(p => p.Key == item.ProductId);
+            SelectedProduct = new KeyAndValue
+            {
+                Key = (int)item.ProductId,
+                Value = new ProductsForStockItems(potplantsEntities).GetProductDisplayNamePerId(item.ProductId)
+            };
             SelectedQuality = Qualities.FirstOrDefault(q => q.Key == item.QualityId);
             SelectedTrayType = TrayTypes.FirstOrDefault(t => t.Key == item.TrayTypeId);
         }
         #endregion
         #region Properties
-        public ObservableCollection<KeyAndValue> Products
-        {
-            get
-            {
-                if (_Products == null)
-                    _Products = new ProductsForStockItems(potplantsEntities).GetProductsListItems();
-                return _Products;
-            }
-            set
-            {
-                if (_Products != value)
-                {
-                    _Products = value;
-                    OnPropertyChanged(() => Products);
-                }
-            }
-        }
-        public ObservableCollection<KeyAndValue> Growers
-        {
-            get
-            {
-                if (_Growers == null)
-                    _Growers = new GrowersForStockItems(potplantsEntities).GetGrowersListItems();
-                return _Growers;
-            }
-            set
-            {
-                if (_Growers != value)
-                {
-                    _Growers = value;
-                    OnPropertyChanged(() => Growers);
-                }
-            }
-        }
+        //public ObservableCollection<KeyAndValue> Products
+        //{
+        //    get
+        //    {
+        //        if (_Products == null)
+        //            _Products = new ProductsForStockItems(potplantsEntities).GetProductsListItems();
+        //        return _Products;
+        //    }
+        //    set
+        //    {
+        //        if (_Products != value)
+        //        {
+        //            _Products = value;
+        //            OnPropertyChanged(() => Products);
+        //        }
+        //    }
+        //}
+        //public ObservableCollection<KeyAndValue> Growers
+        //{
+        //    get
+        //    {
+        //        if (_Growers == null)
+        //            _Growers = new GrowersForStockItems(potplantsEntities).GetGrowersListItems();
+        //        return _Growers;
+        //    }
+        //    set
+        //    {
+        //        if (_Growers != value)
+        //        {
+        //            _Growers = value;
+        //            OnPropertyChanged(() => Growers);
+        //        }
+        //    }
+        //}
         public ObservableCollection<KeyAndValue> Qualities
         {
             get
@@ -120,32 +220,32 @@ namespace ExportManager.ViewModels.AddViewModels
                 }
             }
         }
-        public KeyAndValue SelectedProduct
-        {
-            get { return _SelectedProduct; }
-            set
-            {
-                if (_SelectedProduct != value)
-                {
-                    _SelectedProduct = value;
-                    TrayTypes = new TrayTypesForStockItems(potplantsEntities).GetCompatibleTrayTypes(SelectedProduct.Key);
-                    OnPropertyChanged(() => TrayTypes);
-                    OnPropertyChanged(() => SelectedProduct);
-                }
-            }
-        }
-        public KeyAndValue SelectedGrower
-        {
-            get { return _SelectedGrower; }
-            set
-            {
-                if (_SelectedGrower != value)
-                {
-                    _SelectedGrower = value;
-                    OnPropertyChanged(() => SelectedGrower);
-                }
-            }
-        }
+        //public KeyAndValue SelectedProduct
+        //{
+        //    get { return _SelectedProduct; }
+        //    set
+        //    {
+        //        if (_SelectedProduct != value)
+        //        {
+        //            _SelectedProduct = value;
+        //            TrayTypes = new TrayTypesForStockItems(potplantsEntities).GetCompatibleTrayTypes(SelectedProduct.Key);
+        //            OnPropertyChanged(() => TrayTypes);
+        //            OnPropertyChanged(() => SelectedProduct);
+        //        }
+        //    }
+        //}
+        //public KeyAndValue SelectedGrower
+        //{
+        //    get { return _SelectedGrower; }
+        //    set
+        //    {
+        //        if (_SelectedGrower != value)
+        //        {
+        //            _SelectedGrower = value;
+        //            OnPropertyChanged(() => SelectedGrower);
+        //        }
+        //    }
+        //}
         public KeyAndValue SelectedQuality
         {
             get { return _SelectedQuality; }
@@ -244,28 +344,28 @@ namespace ExportManager.ViewModels.AddViewModels
         }
         #endregion
         #region Commands
-        public ICommand NewProductCommand
-        {
-            get
-            {
-                if (_NewProductCommand == null)
-                {
-                    _NewProductCommand = new BaseCommand(OpenNewProductTab);
-                }
-                return _NewProductCommand;
-            }
-        }
-        public ICommand NewGrowerCommand
-        {
-            get
-            {
-                if (_NewGrowerCommand == null)
-                {
-                    _NewGrowerCommand = new BaseCommand(OpenNewGrowerTab);
-                }
-                return _NewGrowerCommand;
-            }
-        }
+        //public ICommand NewProductCommand
+        //{
+        //    get
+        //    {
+        //        if (_NewProductCommand == null)
+        //        {
+        //            _NewProductCommand = new BaseCommand(OpenNewProductTab);
+        //        }
+        //        return _NewProductCommand;
+        //    }
+        //}
+        //public ICommand NewGrowerCommand
+        //{
+        //    get
+        //    {
+        //        if (_NewGrowerCommand == null)
+        //        {
+        //            _NewGrowerCommand = new BaseCommand(OpenNewGrowerTab);
+        //        }
+        //        return _NewGrowerCommand;
+        //    }
+        //}
         public ICommand NewQualityCommand
         {
             get
@@ -308,15 +408,15 @@ namespace ExportManager.ViewModels.AddViewModels
             } 
             potplantsEntities.SaveChanges();
         }
-        public void OpenNewProductTab()
-        {
-            OpenNewTab(() => new NewProductViewModel(), RefreshProducts);
-        }
+        //public void OpenNewProductTab()
+        //{
+        //    OpenNewTab(() => new NewProductViewModel(), RefreshProducts);
+        //}
 
-        public void OpenNewGrowerTab()
-        {
-            OpenNewTab(() => new NewGrowerViewModel(), RefreshGrowers);
-        }
+        //public void OpenNewGrowerTab()
+        //{
+        //    OpenNewTab(() => new NewGrowerViewModel(), RefreshGrowers);
+        //}
         public void openNewQualityTab()
         {
             OpenNewTab(() => new NewQualityTypeViewModel(), RefreshQualities);
@@ -325,14 +425,14 @@ namespace ExportManager.ViewModels.AddViewModels
         {
             OpenNewTab(() => new NewTrayTypeViewModel(), RefreshTrayTypes);
         }
-        private void RefreshProducts()
-        {
-            Products = new ProductsForStockItems(potplantsEntities).GetProductsListItems();
-        }
-        private void RefreshGrowers()
-        {
-            Growers = new GrowersForStockItems(potplantsEntities).GetGrowersListItems();
-        }
+        //private void RefreshProducts()
+        //{
+        //    Products = new ProductsForStockItems(potplantsEntities).GetProductsListItems();
+        //}
+        //private void RefreshGrowers()
+        //{
+        //    Growers = new GrowersForStockItems(potplantsEntities).GetGrowersListItems();
+        //}
         private void RefreshQualities()
         {
             Qualities = new QualitiesForStockItems(potplantsEntities).GetQualitiesListItems();

@@ -4,6 +4,7 @@
                     xmlns:vmShow="clr-namespace:ExportManager.ViewModels.ShowAllViewModels"
                     xmlns:vmAdd="clr-namespace:ExportManager.ViewModels.AddViewModels"
                     xmlns:vmReport="clr-namespace:ExportManager.ViewModels.ReportViewModels"
+                    xmlns:vmModal="clr-namespace:ExportManager.ViewModels.Windows"
                     xmlns:vw="clr-namespace:ExportManager.Views"
                     xmlns:vwShow="clr-namespace:ExportManager.Views.ShowAllViews"
                     xmlns:vwAdd="clr-namespace:ExportManager.Views.AddViews"

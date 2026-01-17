@@ -52,6 +52,13 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             base.DisplayName = "Products";
 
         }
+        public AllProductsViewModel(Action<SelectedItemEventArgs> itemSetter)
+            : base(itemSetter,
+                  generateArgsFromSelection:
+                  selectedItem => new SelectedItemEventArgs(selectedItem.ProductId, selectedItem.ProductDisplayName))
+        {
+            base.DisplayName = "Select the product";
+        }
         #endregion
         #region Commands
         public ICommand ShowPictureCommand

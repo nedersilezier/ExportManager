@@ -8,10 +8,11 @@ using ExportManager.ViewModels.Abstract;
 using ExportManager.Models;
 using ExportManager.Models.EntitiesForView;
 using ExportManager.ViewModels.AddViewModels;
+using ExportManager.Models.BusinessLogic.ListViewsForUI;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
-    public class AllAddressesViewModel: AllViewModel<dynamic>
+    public class AllAddressesViewModel : AllViewModel<dynamic>
     {
         #region List
         public override void Load()
@@ -37,15 +38,22 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #endregion
         #region Constructor
         public AllAddressesViewModel()
-            :base()
+            : base()
         {
             base.DisplayName = "Addresses";
         }
-        public AllAddressesViewModel(Action<SelectedItemEventArgs<dynamic>> itemSetter)
-            : base(itemSetter)
+        public AllAddressesViewModel(Action<SelectedItemEventArgs> itemSetter)
+            : base(itemSetter,
+                  generateArgsFromSelection:
+                  selectedItem => new SelectedItemEventArgs(selectedItem.AddressId, selectedItem.FullAddress))
         {
             base.DisplayName = "Select the address";
         }
+        //public AllAddressesViewModel(Action<SelectedItemEventArgs<dynamic>> itemSetter)
+        //    : base(itemSetter)
+        //{
+        //    base.DisplayName = "Select the address";
+        //}
         #endregion
         #region Functions
         public override void OnAdd()
