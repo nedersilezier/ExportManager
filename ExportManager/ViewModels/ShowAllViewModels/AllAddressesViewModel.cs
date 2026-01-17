@@ -41,6 +41,11 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         {
             base.DisplayName = "Addresses";
         }
+        public AllAddressesViewModel(Action<SelectedItemEventArgs<dynamic>> itemSetter)
+            : base(itemSetter)
+        {
+            base.DisplayName = "Select the address";
+        }
         #endregion
         #region Functions
         public override void OnAdd()
@@ -56,6 +61,43 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         public override void OnRemove()
         {
             SoftDelete<Addresses>(SelectedItem.AddressId);
+        }
+        #endregion
+        #region Sorting and searching
+        public override List<string> getComboBoxSortList()
+        {
+            return new List<string> { "city", "country" };
+        }
+        public override void Sort()
+        {
+            if (SortField == "city")
+                List = new ObservableCollection<dynamic>(List.OrderBy(t => t.City));
+            if (SortField == "country")
+                List = new ObservableCollection<dynamic>(List.OrderBy(t => t.Country));
+        }
+        public override List<string> getComboBoxFindList()
+        {
+            return new List<string> { "city", "country" };
+        }
+        public override void Find()
+        {
+            switch(FindField)
+            {
+                case "city":
+                    Load();
+                    List = new ObservableCollection<dynamic>(List.Where(t => t.City != null && t.City.ToLower().StartsWith(FindTextBox.ToLower())));
+                    break;
+                case "country":
+                    Load();
+                    List = new ObservableCollection<dynamic>(List.Where(t => t.Country != null && t.Country.ToLower().StartsWith(FindTextBox.ToLower())));
+                    break;
+            }
+            //if (FindField == "city")
+            //{
+            //    Load();
+            //    List = new ObservableCollection<dynamic>(List.Where(t => t.City != null && t.City.ToLower().StartsWith(FindTextBox.ToLower())));
+            //}
+
         }
         #endregion
     }

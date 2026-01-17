@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Height="500" Width="500"
         ResizeMode="NoResize"
+        BorderBrush="DarkGray"
+        BorderThickness="1"
+        Topmost="True"
         WindowStartupLocation="CenterScreen"
         Icon="/Icons/camera.png">
     <Image Source="{Binding ImageData}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5, 5, 5, 5"/>

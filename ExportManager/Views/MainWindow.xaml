@@ -22,16 +22,12 @@
             </MenuItem>
 
             <MenuItem Header="_Database">
-                <!--<MenuItem Header="_Basic data"
-                  ItemsSource="{Binding DatabaseDictionaryCommands}"
-                ItemTemplate="{StaticResource BasicDataTemplate}" />-->
                 <MenuItem Header="_Basic data"
                           ItemsSource="{Binding DatabaseDictionaryCommands}"
                           ItemTemplate="{StaticResource BasicDataTemplate}">
                     <MenuItem.ItemContainerStyle>
                         <Style TargetType="MenuItem">
-                            <Setter Property="Command"     Value="{Binding Command}" />
-                            <Setter Property="ItemsSource" Value="{Binding Children}" />
+                            <Setter Property="Command" Value="{Binding Command}" />
                         </Style>
                     </MenuItem.ItemContainerStyle>
                 </MenuItem>
@@ -58,11 +54,11 @@
                 </MenuItem.ItemContainerStyle>
             </MenuItem>
         </Menu>
-        <!--Buttons-->
+        <!--Main menu buttons-->
         <ItemsControl ItemsSource="{Binding GlobalCommands}" Grid.Row="1" Grid.ColumnSpan="2" Margin="0, 4, 0, 0">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal"/>
+                    <StackPanel Orientation="Horizontal" Margin="4, 0, 0, 0"/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
@@ -75,18 +71,11 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <!--Header-->
-        <!--<Border Grid.Row="2">
-            <HeaderedContentControl 
-                Header="Workspace"
-                Content="{Binding Path=Workspaces}"
-                ContentTemplate="{StaticResource WorkspacesTemplate}"
-                Style="{StaticResource MainHCCStyle}"
-            />
-        </Border>-->
+        <!--Header, workspace, progressbar-->
         <Grid Grid.Row="2">
             <Border>
-                <HeaderedContentControl Header="Workspace"
+                <HeaderedContentControl Grid.Row="2" 
+                                        Header="Workspace"
                                         Content="{Binding Workspaces}"
                                         ContentTemplate="{StaticResource WorkspacesTemplate}"
                                         Style="{StaticResource MainHCCStyle}"/>

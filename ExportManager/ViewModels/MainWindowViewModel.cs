@@ -230,7 +230,7 @@ namespace ExportManager.ViewModels
                     workspace.LoadingStarted -= OnWorkspaceLoadingStarted;
                     workspace.LoadingFinished -= OnWorkspaceLoadingEnded;
                     workspace.RequestImageWindow -= OnWorkspaceWindowRequest;
-                }      
+                }
         }
         private void OnWorkspaceRequestClose(object sender, EventArgs e)
         {
@@ -240,7 +240,7 @@ namespace ExportManager.ViewModels
         private void OnWorkspaceRequestOpen(object sender, WorkspaceViewModel workspace)
         {
             this.CreateView(workspace);
-        } 
+        }
         private void OnWorkspaceLoadingStarted(object sender, EventArgs e)
         {
             LoadingCounter++;
@@ -267,11 +267,11 @@ namespace ExportManager.ViewModels
         #endregion // Workspaces
 
         #region Private Helpers
-        public void ShowAll<T>() where T:WorkspaceViewModel, new()
+        public void ShowAll<T>() where T : WorkspaceViewModel, new()
         {
             T workspace =
-                this.Workspaces.FirstOrDefault(vm => vm is T)
-                as T;
+                this.Workspaces.OfType<T>().FirstOrDefault(
+                    vm => vm is IAllViewable allViewModel && allViewModel.IsSelectMode == false);
             if (workspace == null)
             {
                 workspace = new T();
@@ -280,24 +280,11 @@ namespace ExportManager.ViewModels
 
             this.SetActiveWorkspace(workspace);
         }
-        public void CreateView(WorkspaceViewModel workspace) //jedna uniwersalna funkcja do tworzenia widokow
+        public void CreateView(WorkspaceViewModel workspace)
         {
-            this.Workspaces.Add(workspace); //dodajemy zakladke do kolekcji zakladek
-            this.SetActiveWorkspace(workspace); //  aktywujemy zakladke(zeby byla wlaczona)
+            this.Workspaces.Add(workspace);
+            this.SetActiveWorkspace(workspace);
         }
-        //private void ShowAllTowar()
-        //{
-        //    WszystkieTowaryViewModel workspace =
-        //        this.Workspaces.FirstOrDefault(vm => vm is WszystkieTowaryViewModel)
-        //        as WszystkieTowaryViewModel;
-        //    if (workspace == null)
-        //    {
-        //        workspace = new WszystkieTowaryViewModel();
-        //        this.Workspaces.Add(workspace);
-        //    }
-
-        //    this.SetActiveWorkspace(workspace);
-        //}
         //private void ShowAllProducts()
         //{
         //    AllProductsViewModel workspace =

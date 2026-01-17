@@ -1,5 +1,6 @@
 ﻿using ExportManager.Helper;
 using ExportManager.Models;
+using ExportManager.ViewModels.ShowAllViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,7 +12,7 @@ using System.Windows.Input;
 
 namespace ExportManager.ViewModels.Abstract
 {
-    public abstract class AllViewModel<T>: WorkspaceViewModel
+    public abstract class AllViewModel<T> : WorkspaceViewModel, IAllViewable
     {
         private T _SelectedItem;
         private ReadOnlyCollection<CommandViewModel> _ExtraCommands;
@@ -24,11 +25,12 @@ namespace ExportManager.ViewModels.Abstract
             get { return _SelectedItem; }
             set
             {
-                if(!Equals(_SelectedItem, value))
+                if (!Equals(_SelectedItem, value))
                     _SelectedItem = value;
                 OnPropertyChanged(() => SelectedItem);
             }
         }
+
         #endregion
         #region Command
         private BaseCommand _LoadCommand;
@@ -75,13 +77,13 @@ namespace ExportManager.ViewModels.Abstract
         {
             get
             {
-                if(_ExtraCommands != null)
+                if (_ExtraCommands != null)
                     return _ExtraCommands;
                 _ExtraCommands = new ReadOnlyCollection<CommandViewModel>(CreateExtraCommands());
                 return _ExtraCommands;
             }
         }
-        
+
         #endregion
         #region Functions
         //protected void AddNew<T2>() where T2: NewItemViewModelBase, new()
@@ -102,7 +104,7 @@ namespace ExportManager.ViewModels.Abstract
         public abstract void OnAdd();
         public abstract void OnEdit();
         public abstract void OnRemove();
-        protected void SoftDelete<T>(int itemId) where T: class, IHasIsActive
+        protected void SoftDelete<T>(int itemId) where T : class, IHasIsActive
         {
             var item = potplantsEntities.Set<T>().Find(itemId);
             if (item == null)
@@ -112,7 +114,7 @@ namespace ExportManager.ViewModels.Abstract
             potplantsEntities.SaveChanges();
             Load();
         }
-        
+
         public virtual IList<CommandViewModel> CreateExtraCommands()
         {
             return new List<CommandViewModel>();
@@ -147,7 +149,109 @@ namespace ExportManager.ViewModels.Abstract
         public AllViewModel()
         {
             potplantsEntities = new PotplantsEntities();
+            IsCRUDMode = true;
         }
+        public AllViewModel(Action<SelectedItemEventArgs<T>> itemSetter)
+        {
+            potplantsEntities = new PotplantsEntities();
+            IsSelectMode = true;
+            _ItemSelected = itemSetter;
+        }
+        #endregion
+        #region Select mode
+        private bool _isCRUDMode;
+        private bool _isSelectMode;
+        protected event Action<SelectedItemEventArgs<T>> _ItemSelected;
+        //protected event Action<T> _ItemSelected;
+        public bool IsCRUDMode
+        {
+            get { return _isCRUDMode; }
+            set
+            {
+                if (_isCRUDMode != value)
+                {
+                    _isCRUDMode = value;
+                    _isSelectMode = !value;
+                    OnPropertyChanged(() => IsCRUDMode);
+                    OnPropertyChanged(() => IsSelectMode);
+                }
+            }
+        }
+        public bool IsSelectMode
+        {
+            get { return _isSelectMode; }
+            set
+            {
+                if (_isSelectMode != value)
+                {
+                    _isSelectMode = value;
+                    _isCRUDMode = !value;
+                    OnPropertyChanged(() => IsSelectMode);
+                    OnPropertyChanged(() => IsCRUDMode);
+                }
+            }
+        }
+
+        private BaseCommand _SelectCommand;
+        public ICommand SelectCommand
+        {
+            get
+            {
+                if (_SelectCommand == null)
+                    _SelectCommand = new BaseCommand(selectAndClose);
+                return _SelectCommand;
+
+            }
+        }
+        public void selectAndClose()
+        {
+            //_ItemSelected?.Invoke(SelectedItem);
+            _ItemSelected?.Invoke(GenerateArgsFromSelection());
+            OnRequestClose();
+        }
+        public virtual SelectedItemEventArgs<T> GenerateArgsFromSelection()
+        {
+            return new SelectedItemEventArgs<T>(SelectedItem);
+        }
+        #endregion
+        #region Sorting and searching
+        private BaseCommand _SortCommand;
+        public ICommand SortCommand
+        {
+            get
+            {
+                if (_SortCommand == null)
+                {
+                    _SortCommand = new BaseCommand(Sort);
+                }
+                return _SortCommand;
+            }
+        }
+        public string SortField { get; set; }
+        private BaseCommand _FindCommand;
+        public ICommand FindCommand
+        {
+            get
+            {
+                if (_FindCommand == null)
+                    _FindCommand = new BaseCommand(Find);
+                return _FindCommand;
+            }
+        }
+        public string FindField { get; set; }
+        public string FindTextBox { get; set; }
+        public List<string> SortComboBoxItems
+        {
+            get { return getComboBoxSortList(); }
+        }
+        public List<string> FindComboBoxItems
+        {
+            get { return getComboBoxFindList(); }
+        }
+        public abstract void Sort();
+        public abstract void Find();
+        public abstract List<string> getComboBoxSortList();
+        public abstract List<string> getComboBoxFindList();
         #endregion
     }
 }

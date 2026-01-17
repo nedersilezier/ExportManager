@@ -33,6 +33,9 @@
         <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center">Shelf weight</Label>
         <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Path=ShelfWeight, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"/>
         <Label Grid.Row="6" Grid.Column="0" HorizontalAlignment="Center">Remarks</Label>
-        <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Path=Remarks, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+        <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Path=Remarks, UpdateSourceTrigger=PropertyChanged}"
+                 TextWrapping="Wrap"
+                 VerticalContentAlignment="Top"
+                 VerticalScrollBarVisibility="Auto"/>
     </Grid>
 </local:NewItemViewBase>

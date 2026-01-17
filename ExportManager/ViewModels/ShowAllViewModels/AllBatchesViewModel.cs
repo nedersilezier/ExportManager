@@ -122,5 +122,41 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             }
         }
         #endregion
+        #region Sorting and searching
+        public override List<string> getComboBoxSortList()
+        {
+            return new List<string> { "Product name", "Cost price" };
+        }
+        public override void Sort()
+        {
+            switch(SortField)
+            {
+                case "Product name":
+                    List = new ObservableCollection<dynamic>(List.OrderBy(t => t.ProductName));
+                    break;
+                case "Cost price":
+                    List = new ObservableCollection<dynamic>(List.OrderBy(t => t.CostPrice));
+                    break;
+            }
+        }
+        public override List<string> getComboBoxFindList()
+        {
+            return new List<string> { "Product name", "Cost price" };
+        }
+        public override void Find()
+        {
+            switch (FindField)
+            {
+                case "Product name":
+                    Load();
+                    List = new ObservableCollection<dynamic>(List.Where(t => t.ProductName != null && t.ProductName.ToLower().StartsWith(FindTextBox.ToLower())));
+                    break;
+                case "Cost price":
+                    Load();
+                    List = new ObservableCollection<dynamic>(List.Where(t => t.CostPrice != null && t.CostPrice.ToLower().StartsWith(FindTextBox.ToLower())));
+                    break;
+            }
+        }
+        #endregion
     }
 }

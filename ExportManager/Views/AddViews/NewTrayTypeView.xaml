@@ -30,6 +30,9 @@
         <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center">Maximum quantity per tray</Label>
         <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=QtyPerTray, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"/>
         <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center">Remarks</Label>
-        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Path=Remarks, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Path=Remarks, UpdateSourceTrigger=PropertyChanged}"
+                 TextWrapping="Wrap"
+                 VerticalContentAlignment="Top"
+                 VerticalScrollBarVisibility="Auto"/>
     </Grid>
 </local:NewItemViewBase>

@@ -77,5 +77,47 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             return;
         }
         #endregion
+        #region Sorting and searching
+        public override List<string> getComboBoxSortList()
+        {
+            return new List<string> { "Product name", "Expiry date"};
+        }
+        public override void Sort()
+        {
+            switch (SortField)
+            {
+                case "Product name":
+                    List = new ObservableCollection<dynamic>(List.OrderBy(t => t.ProductName));
+                    break;
+                case "Expiry date":
+                    List = new ObservableCollection<dynamic>(List.OrderBy(t => t.ExpiryDate));
+                    break;
+            }
+        }
+        public override List<string> getComboBoxFindList()
+        {
+            return new List<string> { "Product name", "Grower", "Pot size" };
+        }
+        public override void Find()
+        {
+            switch (FindField)
+            {
+                case "Product name":
+                    Load();
+                    List = new ObservableCollection<dynamic>(List.Where(t => t.ProductName != null && t.ProductName.ToLower().StartsWith(FindTextBox.ToLower())));
+                    break;
+                case "Grower":
+                    Load();
+                    List = new ObservableCollection<dynamic>(List.Where(t => t.GrowerName != null && t.GrowerName.ToLower().StartsWith(FindTextBox.ToLower())));
+                    break;
+                case "Pot size":
+                    Load();
+                    int potsize;
+                    if (int.TryParse(FindTextBox, out potsize))
+                        List = new ObservableCollection<dynamic>(List.Where(t => t.Potsize == potsize));
+                    break;
+            }
+        }
+        #endregion
     }
 }

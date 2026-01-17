@@ -11,7 +11,7 @@ using ExportManager.Models;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
-    public class AllGrowersViewModel: AllViewModel<dynamic>
+    public class AllGrowersViewModel : AllViewModel<dynamic>
     {
         #region List
         public override void Load()
@@ -44,7 +44,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #endregion
         #region Constructor
         public AllGrowersViewModel()
-            :base()
+            : base()
         {
             base.DisplayName = "Growers";
         }
@@ -64,6 +64,60 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         public override void OnRemove()
         {
             SoftDelete<Growers>(SelectedItem.GrowerId);
+        }
+        #endregion
+        #region Sorting and searching
+        public override List<string> getComboBoxSortList()
+        {
+            return new List<string> { "Name", "City", "Country", "Registration number" };
+        }
+        public override void Sort()
+        {
+            switch (SortField)
+            {
+                case "Name":
+                    List = new ObservableCollection<dynamic>(List.OrderBy(t => t.ClientName));
+                    break;
+                case "City":
+                    List = new ObservableCollection<dynamic>(List.OrderBy(t => t.City));
+                    break;
+                case "Country":
+                    List = new ObservableCollection<dynamic>(List.OrderBy(t => t.Country));
+                    break;
+                case "Registration number":
+                    List = new ObservableCollection<dynamic>(List.OrderBy(t => t.RegistrationNumber));
+                    break;
+            }
+        }
+        public override List<string> getComboBoxFindList()
+        {
+            return new List<string> { "Name", "City", "Country", "Cultivations", "Tax ID" };
+        }
+        public override void Find()
+        {
+            switch (FindField)
+            {
+                case "Name":
+                    Load();
+                    List = new ObservableCollection<dynamic>(List.Where(t => t.ClientName != null && t.ClientName.ToLower().StartsWith(FindTextBox.ToLower())));
+                    break;
+                case "City":
+                    Load();
+                    List = new ObservableCollection<dynamic>(List.Where(t => t.City != null && t.City.ToLower().StartsWith(FindTextBox.ToLower())));
+                    break;
+                case "Country":
+                    Load();
+                    List = new ObservableCollection<dynamic>(List.Where(t => t.Country != null && t.Country.ToLower().StartsWith(FindTextBox.ToLower())));
+                    break;
+                case "Cultivations":
+                    Load();
+                    List = new ObservableCollection<dynamic>(List.Where(t => t.Cultivations != null && t.Cultivations.ToLower().Contains(FindTextBox.ToLower())));
+                    break;
+                case "Tax ID":
+                    Load();
+                    List = new ObservableCollection<dynamic>(List.Where(t => t.TaxId != null && t.TaxId.StartsWith(FindTextBox)));
+                    break;
+            }
         }
         #endregion
     }

@@ -45,5 +45,42 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             SoftDelete<Categories>(SelectedItem.CategoryId);
         }
         #endregion
+        #region Sorting and searching
+        public override List<string> getComboBoxSortList()
+        {
+            return new List<string> { "Name", "Remarks" };
+        }
+        public override void Sort()
+        {
+            switch(SortField)
+            {
+                case "Name":
+                    List = new ObservableCollection<Categories>(List.OrderBy(t => t.Name));
+                    break;
+                case "Remarks":
+                    List = new ObservableCollection<Categories>(List.OrderBy(t => t.Remarks));
+                    break;
+            }
+        }
+        public override List<string> getComboBoxFindList()
+        {
+            return new List<string> { "Name", "Remarks" };
+        }
+        public override void Find()
+        {
+            switch (FindField)
+            {
+                case "Name":
+                    Load();
+                    List = new ObservableCollection<Categories>(List.Where(t => t.Name != null && t.Name.ToLower().StartsWith(FindTextBox.ToLower())));
+                    break;
+                case "Remarks":
+                    Load();
+                    List = new ObservableCollection<Categories>(List.Where(t => t.Remarks != null && t.Remarks.ToLower().Contains(FindTextBox.ToLower())));
+                    break;
+            }
+
+        }
+        #endregion
     }
 }

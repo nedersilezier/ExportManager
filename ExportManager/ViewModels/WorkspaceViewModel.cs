@@ -14,6 +14,7 @@ namespace ExportManager.ViewModels
     {
         #region Fields
         private BaseCommand _CloseCommand;
+        
         #endregion 
         #region Constructor
         public WorkspaceViewModel()
@@ -68,7 +69,7 @@ namespace ExportManager.ViewModels
         #endregion
         #endregion
         #region Functions
-        protected void OpenNewTab(Func<WorkspaceViewModel> constructor, Action refreshEvent)
+        protected void OpenNewTab(Func<WorkspaceViewModel> constructor, Action refreshEvent = null)
         {
             var viewModel = constructor();
             if (viewModel is NewItemViewModelBase newItemViewModel)

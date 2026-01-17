@@ -43,9 +43,9 @@
                 <DatePicker Grid.Row="0"  Grid.Column="1" SelectedDate="{Binding Date}" Margin="2, 2, 2, 2" VerticalAlignment="Center" Height="30"/>
                 <Label Grid.Row="1" Grid.Column="0" Content="Select invoice" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
                 <ComboBox Grid.Row="1" Grid.Column="1" Margin="2, 2, 2, 2"
-  ItemsSource="{Binding InvoiceComboBoxItems}"
-  SelectedItem="{Binding SelectedInvoice}"
-  VerticalContentAlignment="Center">
+                            ItemsSource="{Binding InvoiceComboBoxItems}"
+                            SelectedItem="{Binding SelectedInvoice}"
+                            VerticalContentAlignment="Center">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Value}"/>
@@ -53,7 +53,7 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
             </Grid>
-            <Button Grid.Column="1" Content="Calculate" Command="{Binding CalculateInvoice}" Width="150" Margin="2, 2, 2, 2" Style="{StaticResource CustomButtonStyle}"/>
+            <Button Grid.Column="1" Content="Calculate" Command="{Binding CalculateInvoice}" Margin="2, 2, 2, 2" Style="{StaticResource CustomButtonStyle}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             <Grid Grid.Column="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40"/>

@@ -11,7 +11,7 @@ using ExportManager.Models;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
-    public class AllClientsViewModel: AllViewModel<dynamic>
+    public class AllClientsViewModel : AllViewModel<dynamic>
     {
         #region List
         public override void Load()
@@ -62,6 +62,49 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         public override void OnRemove()
         {
             SoftDelete<Clients>(SelectedItem.ClientId);
+        }
+        #endregion
+        #region Sorting and searching
+        public override List<string> getComboBoxSortList()
+        {
+            return new List<string> { "Name", "Client code", "Registration number" };
+        }
+        public override void Sort()
+        {
+            switch (SortField)
+            {
+                case "Name":
+                    List = new ObservableCollection<dynamic>(List.OrderBy(t => t.ClientName));
+                    break;
+                case "Client code":
+                    List = new ObservableCollection<dynamic>(List.OrderBy(t => t.ClientCode));
+                    break;
+                case "Registration number":
+                    List = new ObservableCollection<dynamic>(List.OrderBy(t => t.RegistrationNumber));
+                    break;
+            }
+        }
+        public override List<string> getComboBoxFindList()
+        {
+            return new List<string> { "Name", "Contact person", "Tax ID" };
+        }
+        public override void Find()
+        {
+            switch (FindField)
+            {
+                case "Name":
+                    Load();
+                    List = new ObservableCollection<dynamic>(List.Where(t => t.ClientName != null && t.ClientName.ToLower().StartsWith(FindTextBox.ToLower())));
+                    break;
+                case "Contact person":
+                    Load();
+                    List = new ObservableCollection<dynamic>(List.Where(t => t.ContactPerson != null && t.ContactPerson.ToLower().StartsWith(FindTextBox.ToLower())));
+                    break;
+                case "Tax ID":
+                    Load();
+                    List = new ObservableCollection<dynamic>(List.Where(t => t.TaxId != null && t.TaxId.StartsWith(FindTextBox)));
+                    break;
+            }
         }
         #endregion
     }

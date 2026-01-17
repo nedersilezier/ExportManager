@@ -39,5 +39,23 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             return;
         }
         #endregion
+        #region Sorting and searching
+        public override List<string> getComboBoxSortList()
+        {
+            return new List<string> { "Not implemented yet" };
+        }
+        public override void Sort()
+        {
+            return;
+        }
+        public override List<string> getComboBoxFindList()
+        {
+            return new List<string> { "Not implemented yet" };
+        }
+        public override void Find()
+        {
+            return;
+        }
+        #endregion
     }
 }

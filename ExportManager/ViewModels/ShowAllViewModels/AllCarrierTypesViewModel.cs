@@ -45,5 +45,58 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             SoftDelete<CarrierTypes>(SelectedItem.CarrierTypeId);
         }
         #endregion
+        #region Sorting and searching
+        public override List<string> getComboBoxSortList()
+        {
+            return new List<string> { "Name", "Width", "Length" };
+        }
+        public override void Sort()
+        {
+            switch(SortField)
+            {
+                case "Name":
+                    List = new ObservableCollection<dynamic>(List.OrderBy(t => t.Name));
+                    break;
+                case "Width":
+                    List = new ObservableCollection<dynamic>(List.OrderBy(t => t.Width));
+                    break;
+                case "Length":
+                    List = new ObservableCollection<dynamic>(List.OrderBy(t => t.Length));
+                    break;
+            }
+        }
+        public override List<string> getComboBoxFindList()
+        {
+            return new List<string> { "Name", "Width", "Length" };
+        }
+        public override void Find()
+        {
+            switch (FindField)
+            {
+                case "Name":
+                    Load();
+                    List = new ObservableCollection<dynamic>(List.Where(t => t.Name != null && t.Name.ToLower().Contains(FindTextBox.ToLower())));
+                    break;
+                case "Width":
+                    decimal width;
+                    bool isDecimal = decimal.TryParse(FindTextBox, out width);
+                    Load();
+                    if (isDecimal)
+                    {
+                        List = new ObservableCollection<dynamic>(List.Where(t => t.Width == width));
+                    }
+                    break;
+                case "Length":
+                    decimal length;
+                    bool isDecimalLength = decimal.TryParse(FindTextBox, out length);
+                    Load();
+                    if (isDecimalLength)
+                    {
+                        List = new ObservableCollection<dynamic>(List.Where(t => t.Length == length));
+                    }
+                    break;
+            }
+        }
+        #endregion
     }
 }

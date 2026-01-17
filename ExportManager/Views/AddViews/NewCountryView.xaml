@@ -30,6 +30,11 @@
         <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" Margin="0, 8, 0, 8">Member of EU</Label>
         <CheckBox Grid.Row="4" Grid.Column="1" IsChecked="{Binding IsEUMember}" Margin="0, 8, 0, 8"/>
         <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" Margin="0, 8, 0, 8">Remarks</Label>
-        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Path=Remarks}" AcceptsReturn="False" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Margin="0, 8, 0, 8"/>
+        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Path=Remarks}"
+                 AcceptsReturn="False"
+                 TextWrapping="Wrap"
+                 VerticalContentAlignment="Top"
+                 VerticalScrollBarVisibility="Auto"
+                 Margin="0, 8, 0, 8"/>
     </Grid>
 </local:NewItemViewBase>

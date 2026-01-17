@@ -26,7 +26,11 @@
                 <Label Grid.Row="2" Grid.Column="0" Content="Registration number" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
                 <TextBox Grid.Row="2" Grid.Column="1" Margin="0, 2, 0, 2" Text="{Binding RegistrationNo, UpdateSourceTrigger=PropertyChanged}"/>
                 <Label Grid.Row="3" Grid.Column="0" Content="Remarks" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
-                <TextBox Grid.Row="3" Grid.Column="1" Margin="0, 2, 0, 2" Text="{Binding Remarks, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+                <TextBox Grid.Row="3" Grid.Column="1" Margin="0, 2, 0, 2"
+                         Text="{Binding Remarks, UpdateSourceTrigger=PropertyChanged}"
+                         TextWrapping="Wrap"
+                         VerticalContentAlignment="Top"
+                         VerticalScrollBarVisibility="Auto"/>
             </Grid>
         </TabItem>
         <TabItem Header="Address" Height="20" VerticalAlignment="Bottom">

@@ -13,7 +13,7 @@ using System.Collections.ObjectModel;
 
 namespace ExportManager.ViewModels.Abstract
 {
-    public abstract class NewItemViewModel<T>: NewItemViewModelBase where T: class, IHasIsActive, new()
+    public abstract class NewItemViewModel<T>: NewItemViewModelBase where T : class, IHasIsActive, new()
     {
         #region Fields
         protected bool _IsEditMode = false;
@@ -34,7 +34,7 @@ namespace ExportManager.ViewModels.Abstract
             Console.WriteLine("Save called from NewItemViewModel");
             if (!_IsEditMode)
             {
-                Console.WriteLine("Weszlo?????");
+                Console.WriteLine("Can you see me?????");
                 item.IsActive = true;
                 potplantsEntities.Set<T>().Add(item);
             }

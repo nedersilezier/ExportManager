@@ -20,6 +20,8 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Fields
         private BaseCommand _ShowPictureCommand;
         #endregion
+        #region Properties
+        #endregion
         #region List
         public override void Load()
         {
@@ -107,6 +109,47 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             };
         }
         #endregion
-
+        #region Sorting and searching
+        public override List<string> getComboBoxSortList()
+        {
+            return new List<string> { "Product name", "Category" };
+        }
+        public override void Sort()
+        {
+            switch (SortField)
+            {
+                case "Product name":
+                    List = new ObservableCollection<dynamic>(List.OrderBy(t => t.Name));
+                    break;
+                case "Category":
+                    List = new ObservableCollection<dynamic>(List.OrderBy(t => t.CategoryName));
+                    break;
+            }
+        }
+        public override List<string> getComboBoxFindList()
+        {
+            return new List<string> { "Product name", "Category name", "Pot size" };
+        }
+        public override void Find()
+        {
+            switch (FindField)
+            {
+                case "Product name":
+                    Load();
+                    List = new ObservableCollection<dynamic>(List.Where(t => t.Name != null && t.Name.ToLower().StartsWith(FindTextBox.ToLower())));
+                    break;
+                case "Category name":
+                    Load();
+                    List = new ObservableCollection<dynamic>(List.Where(t => t.CategoryName != null && t.CategoryName.ToLower().StartsWith(FindTextBox.ToLower())));
+                    break;
+                case "Pot size":
+                    Load();
+                    int potsize;
+                    if (int.TryParse(FindTextBox, out potsize))
+                        List = new ObservableCollection<dynamic>(List.Where(t => t.Potsize == potsize));
+                    break;
+            }
+        }
+        #endregion
     }
 }

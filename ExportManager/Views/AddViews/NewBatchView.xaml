@@ -68,6 +68,10 @@
         <Label Grid.Row="7" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Expires at</Label>
         <DatePicker Grid.Row="7" Grid.Column="1" Margin="0, 2, 0, 2" SelectedDate="{Binding ExpiryDate}" VerticalAlignment="Center"/>
         <Label Grid.Row="8" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Description</Label>
-        <TextBox Grid.Row="8" Grid.Column="1" Margin="0, 2, 0, 2" Text="{Binding Path=Remarks, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+        <TextBox Grid.Row="8" Grid.Column="1" Margin="0, 2, 0, 2"
+                 Text="{Binding Path=Remarks, UpdateSourceTrigger=PropertyChanged}"
+                 TextWrapping="Wrap"
+                 VerticalContentAlignment="Top"
+                 VerticalScrollBarVisibility="Auto"/>
     </Grid>
 </local:NewItemViewBase>

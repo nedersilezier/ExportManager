@@ -118,6 +118,7 @@
     </Compile>
     <Compile Include="Models\EntitiesForView\AddressesListView.cs" />
     <Compile Include="Models\EntitiesForView\ClientsListView.cs" />
+    <Compile Include="Models\EntitiesForView\CountriesListView.cs" />
     <Compile Include="Models\EntitiesForView\GrowersListView.cs" />
     <Compile Include="Models\EntitiesForView\InvoiceReportItemsListView.cs" />
     <Compile Include="Models\EntitiesForView\KeyAndValue.cs" />
@@ -226,6 +227,8 @@
     <Compile Include="ViewModels\AddViewModels\NewTrayTypeViewModel.cs" />
     <Compile Include="ViewModels\ReportViewModels\VolumeReportViewModel.cs" />
     <Compile Include="ViewModels\ReportViewModels\OrderWeightReportViewModel.cs" />
+    <Compile Include="ViewModels\ShowAllViewModels\IAllViewable.cs" />
+    <Compile Include="ViewModels\ShowAllViewModels\SelectedItemEventArgs.cs" />
     <Compile Include="ViewModels\Windows\ImageWindowEventArgs.cs" />
     <Compile Include="ViewModels\Windows\ImageWindowViewModel.cs" />
     <Compile Include="ViewModels\WorkspaceViewModel.cs" />

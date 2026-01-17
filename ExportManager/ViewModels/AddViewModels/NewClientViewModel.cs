@@ -11,11 +11,79 @@ using System.Windows.Input;
 using ExportManager.Models.EntitiesForView;
 using ExportManager.Models.BusinessLogic;
 using ExportManager.Models.BusinessLogic.ListViewsForUI;
+using ExportManager.ViewModels.ShowAllViewModels;
 
 namespace ExportManager.ViewModels.AddViewModels
 {
-    public class NewClientViewModel: NewItemViewModel<Clients>
+    public class NewClientViewModel : NewItemViewModel<Clients>
     {
+        #region Select test
+        private BaseCommand _SelectTestCommand;
+        public ICommand SelectTestCommand
+        {
+            get
+            {
+                if (_SelectTestCommand == null)
+                {
+                    _SelectTestCommand = new BaseCommand(openSelectTestTab);
+                }
+                return _SelectTestCommand;
+            }
+        }
+        private KeyAndValue _TestAddress;
+        public KeyAndValue TestAddress
+        {
+            get
+            {
+                if (_TestAddress == null)
+                {
+                    _TestAddress = new KeyAndValue();
+                }
+                return _TestAddress;
+            }
+            set
+            {
+                if (_TestAddress != value)
+                {
+                    _TestAddress = value;
+                    OnPropertyChanged(() => TestAddress);
+                }
+            }
+        }
+        public void setTestAddress(SelectedItemEventArgs<dynamic> e)
+        {
+            string FullHouseNumber = e.SelectedItem.HouseNumber + (e.SelectedItem.ApartmentNumber == null || e.SelectedItem.ApartmentNumber == string.Empty ?
+                    string.Empty :
+                    "/" + e.SelectedItem.ApartmentNumber);
+            TestAddress.Key = e.SelectedItem.AddressId;
+            TestAddress.Value = e.SelectedItem.Street + " " + FullHouseNumber + ", " + e.SelectedItem.ZipCode + " " + e.SelectedItem.City + "; " + e.SelectedItem.Country;
+        }
+        //public void setTestAddress(AddressesListView address)
+        //{
+        //    string FullHouseNumber = address.HouseNumber + (address.ApartmentNumber == null || address.ApartmentNumber == string.Empty ?
+        //            string.Empty :
+        //            "/" + address.ApartmentNumber);
+        //    TestAddress.Key = address.AddressId;
+        //    TestAddress.Value = address.Street + " " + FullHouseNumber + ", " + address.ZipCode + " " + address.City + "; " + address.Country;
+        //}
+        private void openSelectTestTab()
+        {
+            OpenNewTab(() => new AllAddressesViewModel(setTestAddress), () => { });
+        }
+        private int _SelectedTabIndex;
+        public int SelectedTabIndex
+        {
+            get => _SelectedTabIndex;
+            set
+            {
+                if (_SelectedTabIndex != value)
+                {
+                    _SelectedTabIndex = value;
+                    OnPropertyChanged(() => SelectedTabIndex);
+                }
+            }
+        }
+        #endregion
         private BaseCommand _NewCountryCommand;
         private KeyAndValue _SelectedCountry;
         private KeyAndValue _SelectedAddress;
@@ -25,8 +93,8 @@ namespace ExportManager.ViewModels.AddViewModels
         public bool _IsAddressesNeeded;
         public bool _IsNotAddressesNeeded;
         #region Constructor
-        public NewClientViewModel(  )
-            :base()
+        public NewClientViewModel()
+            : base()
         {
             base.DisplayName = "New client";
             item = new Clients();
@@ -53,7 +121,7 @@ namespace ExportManager.ViewModels.AddViewModels
             get { return _IsAddressesNeeded; }
             set
             {
-                if( _IsAddressesNeeded != value )
+                if (_IsAddressesNeeded != value)
                 {
                     _IsAddressesNeeded = value;
                     if (value == true)
@@ -76,7 +144,7 @@ namespace ExportManager.ViewModels.AddViewModels
             get { return _IsNotAddressesNeeded; }
             set
             {
-                if( _IsNotAddressesNeeded != value )
+                if (_IsNotAddressesNeeded != value)
                 {
                     _IsNotAddressesNeeded = value;
                     if (value == true)
@@ -176,10 +244,10 @@ namespace ExportManager.ViewModels.AddViewModels
             get { return _SelectedCountry; }
             set
             {
-                if(_SelectedCountry != value)
+                if (_SelectedCountry != value)
                 {
                     _SelectedCountry = value;
-                    OnPropertyChanged(() => SelectedCountry); //sprawdz czy to w ogole potrzebne....
+                    OnPropertyChanged(() => SelectedCountry);
                 }
             }
         }
@@ -188,7 +256,7 @@ namespace ExportManager.ViewModels.AddViewModels
             get { return _SelectedAddress; }
             set
             {
-                if(_SelectedAddress != value)
+                if (_SelectedAddress != value)
                 {
                     _SelectedAddress = value;
                     OnPropertyChanged(() => SelectedAddress);
@@ -197,11 +265,12 @@ namespace ExportManager.ViewModels.AddViewModels
         }
 
         //Client related
-        public string ClientName {
+        public string ClientName
+        {
             get { return item.Name; }
             set
             {
-                if(item.Name != value)
+                if (item.Name != value)
                 {
                     item.Name = value;
                     OnPropertyChanged(() => ClientName);
@@ -213,7 +282,7 @@ namespace ExportManager.ViewModels.AddViewModels
             get { return item.ClientCode; }
             set
             {
-                if(item.ClientCode != value)
+                if (item.ClientCode != value)
                 {
                     item.ClientCode = value;
                     OnPropertyChanged(() => ClientCode);
@@ -249,7 +318,7 @@ namespace ExportManager.ViewModels.AddViewModels
             get { return item.Email; }
             set
             {
-                if( item.Email != value)
+                if (item.Email != value)
                 {
                     item.Email = value;
                     OnPropertyChanged(() => Email);
@@ -320,18 +389,20 @@ namespace ExportManager.ViewModels.AddViewModels
         #region Commands
         public override void Save()
         {
-            if(IsAddressesNeeded)
+            if (IsAddressesNeeded)
             {
-                if (SelectedAddress == null)
+                //if (SelectedAddress == null)
+                if (TestAddress == null)
                     throw new Exception("No address selected");
-                item.AddressId = SelectedAddress.Key;
+                //item.AddressId = SelectedAddress.Key;
+                item.AddressId = TestAddress.Key;
             }
             else
             {
                 if (SelectedCountry == null)
                     throw new Exception("No country selected");
                 newClientAddress.CountryId = SelectedCountry.Key;
-                if(!_IsEditMode)
+                if (!_IsEditMode)
                 {
                     newClientAddress.IsActive = true;
                     potplantsEntities.Addresses.Add(newClientAddress);

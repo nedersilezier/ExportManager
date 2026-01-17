@@ -55,7 +55,11 @@
         <Button Grid.Row="6" Grid.Column="2" Margin="0, 2, 0, 2" Content="New" Command="{Binding NewColorCommand}"/>
         
         <Label Grid.Row="7" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Description</Label>
-        <TextBox Grid.Row="7" Grid.Column="1" Margin="0, 2, 0, 2" Text="{Binding Path=Remarks, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+        <TextBox Grid.Row="7" Grid.Column="1" Margin="0, 2, 0, 2"
+                 Text="{Binding Path=Remarks, UpdateSourceTrigger=PropertyChanged}"
+                 TextWrapping="Wrap"
+                 VerticalContentAlignment="Top"
+                 VerticalScrollBarVisibility="Auto"/>
         <Border Grid.Row="8" Grid.ColumnSpan="3" Background="LightGray" Height="1" VerticalAlignment="Center"/>
         <Grid Grid.Row="9" Grid.ColumnSpan="3" Margin="0, 10, 0, 0">
             <Grid.ColumnDefinitions>
