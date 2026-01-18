@@ -13,41 +13,46 @@ using System.Collections.ObjectModel;
 
 namespace ExportManager.ViewModels.Abstract
 {
-    public abstract class NewItemViewModel<T>: NewItemViewModelBase where T : class, IHasIsActive, new()
+    public abstract class NewItemViewModel<T> : NewItemViewModelBase where T : class, IHasIsActive, new()
     {
         #region Fields
         protected bool _IsEditMode = false;
+        protected string errorMessage = null;
         #endregion
         #region Database
         protected T item;
         #endregion
         #region Constructor
-        public NewItemViewModel()
-            :base()
+        public NewItemViewModel(string[] validatedFields)
+            : base()
         {
             item = new T();
+            ValidatedFields = validatedFields ?? Array.Empty<string>();
         }
         #endregion
         #region Commands
         public override void Save()
         {
-            Console.WriteLine("Save called from NewItemViewModel");
-            if (!_IsEditMode)
+            if (IsValid() == true)
             {
-                Console.WriteLine("Can you see me?????");
-                item.IsActive = true;
-                potplantsEntities.Set<T>().Add(item);
+                if (!_IsEditMode)
+                {
+                    Console.WriteLine("Can you see me?????");
+                    item.IsActive = true;
+                    potplantsEntities.Set<T>().Add(item);
+                }
+                try
+                {
+                    Console.WriteLine("Item name: " + item);
+                    potplantsEntities.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
-            try
-            {
-                Console.WriteLine("Item name: " + item);
-                potplantsEntities.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            //RaiseAdded();
+            else
+                MessageBox.Show(errorMessage + ". Please correct the errors before saving.");
         }
         #endregion
         #region Functions

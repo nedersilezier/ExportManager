@@ -12,6 +12,7 @@ using ExportManager.Models.EntitiesForView;
 using ExportManager.Models.BusinessLogic;
 using ExportManager.Models.BusinessLogic.ListViewsForUI;
 using ExportManager.ViewModels.ShowAllViewModels;
+using ExportManager.ViewModels.Events;
 
 namespace ExportManager.ViewModels.AddViewModels
 {
@@ -91,7 +92,7 @@ namespace ExportManager.ViewModels.AddViewModels
         #endregion
         #region Constructor
         public NewClientViewModel()
-            : base()
+            : base(new[] { "" })
         {
             base.DisplayName = "New client";
             item = new Clients();
@@ -100,7 +101,7 @@ namespace ExportManager.ViewModels.AddViewModels
             IsNotAddressesNeeded = true;
         }
         public NewClientViewModel(int clientId)
-            : base()
+            : base(new[] { "" })
         {
             base.DisplayName = "Edit client";
             _IsEditMode = true;
@@ -389,11 +390,12 @@ namespace ExportManager.ViewModels.AddViewModels
         {
             if (IsAddressesNeeded)
             {
-                //if (SelectedAddress == null)
                 if (SelectedAddress == null)
                     throw new Exception("No address selected");
-                //item.AddressId = SelectedAddress.Key;
-                item.AddressId = SelectedAddress.Key;
+                if(_IsEditMode)
+                    item.AddressId = newClientAddress.AddressId;
+                else
+                    item.AddressId = SelectedAddress.Key;
             }
             else
             {

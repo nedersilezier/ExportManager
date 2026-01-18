@@ -15,21 +15,21 @@ using ExportManager.Models.BusinessLogic.ListViewsForUI;
 
 namespace ExportManager.ViewModels.AddViewModels
 {
-    public class NewAddressViewModel: NewItemViewModel<Addresses>
+    public class NewAddressViewModel : NewItemViewModel<Addresses>
     {
         private BaseCommand _NewCountryCommand;
         private KeyAndValue _SelectedCountry;
         public ObservableCollection<KeyAndValue> _Countries;
         #region Constructor
         public NewAddressViewModel()
-            : base()
+            : base(new[] {""})
         {
             base.DisplayName = "New address";
             item = new Addresses();
             
         }
         public NewAddressViewModel(int addressId)
-            : base()
+            : base(new[] { "" })
         {
             base.DisplayName = "Edit address";
             _IsEditMode = true;

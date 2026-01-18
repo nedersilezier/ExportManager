@@ -11,10 +11,12 @@ using System.Windows;
 using System.Data.Entity.Validation;
 using System.Data.Entity.Infrastructure;
 using ExportManager.ViewModels.AddViewModels;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace ExportManager.ViewModels.Abstract
 {
-    public abstract class NewItemViewModelBase: WorkspaceViewModel
+    public abstract class NewItemViewModelBase : WorkspaceViewModel, IDataErrorInfo
     {
         #region Events
         public event Action Added;
@@ -45,16 +47,23 @@ namespace ExportManager.ViewModels.Abstract
         public abstract void Save();
         private void saveAndClose()
         {
-            try
+            if (IsValid())
+                try
+                {
+                    Save();
+                    RaiseAdded();
+                    OnRequestClose();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+            else
             {
-                Save();
-                RaiseAdded();
-                OnRequestClose();
+                var message = string.Join(Environment.NewLine, this.GetValidationErrors());
+                MessageBox.Show(message + "\nPlease correct the errors before saving.");
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+                
         }
         protected void RaiseAdded()
         {
@@ -74,6 +83,32 @@ namespace ExportManager.ViewModels.Abstract
         //    }
         //    OnRequestOpen(viewModel);
         //}
+        #endregion
+        #region  Validation 
+        public string Error
+        {
+            get
+            {
+                return null;
+            }
+        }
+        public virtual string this[string name] { get { return null; } }
+        public virtual bool IsValid()
+        {
+            return true;
+        }
+        protected string[] ValidatedFields;
+        protected IEnumerable<string> GetValidationErrors()
+        {
+            foreach(var field in ValidatedFields)
+            {
+                var error = this[field];
+                if (!string.IsNullOrEmpty(error))
+                {
+                    yield return field + ": " + error;
+                }
+            }
+        }
         #endregion
     }
 }

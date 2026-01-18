@@ -9,7 +9,7 @@ using ExportManager.Models;
 using ExportManager.Models.EntitiesForView;
 using ExportManager.ViewModels.AddViewModels;
 using ExportManager.Models.BusinessLogic.ListViewsForUI;
-
+using ExportManager.ViewModels.Events;
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
     public class AllAddressesViewModel : AllViewModel<dynamic>

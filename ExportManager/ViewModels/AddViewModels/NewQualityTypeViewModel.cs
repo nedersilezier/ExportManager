@@ -12,13 +12,13 @@ namespace ExportManager.ViewModels.AddViewModels
     {
         #region Constructor
         public NewQualityTypeViewModel()
-            :base()
+            :base(new[] { "" })
         {
             base.DisplayName = "New quality type";
             item = new Qualities();
         }
         public NewQualityTypeViewModel(int qualityTypeId)
-            : base()
+            : base(new[] { "" })
         {
             base.DisplayName = "Edit quality type";
             _IsEditMode = true;

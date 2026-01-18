@@ -12,13 +12,13 @@ namespace ExportManager.ViewModels.AddViewModels
     {
         #region Constructor
         public NewPaymentMethodViewModel()
-            :base()
+            :base(new[] { "" })
         {
             base.DisplayName = "New payment method";
             item = new PaymentMethods();
         }
         public NewPaymentMethodViewModel(int paymentMethodId)
-            : base()
+            : base(new[] { "" })
         {
             base.DisplayName = "Edit payment method";
             _IsEditMode = true;

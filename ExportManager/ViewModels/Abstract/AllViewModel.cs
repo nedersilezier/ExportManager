@@ -1,6 +1,7 @@
 ﻿using ExportManager.Helper;
 using ExportManager.Models;
 using ExportManager.ViewModels.ShowAllViewModels;
+using ExportManager.ViewModels.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -169,8 +170,8 @@ namespace ExportManager.ViewModels.Abstract
         {
             potplantsEntities = new PotplantsEntities();
             IsSelectMode = true;
-            _ItemSelected = itemSetter;
             _GenerateArgsFromSelection = generateArgsFromSelection;
+            _ItemSelected = itemSetter;
         }
         //public AllViewModel(Action<SelectedItemEventArgs<T>> itemSetter)
         //{
@@ -182,7 +183,7 @@ namespace ExportManager.ViewModels.Abstract
         #region Select mode
         private bool _isCRUDMode;
         private bool _isSelectMode;
-        protected event Action<SelectedItemEventArgs> _ItemSelected;
+        protected Action<SelectedItemEventArgs> _ItemSelected;
         protected Func<T, SelectedItemEventArgs> _GenerateArgsFromSelection;
         //protected event Action<SelectedItemEventArgs<T>> _ItemSelected;
         //protected event Action<T> _ItemSelected;

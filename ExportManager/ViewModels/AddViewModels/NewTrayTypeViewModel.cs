@@ -12,13 +12,13 @@ namespace ExportManager.ViewModels.AddViewModels
     {
         #region Constructor
         public NewTrayTypeViewModel()
-            : base()
+            : base(new[] { "" })
         {
             base.DisplayName = "New tray type";
             item = new TrayTypes();
         }
         public NewTrayTypeViewModel(int trayTypeId)
-            : base()
+            : base(new[] { "" })
         {
             base.DisplayName = "Edit tray type";
             _IsEditMode = true;

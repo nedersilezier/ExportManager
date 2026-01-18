@@ -12,13 +12,13 @@ namespace ExportManager.ViewModels.AddViewModels
     {
         #region Constructor
         public NewCategoryViewModel()
-            : base()
+            : base(new[] { "" })
         {
             base.DisplayName = "New category";
             item = new Categories();
         }
         public NewCategoryViewModel(int categoryId)
-            : base()
+            : base(new[] { "" })
         {
             base.DisplayName = "Edit category";
             _IsEditMode = true;

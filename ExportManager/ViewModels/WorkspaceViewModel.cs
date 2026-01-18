@@ -7,6 +7,7 @@ using System.Windows.Input;
 using ExportManager.ViewModels.Abstract;
 using System.Windows;
 using ExportManager.ViewModels.Windows;
+using ExportManager.ViewModels.Events;
 
 namespace ExportManager.ViewModels
 {

@@ -14,13 +14,13 @@ namespace ExportManager.ViewModels.AddViewModels
     {
         #region Constructor
         public NewCountryViewModel()
-        : base()
+        : base(new[] { "" })
         {
             base.DisplayName = "New country";
             item = new Countries();
         }
         public NewCountryViewModel(int countryId)
-        : base()
+        : base(new[] { "" })
         {
             base.DisplayName = "Edit country";
             _IsEditMode = true;

@@ -5,6 +5,7 @@ using ExportManager.Models.BusinessLogic.ListViewsForUI;
 using ExportManager.Models.EntitiesForView;
 using ExportManager.ViewModels.Abstract;
 using ExportManager.ViewModels.ShowAllViewModels;
+using ExportManager.ViewModels.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -122,7 +123,7 @@ namespace ExportManager.ViewModels.AddViewModels
         #endregion
         #region Constructor
         public NewBatchViewModel()
-            :base()
+            :base(new[] { "" })
         {
             base.DisplayName = "New batch";
             item = new StockItems();
@@ -130,7 +131,7 @@ namespace ExportManager.ViewModels.AddViewModels
             IsBlocked = false;
         }
         public NewBatchViewModel(int batchId)
-            : base()
+            : base(new[] { "" })
         {
             base.DisplayName = "Edit batch";
             _IsEditMode = true;

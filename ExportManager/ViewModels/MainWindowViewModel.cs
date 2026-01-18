@@ -12,6 +12,7 @@ using ExportManager.ViewModels;
 using ExportManager.ViewModels.Abstract;
 using ExportManager.ViewModels.ShowAllViewModels;
 using ExportManager.ViewModels.ReportViewModels;
+using ExportManager.ViewModels.Events;
 using System.Windows;
 using ExportManager.ViewModels.Windows;
 using ExportManager.Views.Windows;
@@ -285,55 +286,6 @@ namespace ExportManager.ViewModels
             this.Workspaces.Add(workspace);
             this.SetActiveWorkspace(workspace);
         }
-        //private void ShowAllProducts()
-        //{
-        //    AllProductsViewModel workspace =
-        //        this.Workspaces.FirstOrDefault(vm => vm is AllProductsViewModel)
-        //        as AllProductsViewModel;
-        //    if (workspace == null)
-        //    {
-        //        workspace = new AllProductsViewModel();
-        //        this.Workspaces.Add(workspace);
-        //    }
-        //    this.SetActiveWorkspace(workspace);
-        //}
-        //private void ShowAllOrderItems()
-        //{
-        //    AllOrderItemsViewModel workspace =
-        //        this.Workspaces.FirstOrDefault(vm => vm is AllOrderItemsViewModel)
-        //        as AllOrderItemsViewModel;
-        //    if (workspace == null)
-        //    {
-        //        workspace = new AllOrderItemsViewModel();
-        //        this.Workspaces.Add(workspace);
-        //    }
-
-        //    this.SetActiveWorkspace(workspace);
-        //}
-        //private void ShowAllCarrierTypes()
-        //{
-        //    AllCarrierTypesViewModel workspace =
-        //        this.Workspaces.FirstOrDefault(vm => vm is AllCarrierTypesViewModel)
-        //        as AllCarrierTypesViewModel;
-        //    if (workspace == null)
-        //    {
-        //        workspace = new AllCarrierTypesViewModel();
-        //        this.Workspaces.Add(workspace);
-        //    }
-        //    this.SetActiveWorkspace(workspace);
-        //}
-        //private void ShowAllCategories()
-        //{
-        //    AllCategoriesViewModel workspace =
-        //        this.Workspaces.FirstOrDefault(vm => vm is AllCategoriesViewModel)
-        //        as AllCategoriesViewModel;
-        //    if (workspace == null)
-        //    {
-        //        workspace = new AllCategoriesViewModel();
-        //        this.Workspaces.Add(workspace);
-        //    }
-        //    this.SetActiveWorkspace(workspace);
-        //}
         private void SetActiveWorkspace(WorkspaceViewModel workspace)
         {
             Debug.Assert(this.Workspaces.Contains(workspace));

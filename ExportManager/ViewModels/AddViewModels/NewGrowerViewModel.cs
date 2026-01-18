@@ -5,6 +5,7 @@ using ExportManager.Models.BusinessLogic.ListViewsForUI;
 using ExportManager.Models.EntitiesForView;
 using ExportManager.ViewModels.Abstract;
 using ExportManager.ViewModels.ShowAllViewModels;
+using ExportManager.ViewModels.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -63,7 +64,7 @@ namespace ExportManager.ViewModels.AddViewModels
         #endregion
         #region Constructor
         public NewGrowerViewModel()
-            : base()
+            : base(new[] { "" })
         {
             base.DisplayName = "New grower";
             item = new Growers();
@@ -72,7 +73,7 @@ namespace ExportManager.ViewModels.AddViewModels
             IsNotAddressesNeeded = true;
         }
         public NewGrowerViewModel(int growerId)
-            : base()
+            : base(new[] { "" })
         {
             base.DisplayName = "Edit grower";
             _IsEditMode = true;

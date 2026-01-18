@@ -12,6 +12,7 @@ using ExportManager.ViewModels.AddViewModels;
 using ExportManager.Models;
 using ExportManager.ViewModels.Windows;
 using ExportManager.Views.Windows;
+using ExportManager.ViewModels.Events;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {

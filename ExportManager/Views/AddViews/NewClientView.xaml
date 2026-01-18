@@ -47,9 +47,6 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="150"/>
@@ -57,31 +54,47 @@
                     <ColumnDefinition Width="100"/>
                 </Grid.ColumnDefinitions>
                 <RadioButton Grid.Row="0" Grid.Column="0" Content="Manual address input" x:Name="ManualInput" GroupName="AddressInputType" IsChecked="{Binding IsNotAddressesNeeded}" Margin="0, 2, 0, 2" Height="20"/>
-                <Label Grid.Row="1" Grid.Column="0" Content="Street" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Street, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsChecked, ElementName=ManualInput}" Margin="0, 2, 0, 2"/>
-                <Label Grid.Row="2" Grid.Column="0" Content="House number" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
-                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding HouseNumber, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsChecked, ElementName=ManualInput}" Margin="0, 2, 0, 2"/>
-                <Label Grid.Row="3" Grid.Column="0" Content="Apartment number" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
-                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding ApartmentNumber, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsChecked, ElementName=ManualInput}" Margin="0, 2, 0, 2"/>
-                <Label Grid.Row="4" Grid.Column="0" Content="City" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
-                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding City, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsChecked, ElementName=ManualInput}" Margin="0, 2, 0, 2"/>
-                <Label Grid.Row="5" Grid.Column="0" Content="Zip code" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
-                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding ZipCode, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsChecked, ElementName=ManualInput}" Margin="0, 2, 0, 2"/>
-                <Label Grid.Row="6" Grid.Column="0" Content="Country" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
-                <ComboBox Grid.Row="6" Grid.Column="1" ItemsSource="{Binding Countries}" 
-                          SelectedItem="{Binding SelectedCountry}" 
-                          IsEnabled="{Binding IsChecked, ElementName=ManualInput}"
-                          Margin="0, 2, 0, 2">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Value}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-                <Button Grid.Row="6" Grid.Column="2" Content="Add" Command="{Binding NewCountryCommand}" IsEnabled="{Binding IsChecked, ElementName=ManualInput}" Margin="10, 2, 10, 2"/>
+                <RadioButton Grid.Row="0" Grid.Column="1" Content="Use existing address" x:Name="ExistingInput" GroupName="AddressInputType" IsChecked="{Binding IsAddressesNeeded}" Margin="0, 2, 0, 2"/>
+                <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="0, 10, 0, 2" Visibility="{Binding IsNotAddressesNeeded, Converter={StaticResource BoolToVisibility}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="Street" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Street, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsChecked, ElementName=ManualInput}" Margin="0, 2, 0, 2"/>
+                    <Label Grid.Row="1" Grid.Column="0" Content="House number" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding HouseNumber, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsChecked, ElementName=ManualInput}" Margin="0, 2, 0, 2"/>
+                    <Label Grid.Row="2" Grid.Column="0" Content="Apartment number" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding ApartmentNumber, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsChecked, ElementName=ManualInput}" Margin="0, 2, 0, 2"/>
+                    <Label Grid.Row="3" Grid.Column="0" Content="City" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding City, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsChecked, ElementName=ManualInput}" Margin="0, 2, 0, 2"/>
+                    <Label Grid.Row="4" Grid.Column="0" Content="Zip code" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
+                    <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding ZipCode, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsChecked, ElementName=ManualInput}" Margin="0, 2, 0, 2"/>
+                    <Label Grid.Row="5" Grid.Column="0" Content="Country" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
+                    <ComboBox Grid.Row="5" Grid.Column="1" ItemsSource="{Binding Countries}" 
+          SelectedItem="{Binding SelectedCountry}" 
+          IsEnabled="{Binding IsChecked, ElementName=ManualInput}"
+          Margin="0, 2, 0, 2">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Value}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Grid.Row="5" Grid.Column="2" Content="Add" Command="{Binding NewCountryCommand}" IsEnabled="{Binding IsChecked, ElementName=ManualInput}" Margin="10, 2, 10, 2"/>
+                </Grid>
+
                 
-                <RadioButton Grid.Row="7" Grid.Column="0" Content="Use existing address" x:Name="ExistingInput" GroupName="AddressInputType" IsChecked="{Binding IsAddressesNeeded}" Margin="0, 2, 0, 2"/>
-                <Grid Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Margin="0, 10, 0, 2" Visibility="{Binding IsAddressesNeeded, Converter={StaticResource BoolToVisibility}}">
+                <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0, 10, 0, 2" Visibility="{Binding IsAddressesNeeded, Converter={StaticResource BoolToVisibility}}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>

@@ -13,13 +13,13 @@ namespace ExportManager.ViewModels.AddViewModels
     {
         #region Constructor
         public NewColorViewModel()
-            : base()
+            : base(new[] { "" })
         {
             base.DisplayName = "New color";
             item = new Colors();
         }
         public NewColorViewModel(int colorId)
-            : base()
+            : base(new[] { "" })
         {
             base.DisplayName = "Edit color";
             _IsEditMode = true;

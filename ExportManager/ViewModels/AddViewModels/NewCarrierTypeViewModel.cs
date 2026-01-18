@@ -12,13 +12,13 @@ namespace ExportManager.ViewModels.AddViewModels
     {
         #region Constructor
         public NewCarrierTypeViewModel()
-        : base()
+        : base(new[] { "" })
         {
             base.DisplayName = "New carrier type";
             item = new CarrierTypes();
         }
         public NewCarrierTypeViewModel(int carrierTypeId)
-        : base()
+        : base(new[] { "" })
         {
             base.DisplayName = "Edit carrier type";
             _IsEditMode = true;

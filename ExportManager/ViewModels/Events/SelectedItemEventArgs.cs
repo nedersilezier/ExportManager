@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExportManager.ViewModels.ShowAllViewModels
+namespace ExportManager.ViewModels.Events
 {
     //public class SelectedItemEventArgs<T> : EventArgs
     public class SelectedItemEventArgs : EventArgs

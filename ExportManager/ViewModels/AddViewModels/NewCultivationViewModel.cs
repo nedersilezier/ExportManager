@@ -12,13 +12,13 @@ namespace ExportManager.ViewModels.AddViewModels
     {
         #region Constructor
         public NewCultivationViewModel()
-            :base()
+            :base(new[] { "" })
         {
             base.DisplayName = "New cultivation type";
             item = new Cultivations();
         }
         public NewCultivationViewModel(int cultivationId)
-            : base()
+            : base(new[] { "" })
         {
             base.DisplayName = "Edit cultivation type";
             _IsEditMode = true;

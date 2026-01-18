@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace ExportManager.ViewModels.Windows
+namespace ExportManager.ViewModels.Events
 {
     public class ImageWindowEventArgs: EventArgs
     {

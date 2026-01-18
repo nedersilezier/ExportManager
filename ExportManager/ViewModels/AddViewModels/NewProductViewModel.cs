@@ -14,10 +14,11 @@ using ExportManager.Models.EntitiesForView;
 using ExportManager.Models.BusinessLogic;
 using ExportManager.Models.BusinessLogic.ListViewsForUI;
 using Microsoft.Win32;
+using ExportManager.Models.Validators;
 
 namespace ExportManager.ViewModels.AddViewModels
 {
-    public class NewProductViewModel: NewItemViewModel<Products>
+    public class NewProductViewModel : NewItemViewModel<Products>
     {
         private BaseCommand _NewCategoryCommand;
         private BaseCommand _NewColorCommand;
@@ -29,13 +30,13 @@ namespace ExportManager.ViewModels.AddViewModels
         public ObservableCollection<KeyAndValue> _Colors;
         #region Constructor
         public NewProductViewModel()
-            : base()
+            : base(new[] { "Potsize", "Height", "Weight" })
         {
             base.DisplayName = "New product";
             item = new Products();
         }
         public NewProductViewModel(int productId)
-            :base()
+            : base(new[] { "Potsize", "Height", "Weight" })
         {
             base.DisplayName = "Edit product";
             _IsEditMode = true;
@@ -47,18 +48,18 @@ namespace ExportManager.ViewModels.AddViewModels
         #region Properties
         public ObservableCollection<KeyAndValue> Categories
         {
-            get 
-            { 
-                if(_Categories == null)
+            get
+            {
+                if (_Categories == null)
                     _Categories = new CategoriesForProducts(potplantsEntities).GetCategoriesListItems();
-                return _Categories; 
+                return _Categories;
             }
             set
             {
-                if(_Categories!=value)
+                if (_Categories != value)
                 {
                     _Categories = value;
-                    OnPropertyChanged(()=>Categories);
+                    OnPropertyChanged(() => Categories);
                 }
             }
         }
@@ -72,14 +73,14 @@ namespace ExportManager.ViewModels.AddViewModels
             }
             set
             {
-                if( _Colors!=value)
+                if (_Colors != value)
                 {
                     _Colors = value;
-                    OnPropertyChanged(()=>Colors);
+                    OnPropertyChanged(() => Colors);
                 }
             }
         }
-        
+
         public KeyAndValue SelectedCategory
         {
             get { return _SelectedCategory; }
@@ -90,7 +91,7 @@ namespace ExportManager.ViewModels.AddViewModels
                     _SelectedCategory = value;
                     OnPropertyChanged(() => SelectedCategory);
                 }
-                
+
             }
         }
         public KeyAndValue SelectedColor
@@ -117,18 +118,20 @@ namespace ExportManager.ViewModels.AddViewModels
                 }
             }
         }
-        public decimal? Potsize {
-            get { return item.Potsize; } 
+        public decimal? Potsize
+        {
+            get { return item.Potsize; }
             set
             {
-                if(item.Potsize != value)
+                if (item.Potsize != value)
                 {
                     item.Potsize = value;
                     OnPropertyChanged(() => Potsize);
                 }
             }
         }
-        public decimal? Height {
+        public decimal? Height
+        {
             get { return item.Height; }
             set
             {
@@ -139,18 +142,20 @@ namespace ExportManager.ViewModels.AddViewModels
                 }
             }
         }
-        public decimal? Weight {
+        public decimal? Weight
+        {
             get { return item.Weight; }
             set
             {
-                if(item.Weight != value)
+                if (item.Weight != value)
                 {
                     item.Weight = value;
                     OnPropertyChanged(() => Weight);
                 }
             }
         }
-        public bool Cites {
+        public bool Cites
+        {
             get { return item.IsCites; }
             set
             {
@@ -161,11 +166,12 @@ namespace ExportManager.ViewModels.AddViewModels
                 }
             }
         }
-        public string Remarks {
-            get { return item.Remarks; } 
+        public string Remarks
+        {
+            get { return item.Remarks; }
             set
             {
-                if(item.Remarks != value)
+                if (item.Remarks != value)
                 {
                     item.Remarks = value;
                     OnPropertyChanged(() => Remarks);
@@ -190,7 +196,7 @@ namespace ExportManager.ViewModels.AddViewModels
         {
             get
             {
-                if(_NewCategoryCommand == null)
+                if (_NewCategoryCommand == null)
                 {
                     _NewCategoryCommand = new BaseCommand(OpenNewCategoryTab);
                 }
@@ -210,7 +216,7 @@ namespace ExportManager.ViewModels.AddViewModels
         {
             get
             {
-                if(_SelectImageCommand == null)
+                if (_SelectImageCommand == null)
                     _SelectImageCommand = new BaseCommand(SelectImageDialog);
                 return _SelectImageCommand;
             }
@@ -258,8 +264,8 @@ namespace ExportManager.ViewModels.AddViewModels
         }
         private void SelectImageDialog()
         {
-            var dialogWindow = new OpenFileDialog { Filter = "Image files (*jpg;*.jpeg;*.png)|*.jpg;*.jpeg;*.png"};
-            if(dialogWindow.ShowDialog() == true)
+            var dialogWindow = new OpenFileDialog { Filter = "Image files (*jpg;*.jpeg;*.png)|*.jpg;*.jpeg;*.png" };
+            if (dialogWindow.ShowDialog() == true)
             {
                 string selectedFileName = dialogWindow.FileName;
                 Image = System.IO.File.ReadAllBytes(selectedFileName);
@@ -270,5 +276,34 @@ namespace ExportManager.ViewModels.AddViewModels
             Image = null;
         }
         #endregion
+        #region  Validation 
+        public override string this[string name]
+        {
+            get
+            {
+                string message = null;
+                    switch (name)
+                    {
+                        case "Potsize":
+                            message = NumberValidator.IsPositive(this.Potsize);
+                            break;
+                        case "Height":
+                            message = NumberValidator.IsPositive(this.Height);
+                            break;
+                        case "Weight":
+                            message = NumberValidator.IsPositive(this.Weight);
+                            break;
+                    }
+                    
+                return message;
+            }
+        }
+        public override bool IsValid()
+        {
+            if (this["Potsize"] == null && this["Height"] == null && this["Weight"] == null)
+                return true;
+            return false;
+        }
+        #endregion  //Validation 
     }
 }

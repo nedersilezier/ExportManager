@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using ExportManager.Models.EntitiesForView;
 using ExportManager.ViewModels.AddViewModels;
 using ExportManager.Models;
+using ExportManager.ViewModels.Events;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {

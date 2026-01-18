@@ -187,6 +187,8 @@
     <Compile Include="Models\TrayTypes.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Validators\NumberValidator.cs" />
+    <Compile Include="Models\Validators\Validator.cs" />
     <Compile Include="ViewModels\Abstract\AllViewModel.cs" />
     <Compile Include="Models\Extensions\IHasIsActive.cs" />
     <Compile Include="ViewModels\Abstract\NewItemViewModelBase.cs" />
@@ -228,8 +230,8 @@
     <Compile Include="ViewModels\ReportViewModels\VolumeReportViewModel.cs" />
     <Compile Include="ViewModels\ReportViewModels\OrderWeightReportViewModel.cs" />
     <Compile Include="ViewModels\ShowAllViewModels\IAllViewable.cs" />
-    <Compile Include="ViewModels\ShowAllViewModels\SelectedItemEventArgs.cs" />
-    <Compile Include="ViewModels\Windows\ImageWindowEventArgs.cs" />
+    <Compile Include="ViewModels\Events\SelectedItemEventArgs.cs" />
+    <Compile Include="ViewModels\Events\ImageWindowEventArgs.cs" />
     <Compile Include="ViewModels\Windows\ImageWindowViewModel.cs" />
     <Compile Include="ViewModels\WorkspaceViewModel.cs" />
     <Compile Include="Views\ShowAllViews\AllAddressesView.xaml.cs">
