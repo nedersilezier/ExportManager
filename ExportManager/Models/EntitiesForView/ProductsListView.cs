@@ -30,7 +30,7 @@ namespace ExportManager.Models.EntitiesForView
         {
             get
             {
-                return $"{Name} d{Potsize}cm h{Height}cm";
+                return $"{Name} potsize {Potsize}cm height {Height}cm";
             }
         }
 

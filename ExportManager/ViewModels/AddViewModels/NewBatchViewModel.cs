@@ -57,8 +57,12 @@ namespace ExportManager.ViewModels.AddViewModels
         }
         public void setProduct(SelectedItemEventArgs e)
         {
-            SelectedProduct.Key = e.ItemId;
-            SelectedProduct.Value = e.DisplayName;
+            SelectedProduct = new KeyAndValue {
+                Key = e.ItemId,
+                Value = e.DisplayName
+            };
+            //SelectedProduct.Key = e.ItemId;
+            //SelectedProduct.Value = e.DisplayName;
         }
         private void openSelectProductTab()
         {

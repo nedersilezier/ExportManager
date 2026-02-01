@@ -16,7 +16,7 @@ using System.ComponentModel;
 
 namespace ExportManager.ViewModels.Abstract
 {
-    public abstract class NewItemViewModelBase : WorkspaceViewModel, IDataErrorInfo
+    public abstract class NewItemViewModelBase : WorkspaceViewModel
     {
         #region Events
         public event Action Added;
@@ -85,19 +85,12 @@ namespace ExportManager.ViewModels.Abstract
         //}
         #endregion
         #region  Validation 
-        public string Error
-        {
-            get
-            {
-                return null;
-            }
-        }
+        protected string[] ValidatedFields;
         public virtual string this[string name] { get { return null; } }
         public virtual bool IsValid()
         {
             return true;
         }
-        protected string[] ValidatedFields;
         protected IEnumerable<string> GetValidationErrors()
         {
             foreach(var field in ValidatedFields)

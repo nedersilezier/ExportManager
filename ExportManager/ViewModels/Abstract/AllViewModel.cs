@@ -232,13 +232,14 @@ namespace ExportManager.ViewModels.Abstract
             //_ItemSelected?.Invoke(SelectedItem);
             if(SelectedItem == null)
             {
-                throw new InvalidOperationException("No item is selected.");
+                //throw new InvalidOperationException("No item is selected.");
+                ShowMessageBox("No item is selected.");
+                return;
             }
             if(_GenerateArgsFromSelection == null)
             {
                 throw new InvalidOperationException("GenerateArgsFromSelection function is not set.");
             }
-
             _ItemSelected?.Invoke(_GenerateArgsFromSelection(SelectedItem));
             OnRequestClose();
         }
