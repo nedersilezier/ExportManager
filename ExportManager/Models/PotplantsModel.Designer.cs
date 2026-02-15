@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\ptsiw\OneDrive\Dokumenty\Materialy\semestr5\biznesowe_desktopowe\Przykladowy_projekt\akornatka-12102025162019-MVVMFirma\ExportManager\ExportManager\Models\PotplantsModel.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\Poecilotheria\source\repos\ExportManager\ExportManager\Models\PotplantsModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

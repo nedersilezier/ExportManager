@@ -81,6 +81,7 @@
     <Compile Include="Models\BusinessLogic\ListViewsForUI\AddressesForEntities.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\CarrierTypesForReports.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\CategoriesForProducts.cs" />
+    <Compile Include="Models\BusinessLogic\ListViewsForUI\ClientDetailsQuery.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\ClientsForReports.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\ColorsForProducts.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\CountriesForEntities.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Models\EntitiesForView\GrowersListView.cs" />
     <Compile Include="Models\EntitiesForView\InvoiceReportItemsListView.cs" />
     <Compile Include="Models\EntitiesForView\KeyAndValue.cs" />
+    <Compile Include="Models\EntitiesForView\OrdersListView.cs" />
     <Compile Include="Models\EntitiesForView\ProductsListView.cs" />
     <Compile Include="Models\EntitiesForView\StockItemsListView.cs" />
     <Compile Include="Models\EntitiesForView\WeightReportListView.cs" />
@@ -193,6 +195,7 @@
     <Compile Include="Models\Extensions\IHasIsActive.cs" />
     <Compile Include="ViewModels\Abstract\NewItemViewModelBase.cs" />
     <Compile Include="ViewModels\Abstract\NewItemViewModel.cs" />
+    <Compile Include="ViewModels\AddViewModels\NewOrderViewModel.cs" />
     <Compile Include="ViewModels\ShowAllViewModels\AllAddressesViewModel.cs" />
     <Compile Include="ViewModels\ShowAllViewModels\AllBatchesViewModel.cs" />
     <Compile Include="ViewModels\ShowAllViewModels\AllCarrierTypesViewModel.cs" />
@@ -234,6 +237,9 @@
     <Compile Include="ViewModels\Events\ImageWindowEventArgs.cs" />
     <Compile Include="ViewModels\Windows\ImageWindowViewModel.cs" />
     <Compile Include="ViewModels\WorkspaceViewModel.cs" />
+    <Compile Include="Views\AddViews\NewOrderView.xaml.cs">
+      <DependentUpon>NewOrderView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ShowAllViews\AllAddressesView.xaml.cs">
       <DependentUpon>AllAddressesView.xaml</DependentUpon>
     </Compile>
@@ -379,6 +385,10 @@
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AddViews\NewOrderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ShowAllViews\AllAddressesView.xaml">
       <SubType>Designer</SubType>

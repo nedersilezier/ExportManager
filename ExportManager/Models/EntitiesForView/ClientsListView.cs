@@ -23,5 +23,16 @@ namespace ExportManager.Models.EntitiesForView
         public string TaxId {  get; set; }
         public string RegistrationNumber {  get; set; }
         public string Remarks {  get; set; }
+        public string DisplayName
+        {
+            get
+            {
+                return ClientCode + ", " + Country;
+            }
+        }
+        public string FullHouseNumber
+        {
+            get { return HouseNumber + (ApartmentNumber == null || ApartmentNumber == string.Empty ? string.Empty : "/" + ApartmentNumber); }
+        }
     }
 }

@@ -1,4 +1,7 @@
-﻿using ExportManager.ViewModels.Abstract;
+﻿using ExportManager.Models;
+using ExportManager.Models.EntitiesForView;
+using ExportManager.ViewModels.Abstract;
+using ExportManager.ViewModels.AddViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,12 +11,28 @@ using System.Threading.Tasks;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
-    public class AllOrdersViewModel: AllViewModel<dynamic>
+    public class AllOrdersViewModel: AllViewModel<OrdersListView>
     {
         #region List
         public override void Load()
         {
-            List = new ObservableCollection<dynamic>(potplantsEntities.Orders.Where(t => t.IsActive == true).ToList());
+            List = new ObservableCollection<OrdersListView>(
+                from order in potplantsEntities.Orders
+                where order.IsActive == true
+                select new OrdersListView
+                {
+                    OrderId = order.OrderId,
+                    ClientCode = order.Clients.ClientCode,
+                    ClientName = order.Clients.Name,
+                    OrderDate = order.OrderDate,
+                    PreparationDate = order.PreparationDate,
+                    ShipmentDate = order.ShipmentDate,
+                    DeliveryDate = order.DeliveryDate,
+                    Country = order.Clients.Addresses.Countries.Name,
+                    SalesPerson = order.SalesPerson,
+                    Status = order.Status,
+                    Remarks = order.Remarks
+                });
         }
         #endregion
         #region Constructor
@@ -27,15 +46,15 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Functions
         public override void OnAdd()
         {
-            return;
+            OpenNewTab(() => new NewOrderViewModel(), Load);
         }
         public override void OnEdit()
         {
-            return;
+            OpenNewTab(() => new NewOrderViewModel(SelectedItem.OrderId), Load);
         }
         public override void OnRemove()
         {
-            return;
+            SoftDelete<Orders>(SelectedItem.OrderId);
         }
         #endregion
         #region Sorting and searching

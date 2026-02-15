@@ -6,7 +6,19 @@
              xmlns:local="clr-namespace:ExportManager.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <DataGrid AutoGenerateColumns="True" ItemsSource="{Binding List, IsAsync=True}">
-        
+    <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding List, IsAsync=True}">
+        <DataGrid.Columns>
+            <DataGridTextColumn Header="ID" Binding="{Binding OrderId}" Width="40"/>
+            <DataGridTextColumn Header="Client code" Binding="{Binding ClientCode}" Width="200"/>
+            <DataGridTextColumn Header="Client name" Binding="{Binding ClientName}" Width="200"/>
+            <DataGridTextColumn Header="Country" Binding="{Binding Country}" Width="200"/>
+            <DataGridTextColumn Header="Order date" Binding="{Binding OrderDate, StringFormat=d}" Width="100"/>
+            <DataGridTextColumn Header="Preparation date" Binding="{Binding PreparationDate, StringFormat=d}" Width="100"/>
+            <DataGridTextColumn Header="Shipment date" Binding="{Binding ShipmentDate, StringFormat=d}" Width="100"/>
+            <DataGridTextColumn Header="Delivery date" Binding="{Binding DeliveryDate, StringFormat=d}" Width="100"/>
+            <DataGridTextColumn Header="Sales person" Binding="{Binding SalesPerson}" Width="200"/>
+            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="200"/>
+            <DataGridTextColumn Header="Remarks" Binding="{Binding Remarks}" Width="200"/>
+        </DataGrid.Columns>
     </DataGrid>
 </local:AllViewBase>

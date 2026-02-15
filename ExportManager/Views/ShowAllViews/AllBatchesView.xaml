@@ -6,7 +6,40 @@
              xmlns:local="clr-namespace:ExportManager.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <DataGrid AutoGenerateColumns="True" ItemsSource="{Binding List, IsAsync=True}" SelectedItem="{Binding SelectedItem}" IsReadOnly="True">
-        
+    <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding List, IsAsync=True}" SelectedItem="{Binding SelectedItem}" IsReadOnly="True">
+        <DataGrid.Columns>
+            <DataGridTextColumn Header="ID" Binding="{Binding StockItemId}" Width="30"/>
+            <DataGridTextColumn Header="Product name" Binding="{Binding ProductName}" Width="200"/>
+            <DataGridTextColumn Header="Height" Binding="{Binding ProductHeight}" Width="80"/>
+            <DataGridTextColumn Header="Potsize" Binding="{Binding Potsize}" Width="80"/>
+            <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="80"/>
+            <DataGridTextColumn Header="Cost price" Binding="{Binding CostPrice}" Width="80"/>
+            <DataGridTextColumn Header="Tray type" Binding="{Binding TrayTypeName}" Width="80"/>
+            <DataGridTextColumn Header="Trays amount" Binding="{Binding TrayAmount}" Width="80"/>
+            <DataGridTextColumn Header="Per tray" Binding="{Binding PerTray}" Width="80"/>
+            <DataGridTextColumn Header="Quality" Binding="{Binding QualityName}" Width="80"/>
+            <DataGridTextColumn Header="Grower" Binding="{Binding GrowerName}" Width="100"/>
+            <DataGridTextColumn Header="Country" Binding="{Binding CountryName}" Width="100"/>
+            <DataGridTextColumn Header="Expiry date" Binding="{Binding ExpiryDate}" Width="150"/>
+            <DataGridTextColumn Header="Received at" Binding="{Binding ReceivedAt}" Width="150"/>
+            <DataGridTextColumn Header="Internal no" Binding="{Binding InternalNo}" Width="100"/>
+            <DataGridTextColumn Header="Blocked" Binding="{Binding IsBlocked}" Width="80"/>
+            <DataGridTextColumn Header="Inside" Binding="{Binding IsInside}" Width="80"/>
+            <DataGridTextColumn Header="Remarks" Binding="{Binding Remarks}" Width="100">
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="ToolTip">
+                            <Setter.Value>
+                                <ToolTip>
+                                    <TextBlock Text="{Binding Remarks}"
+                                                    TextWrapping="Wrap"
+                                                    Width="400"/>
+                                </ToolTip>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+        </DataGrid.Columns>
     </DataGrid>
 </local:AllViewBase>

@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using ExportManager.Models.EntitiesForView;
 using ExportManager.ViewModels.AddViewModels;
 using ExportManager.Models;
+using ExportManager.ViewModels.Events;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
@@ -45,6 +46,15 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             : base()
         {
             base.DisplayName = "Clients";
+        }
+        public AllClientsViewModel(Action<SelectedItemEventArgs> itemSetter)
+            : base(itemSetter,
+                  generateArgsFromSelection: 
+                  SelectedItem => new SelectedItemEventArgs(
+                      SelectedItem.ClientId, 
+                      SelectedItem.DisplayName))
+        {
+            base.DisplayName = "Select client";
         }
         #endregion
         #region Commands

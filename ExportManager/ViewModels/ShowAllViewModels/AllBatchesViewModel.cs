@@ -36,6 +36,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                     QuantityLeft = stockitem.QuantityLeft,
                     ExpiryDate = stockitem.ExpiryDate,
                     ReceivedAt = stockitem.ReceivedAt,
+                    PerTray = stockitem.TrayTypes.QtyPerTray,
                     TrayAmount = (int)Math.Ceiling((decimal)(stockitem.Quantity / stockitem.TrayTypes.QtyPerTray)),
                     GrowerName = stockitem.Growers.Name,
                     CountryName = stockitem.Growers.Addresses.Countries.Name,

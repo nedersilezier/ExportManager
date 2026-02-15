@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +16,7 @@ namespace ExportManager.Models.EntitiesForView
         public int? QuantityLeft { get; set; }
         public DateTime? ExpiryDate { get; set; }
         public DateTime? ReceivedAt { get; set; }
+        public int? PerTray { get; set; }
         public int TrayAmount { get; set; }
         public string GrowerName { get; set; }
         public string CountryName { get; set; }

@@ -112,16 +112,16 @@ namespace ExportManager.ViewModels.AddViewModels
         }
         #endregion
         #region Fields
-        private BaseCommand _NewProductCommand;
-        private BaseCommand _NewGrowerCommand;
+        //private BaseCommand _NewProductCommand;
+        //private BaseCommand _NewGrowerCommand;
         private BaseCommand _NewQualityCommand;
         private BaseCommand _NewTrayTypeCommand;
         //private KeyAndValue _SelectedProduct;
         //private KeyAndValue _SelectedGrower;
         private KeyAndValue _SelectedQuality;
         private KeyAndValue _SelectedTrayType;
-        public ObservableCollection<KeyAndValue> _Products;
-        public ObservableCollection<KeyAndValue> _Growers;
+        //public ObservableCollection<KeyAndValue> _Products;   
+        //public ObservableCollection<KeyAndValue> _Growers;
         public ObservableCollection<KeyAndValue> _Qualities;
         public ObservableCollection<KeyAndValue> _TrayTypes;
         #endregion
