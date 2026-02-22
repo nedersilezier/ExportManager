@@ -6,121 +6,141 @@
              xmlns:local="clr-namespace:ExportManager.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Margin="2, 0, 2, 0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="70"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Select client</Label>
-        <TextBox Grid.Row="0" Grid.Column="1" 
+    <TabControl SelectedIndex="{Binding SelectedTabIndex}">
+        <TabItem Header="General">
+            <Grid Margin="2, 0, 2, 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="70"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Select client</Label>
+                <TextBox Grid.Row="0" Grid.Column="1" Margin="0, 2, 0, 2" 
 Text="{Binding SelectedClient.Value, UpdateSourceTrigger=PropertyChanged}"
 IsReadOnly="True"/>
-        <Button Grid.Row="0" Grid.Column="2" Content="Browse clients" Command="{Binding SelectClientCommand}" Width="Auto" Margin="10, 0, 10, 0"/>
-        <Label Grid.Row="1" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Dates</Label>
-        <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="0, 2, 0, 2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"/>
-                <ColumnDefinition Width="200"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Label Grid.Row="0" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Left">Order date</Label>
-            <DatePicker Grid.Row="0" Grid.Column="1" Margin="0, 2, 0, 2" SelectedDate="{Binding OrderDate}" VerticalAlignment="Center"/>
+                <Button Grid.Row="0" Grid.Column="2" Content="Browse clients" Command="{Binding SelectClientCommand}" Width="Auto" Margin="10, 0, 10, 0"/>
+                <Label Grid.Row="1" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Sales person</Label>
+                <TextBox Grid.Row="1" Grid.Column="1" Margin="0, 2, 0, 2" Text="{Binding SalesPerson, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Grid.Row="2" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Remarks</Label>
+                <TextBox Grid.Row="2" Grid.Column="1" Margin="0, 2, 0, 2" Text="{Binding Remarks, UpdateSourceTrigger=PropertyChanged}" 
+                         VerticalContentAlignment="Top"
+                        TextWrapping="Wrap" 
+                         VerticalScrollBarVisibility="Visible"/>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Dates">
+            <Grid Margin="2, 0, 2, 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Order date</Label>
+                <DatePicker Grid.Row="0" Grid.Column="1" Margin="0, 2, 0, 2" SelectedDate="{Binding OrderDate}" VerticalAlignment="Center"/>
 
-            <Label Grid.Row="1" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Left">Preparation date</Label>
-            <DatePicker Grid.Row="1" Grid.Column="1" Margin="0, 2, 0, 2" SelectedDate="{Binding PreparationDate}" VerticalAlignment="Center"/>
+                <Label Grid.Row="1" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Preparation date</Label>
+                <DatePicker Grid.Row="1" Grid.Column="1" Margin="0, 2, 0, 2" SelectedDate="{Binding PreparationDate}" VerticalAlignment="Center"/>
 
-            <Label Grid.Row="2" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Left">Shipment date</Label>
-            <DatePicker Grid.Row="2" Grid.Column="1" Margin="0, 2, 0, 2" SelectedDate="{Binding ShipmentDate}" VerticalAlignment="Center"/>
+                <Label Grid.Row="2" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Shipment date</Label>
+                <DatePicker Grid.Row="2" Grid.Column="1" Margin="0, 2, 0, 2" SelectedDate="{Binding ShipmentDate}" VerticalAlignment="Center"/>
 
-            <Label Grid.Row="3" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Left">Delivery date</Label>
-            <DatePicker Grid.Row="3" Grid.Column="1" Margin="0, 2, 0, 2" SelectedDate="{Binding DeliveryDate}" VerticalAlignment="Center"/>
+                <Label Grid.Row="3" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Delivery date</Label>
+                <DatePicker Grid.Row="3" Grid.Column="1" Margin="0, 2, 0, 2" SelectedDate="{Binding DeliveryDate}" VerticalAlignment="Center"/>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Delivery address">
+            <Grid Margin="0, 2, 0, 2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                <RadioButton Grid.Row="0" Grid.Column="0" Content="Default address" x:Name="ManualInput" GroupName="AddressInputType" IsChecked="{Binding IsNotAddressesNeeded}" Margin="0, 2, 0, 2" Height="20"/>
+                <RadioButton Grid.Row="0" Grid.Column="1" Content="Custom address" x:Name="ExistingInput" GroupName="AddressInputType" IsChecked="{Binding IsAddressesNeeded}" Margin="0, 2, 0, 2"/>
+                <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="0, 10, 0, 2" Visibility="{Binding IsNotAddressesNeeded, Converter={StaticResource BoolToVisibility}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="Street" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" IsReadOnly="True" Text="{Binding SelectedClientDetailed.Street, UpdateSourceTrigger=PropertyChanged}" Margin="0, 2, 0, 2"/>
+                    <Label Grid.Row="1" Grid.Column="0" Content="House number" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" IsReadOnly="True" Text="{Binding SelectedClientDetailed.HouseNumber, UpdateSourceTrigger=PropertyChanged}" Margin="0, 2, 0, 2"/>
+                    <Label Grid.Row="2" Grid.Column="0" Content="Apartment number" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" IsReadOnly="True" Text="{Binding SelectedClientDetailed.ApartmentNumber, UpdateSourceTrigger=PropertyChanged}" Margin="0, 2, 0, 2"/>
+                    <Label Grid.Row="3" Grid.Column="0" Content="City" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" IsReadOnly="True" Text="{Binding SelectedClientDetailed.City, UpdateSourceTrigger=PropertyChanged}" Margin="0, 2, 0, 2"/>
+                    <Label Grid.Row="4" Grid.Column="0" Content="Zip code" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
+                    <TextBox Grid.Row="4" Grid.Column="1" IsReadOnly="True" Text="{Binding SelectedClientDetailed.ZipCode, UpdateSourceTrigger=PropertyChanged}" Margin="0, 2, 0, 2"/>
+                    <Label Grid.Row="5" Grid.Column="0" Content="Country" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
+                    <TextBox Grid.Row="5" Grid.Column="1" IsReadOnly="True" Text="{Binding SelectedClientDetailed.Country, UpdateSourceTrigger=PropertyChanged}" Margin="0, 2, 0, 2"/>
+                </Grid>
 
-        </Grid>
-        <Label Grid.Row="2" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Delivery address</Label>
-        <Grid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="0, 2, 0, 2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"/>
-                <ColumnDefinition Width="300"/>
-                <ColumnDefinition Width="150"/>
-                <ColumnDefinition Width="300"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Label Grid.Row="0" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Left">Street</Label>
-            <TextBox Grid.Row="0" Grid.Column="1" 
-                    Text="{Binding SelectedClientDetailed.Street, UpdateSourceTrigger=PropertyChanged}"
-                    IsReadOnly="True"/>
-
-            <Label Grid.Row="0" Grid.Column="2" Margin="0, 2, 0, 2" HorizontalAlignment="Left">Number</Label>
-            <TextBox Grid.Row="0" Grid.Column="3" 
-        Text="{Binding SelectedClientDetailed.FullHouseNumber, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-        IsReadOnly="True"/>
-            <Label Grid.Row="1" Grid.Column="2" Margin="0, 2, 0, 2" HorizontalAlignment="Left">Zip code</Label>
-            <TextBox Grid.Row="1" Grid.Column="1" 
-        Text="{Binding SelectedClientDetailed.ZipCode, UpdateSourceTrigger=PropertyChanged}"
-        IsReadOnly="True"/>
-
-            <Label Grid.Row="1" Grid.Column="3" Margin="0, 2, 0, 2" HorizontalAlignment="Left">Country</Label>
-            <TextBox Grid.Row="1" Grid.Column="3" 
-        Text="{Binding SelectedClientDetailed.Country, UpdateSourceTrigger=PropertyChanged}"
-        IsReadOnly="True"/>
-
-        </Grid>
-        <!--<Label Grid.Row="1" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Select grower</Label>
-        <TextBox Grid.Row="1" Grid.Column="1"
-                 Text="{Binding SelectedGrower.Value, UpdateSourceTrigger=PropertyChanged}"
-                 IsReadOnly="True"/>
-        <Button Grid.Row="1" Grid.Column="2" Content="Browse growers" Command="{Binding SelectGrowerCommand}" Width="Auto" Margin="10, 0, 10, 0"/>
-        <Label Grid.Row="2" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Select quality</Label>
-        <ComboBox Grid.Row="2" Grid.Column="1" Margin="0, 2, 0, 2" ItemsSource="{Binding Qualities}" SelectedItem="{Binding SelectedQuality}">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Value}"/>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
-        <Button Grid.Row="2" Grid.Column="2" Margin="0, 2, 0, 2" Content="New" Command="{Binding NewQualityCommand}"/>
-        <Label Grid.Row="3" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Select tray type</Label>
-        <ComboBox Grid.Row="3" Grid.Column="1" Margin="0, 2, 0, 2" ItemsSource="{Binding TrayTypes}" SelectedItem="{Binding SelectedTrayType}">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Value}"/>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
-        <Button Grid.Row="3" Grid.Column="2" Margin="0, 2, 0, 2" Content="New" Command="{Binding NewTrayTypeCommand}"/>
-        <Label Grid.Row="4" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Quantity</Label>
-        <TextBox Grid.Row="4" Grid.Column="1" Margin="0, 2, 0, 2" Text="{Binding Path=Quantity, UpdateSourceTrigger=PropertyChanged}"/>
-        <Label Grid.Row="5" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Cost price</Label>
-        <TextBox Grid.Row="5" Grid.Column="1" Margin="0, 2, 0, 2" Text="{Binding Path=CostPrice, UpdateSourceTrigger=PropertyChanged}"/>
-        <Label Grid.Row="6" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Block the line</Label>
-        <CheckBox Grid.Row="6" Grid.Column="1" Margin="0, 2, 0, 2" IsChecked="{Binding IsBlocked}" VerticalAlignment="Center"/>
-        <Label Grid.Row="7" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Expires at</Label>
-        <DatePicker Grid.Row="7" Grid.Column="1" Margin="0, 2, 0, 2" SelectedDate="{Binding ExpiryDate}" VerticalAlignment="Center"/>
-        <Label Grid.Row="8" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Description</Label>
-        <TextBox Grid.Row="8" Grid.Column="1" Margin="0, 2, 0, 2"
-                 Text="{Binding Path=Remarks, UpdateSourceTrigger=PropertyChanged}"
-                 TextWrapping="Wrap"
-                 VerticalContentAlignment="Top"
-                 VerticalScrollBarVisibility="Auto"/>-->
-    </Grid>
+                <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0, 10, 0, 2" Visibility="{Binding IsAddressesNeeded, Converter={StaticResource BoolToVisibility}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="Street" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Street, UpdateSourceTrigger=PropertyChanged}" Margin="0, 2, 0, 2"/>
+                    <Label Grid.Row="1" Grid.Column="0" Content="House number" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding HouseNumber, UpdateSourceTrigger=PropertyChanged}" Margin="0, 2, 0, 2"/>
+                    <Label Grid.Row="2" Grid.Column="0" Content="Apartment number" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding ApartmentNumber, UpdateSourceTrigger=PropertyChanged}" Margin="0, 2, 0, 2"/>
+                    <Label Grid.Row="3" Grid.Column="0" Content="City" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding City, UpdateSourceTrigger=PropertyChanged}" Margin="0, 2, 0, 2"/>
+                    <Label Grid.Row="4" Grid.Column="0" Content="Zip code" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
+                    <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding ZipCode, UpdateSourceTrigger=PropertyChanged}" Margin="0, 2, 0, 2"/>
+                    <Label Grid.Row="5" Grid.Column="0" Content="Country" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
+                    <ComboBox Grid.Row="5" Grid.Column="1" ItemsSource="{Binding Countries}" 
+                                SelectedItem="{Binding SelectedCountry}" 
+                                Margin="0, 2, 0, 2">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Value}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Grid.Row="5" Grid.Column="2" Content="Add" Command="{Binding NewCountryCommand}" Margin="10, 2, 10, 2"/>
+                </Grid>
+            </Grid>
+        </TabItem>
+    </TabControl>
 </local:NewItemViewBase>

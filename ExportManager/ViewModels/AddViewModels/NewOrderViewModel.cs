@@ -23,6 +23,9 @@ namespace ExportManager.ViewModels.AddViewModels
             : base(new[] {""})
         {
             base.DisplayName = "New order";
+            item = new Orders();
+            customAddress = new Addresses();
+            IsNotAddressesNeeded = true;
         }
         public NewOrderViewModel(int orderId)
             : base(new[] { "" })
@@ -33,9 +36,117 @@ namespace ExportManager.ViewModels.AddViewModels
         }
         #endregion
         #region Fields
+        private int _SelectedTabIndex;
+        private bool _IsAddressesNeeded;
+        private bool _IsNotAddressesNeeded;
+        private KeyAndValue _SelectedCountry;
+        private ObservableCollection<KeyAndValue> _Countries;
+        private Addresses customAddress;
+        private BaseCommand _NewCountryCommand;
+        private string _SalesPerson;
+        private string _Remarks;
         #endregion
         #region Properties
+        public int SelectedTabIndex
+        {
+            get
+            {
+                return _SelectedTabIndex;
+            }
+            set
+            {
+                if(_SelectedTabIndex != value)
+                {
+                    _SelectedTabIndex = value;
+                    OnPropertyChanged(() => SelectedTabIndex);
+                }
+            }
+        }
+        public bool IsAddressesNeeded
+        {
+            get { return _IsAddressesNeeded; }
+            set
+            {
+                if (_IsAddressesNeeded != value)
+                {
+                    _IsAddressesNeeded = value;
+                    if (value == true)
+                    {
+                        IsNotAddressesNeeded = false;
+                    }
+                    OnPropertyChanged(() => IsAddressesNeeded);
+                }
+            }
+        }
+        public bool IsNotAddressesNeeded
+        {
+            get { return _IsNotAddressesNeeded; }
+            set
+            {
+                if (_IsNotAddressesNeeded != value)
+                {
+                    _IsNotAddressesNeeded = value;
+                    if (value == true)
+                        IsAddressesNeeded = false;
+                    OnPropertyChanged(() => IsNotAddressesNeeded);
+                }
+            }
+        }
+        public KeyAndValue SelectedCountry
+        {
+            get { return _SelectedCountry; }
+            set
+            {
+                if (_SelectedCountry != value)
+                {
+                    _SelectedCountry = value;
+                    OnPropertyChanged(() => SelectedCountry);
+                }
+            }
+        }
+        public ObservableCollection<KeyAndValue> Countries
+        {
+            get
+            {
+                if (_Countries == null)
+                    _Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
+                return _Countries;
+            }
+            set
+            {
+                if (_Countries != value)
+                {
+                    _Countries = value;
+                    OnPropertyChanged(() => Countries);
+                }
+            }
+        }
+        public string SalesPerson
+        {
+            get { return _SalesPerson; }
+            set
+            {
+                if (_SalesPerson != value)
+                {
+                    _SalesPerson = value;
+                    OnPropertyChanged(() => SalesPerson);
+                }
+            }
+        }
+        public string Remarks
+        {
+            get { return _Remarks; }
+            set
+            {
+                if (_Remarks != value)
+                {
+                    _Remarks = value;
+                    OnPropertyChanged(() => Remarks);
+                }
+            }
+        }
         #endregion
+
         #region Item pickers
         private KeyAndValue _SelectedClient;
         private ClientsListView _SelectedClientDetailed;
@@ -101,6 +212,29 @@ namespace ExportManager.ViewModels.AddViewModels
         private void openSelectClientTab()
         {
             OpenNewTab(() => new AllClientsViewModel(setClient));
+        }
+        #endregion
+        #region Commands
+        public ICommand NewCountryCommand
+        {
+            get
+            {
+                if (_NewCountryCommand == null)
+                {
+                    _NewCountryCommand = new BaseCommand(OpenNewCountryTab);
+                }
+                return _NewCountryCommand;
+            }
+        }
+        #endregion
+        #region Functions
+        private void OpenNewCountryTab()
+        {
+            OpenNewTab(() => new NewCountryViewModel(), RefreshCountries);
+        }
+        private void RefreshCountries()
+        {
+            Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
         }
         #endregion
     }

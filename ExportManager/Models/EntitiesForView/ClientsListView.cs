@@ -27,7 +27,7 @@ namespace ExportManager.Models.EntitiesForView
         {
             get
             {
-                return ClientCode + ", " + Country;
+                return ClientName + "(" + ClientCode +")";
             }
         }
         public string FullHouseNumber
