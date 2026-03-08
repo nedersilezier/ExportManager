@@ -61,8 +61,8 @@ namespace ExportManager.ViewModels.Abstract
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString());
-                    //MessageBox.Show(ex.Message);
+                    //MessageBox.Show(ex.ToString());
+                    MessageBox.Show(ex.Message);
                 }
             else
             {

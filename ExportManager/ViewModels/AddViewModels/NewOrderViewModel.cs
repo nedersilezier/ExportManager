@@ -430,6 +430,15 @@ namespace ExportManager.ViewModels.AddViewModels
         {
             if (SelectedClient.Key == 0)
                 throw new Exception("No client selected.");
+            bool orderExists = potplantsEntities.Orders.Any(
+               o => o.ClientId == SelectedClient.Key && 
+               o.IsActive && 
+               o.OrderDate == OrderDate &&
+               o.PreparationDate == PreparationDate &&
+               o.ShipmentDate == ShipmentDate &&
+               o.DeliveryDate == DeliveryDate);
+            if (orderExists)
+                throw new Exception("An order for this client with the selected dates already exists.");
             item.ClientId = SelectedClient.Key;
             if (IsNotAddressesNeeded)
                 item.DeliveryAddressId = new AddressesForEntities(potplantsEntities).GetAddressIdByClientId(SelectedClient.Key);
@@ -445,9 +454,9 @@ namespace ExportManager.ViewModels.AddViewModels
                     ApartmentNumber = ApartmentNumber,
                     City = City,
                     ZipCode = ZipCode,
-                    CountryId = SelectedCountry.Key
+                    CountryId = SelectedCountry.Key,
+                    IsActive = true
                 };
-                customAddress.IsActive = true;
                 potplantsEntities.Addresses.Add(customAddress);
                 potplantsEntities.SaveChanges();
                 item.DeliveryAddressId = customAddress.AddressId;
