@@ -105,6 +105,7 @@
     <Compile Include="Models\BusinessLogic\ListViewsForUI\GrowersForStockItems.cs" />
     <Compile Include="Models\BusinessLogic\InvoiceCalculator.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\InvoicesForReports.cs" />
+    <Compile Include="Models\BusinessLogic\ListViewsForUI\OrderDetailsQuery.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\OrdersForReports.cs" />
     <Compile Include="Models\BusinessLogic\OrderWeightCalculator.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\ProductsForStockItems.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="Models\Colors.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Converters\InverseBoolToVisibilityConverter.cs" />
     <Compile Include="Models\Countries.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>

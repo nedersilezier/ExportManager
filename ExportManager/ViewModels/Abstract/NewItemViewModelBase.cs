@@ -18,6 +18,11 @@ namespace ExportManager.ViewModels.Abstract
 {
     public abstract class NewItemViewModelBase : WorkspaceViewModel
     {
+        #region Fields
+        protected bool _IsCreationMode = true;
+        #endregion
+        #region Properties
+        #endregion
         #region Events
         public event Action Added;
         #endregion

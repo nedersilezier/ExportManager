@@ -16,14 +16,15 @@ namespace ExportManager.Models.BusinessLogic.ListViewsForUI
         }
         #endregion
         #region Functions
-        public IQueryable<Clients> getClientById(int id)
+        public IQueryable<Clients> GetClientById(int id)
         {
             return potplantsEntities.Clients.Where(c => c.IsActive && c.ClientId == id);
         }
-        public IQueryable<ClientsListView> getClientFullDetailsById(int id)
+        public IQueryable<ClientsListView> GetClientFullDetailsById(int id)
         {
-            return getClientById(id).Select(client => new ClientsListView
+            return GetClientById(id).Select(client => new ClientsListView
             {
+                ClientId = client.ClientId,
                 ClientName = client.Name,
                 ClientCode = client.ClientCode,
                 ContactPerson = client.ContactPerson,
@@ -40,9 +41,9 @@ namespace ExportManager.Models.BusinessLogic.ListViewsForUI
                 Remarks = client.Remarks
             });
         }
-        public IQueryable<ClientsListView> getClientAddressDetailsById(int id)
+        public IQueryable<ClientsListView> GetClientAddressDetailsById(int id)
         {
-            return getClientById(id).Select(client => new ClientsListView
+            return GetClientById(id).Select(client => new ClientsListView
             {
                 City = client.Addresses.City,
                 Street = client.Addresses.Street,
@@ -50,6 +51,14 @@ namespace ExportManager.Models.BusinessLogic.ListViewsForUI
                 ApartmentNumber = client.Addresses.ApartmentNumber,
                 ZipCode = client.Addresses.ZipCode,
                 Country = client.Addresses.Countries.Name
+            });
+        }
+        public IQueryable<KeyAndValue> GetKeyAndValueById(int clientId)
+        {
+            return GetClientById(clientId).Select(c => new KeyAndValue
+            {
+                Key = c.ClientId,
+                Value = c.Name + "(" + c.ClientCode + ")"
             });
         }
         #endregion

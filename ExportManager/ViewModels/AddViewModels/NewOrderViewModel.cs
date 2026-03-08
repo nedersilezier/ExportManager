@@ -14,6 +14,7 @@ using ExportManager.ViewModels.ShowAllViewModels;
 using System.Security.Cryptography;
 using ExportManager.Models.BusinessLogic.ListViewsForUI;
 using ExportManager.Models.Extensions;
+using System.Security.Policy;
 
 namespace ExportManager.ViewModels.AddViewModels
 {
@@ -34,14 +35,19 @@ namespace ExportManager.ViewModels.AddViewModels
 
         }
         public NewOrderViewModel(int orderId)
-            : base(new[] { "" })
+            : base(new[] {""} )
         {
+            item = potplantsEntities.Orders.FirstOrDefault(o => o.OrderId == orderId);
             base.DisplayName = "Edit order";
-            _IsEditMode = true;
-            item = potplantsEntities.Orders.Where(o => o.OrderId == orderId).FirstOrDefault();
+            IsEditMode = true;
+            SelectedDeliveryAddress = new OrderDetailsQuery(potplantsEntities).GetOrdersDeliveryAddress(orderId).FirstOrDefault();
+            SelectedClient = new ClientDetailsQuery(potplantsEntities).GetKeyAndValueById(item.ClientId).FirstOrDefault();
+            SelectedCountry = Countries.FirstOrDefault(c => c.Key == item.Addresses.Countries.CountryId);
+            IsNotAddressesNeeded = true;
         }
         #endregion
         #region Fields
+        //logic
         private int _SelectedTabIndex;
         //address related
         private bool _IsAddressesNeeded;
@@ -56,8 +62,11 @@ namespace ExportManager.ViewModels.AddViewModels
         private string _City;
         private string _ZipCode;
         //other
+        //Edit mode
+        private AddressesListView _SelectedDeliveryAddress;
         #endregion
         #region Properties
+        //logic
         public int SelectedTabIndex
         {
             get
@@ -70,6 +79,18 @@ namespace ExportManager.ViewModels.AddViewModels
                 {
                     _SelectedTabIndex = value;
                     OnPropertyChanged(() => SelectedTabIndex);
+                }
+            }
+        }
+        public bool IsEditMode
+        {
+            get { return _IsEditMode; }
+            set
+            {
+                if (_IsEditMode != value)
+                {
+                    _IsEditMode = value;
+                    OnPropertyChanged(() => IsEditMode);
                 }
             }
         }
@@ -294,6 +315,26 @@ namespace ExportManager.ViewModels.AddViewModels
                 }
             }
         }
+        //Edit mode
+        public AddressesListView SelectedDeliveryAddress
+        {
+            get
+            {
+                if (_SelectedDeliveryAddress == null)
+                {
+                    _SelectedDeliveryAddress = new AddressesListView();
+                }
+                return _SelectedDeliveryAddress;
+            }
+            set
+            {
+                if (_SelectedDeliveryAddress != value)
+                {
+                    _SelectedDeliveryAddress = value;
+                    OnPropertyChanged(() => SelectedDeliveryAddress);
+                }
+            }
+        }
         #endregion
 
         #region Item pickers
@@ -356,7 +397,7 @@ namespace ExportManager.ViewModels.AddViewModels
                 Key = e.ItemId,
                 Value = e.DisplayName
             };
-            SelectedClientDetailed = new ClientDetailsQuery(potplantsEntities).getClientAddressDetailsById(e.ItemId).FirstOrDefault();
+            SelectedClientDetailed = new ClientDetailsQuery(potplantsEntities).GetClientAddressDetailsById(e.ItemId).FirstOrDefault();
         }
         private void openSelectClientTab()
         {
@@ -379,6 +420,14 @@ namespace ExportManager.ViewModels.AddViewModels
         #region Functions
         public override void Save()
         {
+            if (IsEditMode)
+                UpdateOrder();
+            else
+                CreateOrder();
+            potplantsEntities.SaveChanges();
+        }
+        private void CreateOrder()
+        {
             if (SelectedClient.Key == 0)
                 throw new Exception("No client selected.");
             item.ClientId = SelectedClient.Key;
@@ -398,6 +447,7 @@ namespace ExportManager.ViewModels.AddViewModels
                     ZipCode = ZipCode,
                     CountryId = SelectedCountry.Key
                 };
+                customAddress.IsActive = true;
                 potplantsEntities.Addresses.Add(customAddress);
                 potplantsEntities.SaveChanges();
                 item.DeliveryAddressId = customAddress.AddressId;
@@ -405,7 +455,19 @@ namespace ExportManager.ViewModels.AddViewModels
             item.IsActive = true;
             item.Status = OrderStatuses.Open;
             potplantsEntities.Orders.Add(item);
-            potplantsEntities.SaveChanges();
+        }
+        private void UpdateOrder()
+        {
+            var address = potplantsEntities.Addresses.FirstOrDefault(a => a.AddressId == item.DeliveryAddressId);
+            if (address != null)
+            {
+                address.Street = SelectedDeliveryAddress.Street;
+                address.HouseNumber = SelectedDeliveryAddress.HouseNumber;
+                address.ApartmentNumber = SelectedDeliveryAddress.ApartmentNumber;
+                address.City = SelectedDeliveryAddress.City;
+                address.ZipCode = SelectedDeliveryAddress.ZipCode;
+                address.CountryId = SelectedCountry.Key;
+            }
         }
         private void OpenNewCountryTab()
         {
