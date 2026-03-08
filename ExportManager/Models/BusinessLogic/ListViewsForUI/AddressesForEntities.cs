@@ -40,6 +40,10 @@ namespace ExportManager.Models.BusinessLogic.ListViewsForUI
             //    }).ToList()
             //);
         }
+        public int GetAddressIdByClientId(int clientId)
+        {             
+            return potplantsEntities.Clients.Where(c => c.ClientId == clientId).Select(c => c.AddressId).FirstOrDefault();
+        }
         #endregion
     }
 }

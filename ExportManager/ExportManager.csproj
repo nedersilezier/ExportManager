@@ -41,6 +41,21 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>64314557AA87DEBACE23B3B0DDBE8DBA856089DB</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>ExportManager_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>ExportManager_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
@@ -128,6 +143,7 @@
     <Compile Include="Models\EntitiesForView\StockItemsListView.cs" />
     <Compile Include="Models\EntitiesForView\WeightReportListView.cs" />
     <Compile Include="Models\Extensions\HasIsActive..cs" />
+    <Compile Include="Models\Extensions\OrderStatuses.cs" />
     <Compile Include="Models\Extensions\StringExtensions.cs" />
     <Compile Include="Models\Growers.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
@@ -371,6 +387,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>PotplantsModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="ExportManager_TemporaryKey.pfx" />
     <None Include="Models\PotplantsModel.edmx.diagram">
       <DependentUpon>PotplantsModel.edmx</DependentUpon>
     </None>
