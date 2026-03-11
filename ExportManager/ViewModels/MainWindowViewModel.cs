@@ -161,7 +161,7 @@ namespace ExportManager.ViewModels
                 new CommandViewModel("Stock", new BaseCommand(() => this.ShowAll<AllInStockViewModel>())),
                 new CommandViewModel("Batches", new BaseCommand(() => this.ShowAll<AllBatchesViewModel>())),
                 new CommandViewModel("Orders", new BaseCommand(() => this.ShowAll<AllOrdersViewModel>())),
-                new CommandViewModel("Order items", new BaseCommand(() => this.ShowAll<AllOrderItemsViewModel>())),
+                //new CommandViewModel("Order items", new BaseCommand(() => this.ShowAll<AllOrderItemsViewModel>())),
                 new CommandViewModel("Invoices", new BaseCommand(() => this.ShowAll<AllInvoicesViewModel>()))
             };
         }

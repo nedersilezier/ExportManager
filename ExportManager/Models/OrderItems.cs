@@ -36,10 +36,11 @@ namespace ExportManager.Models
         public Nullable<System.DateTime> DeletedAt { get; set; }
         public string DeletedBy { get; set; }
         public string Remarks { get; set; }
-        public string InternalNo { get; set; }
         public Nullable<System.DateTime> OrderedDate { get; set; }
         public Nullable<System.DateTime> DeliveredDate { get; set; }
         public int StockItemId { get; set; }
+        public bool IsScanned { get; set; }
+        public int InternalNo { get; set; }
     
         public virtual Orders Orders { get; set; }
         public virtual StockItems StockItems { get; set; }

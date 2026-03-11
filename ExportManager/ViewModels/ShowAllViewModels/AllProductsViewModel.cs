@@ -89,7 +89,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         private void OnShowPicture()
         {
-            if (SelectedItem != null && SelectedItem is ProductsListView)
+            if (SelectedItem != null && SelectedItem is ProductsListView)   
             {
                 int productId = SelectedItem.ProductId;
                 var image = potplantsEntities.Products.Where(t => t.ProductId == productId).Select(t => t.Image).FirstOrDefault();
@@ -105,12 +105,6 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         public override IList<CommandViewModel> CreateExtraCommands()
         {
-            //List<CommandViewModel> TestList = new List<CommandViewModel>();
-            //for(int i = 0; i < 4; i++)
-            //{
-            //    TestList.Add(new CommandViewModel("Test button " + (i+1).ToString(), TestCommand));
-            //}
-            //return TestList;
             return new List<CommandViewModel>
             {
                 new CommandViewModel("Picture", ShowPictureCommand)

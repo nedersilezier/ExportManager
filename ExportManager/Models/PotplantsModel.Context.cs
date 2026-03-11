@@ -41,7 +41,6 @@ namespace ExportManager.Models
         public virtual DbSet<PaymentMethods> PaymentMethods { get; set; }
         public virtual DbSet<Products> Products { get; set; }
         public virtual DbSet<Qualities> Qualities { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<TrayTypes> TrayTypes { get; set; }
         public virtual DbSet<StockItems> StockItems { get; set; }
         public virtual DbSet<StockMovements> StockMovements { get; set; }

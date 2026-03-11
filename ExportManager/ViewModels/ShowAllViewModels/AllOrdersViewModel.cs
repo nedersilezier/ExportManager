@@ -1,4 +1,5 @@
-﻿using ExportManager.Models;
+﻿using ExportManager.Helper;
+using ExportManager.Models;
 using ExportManager.Models.EntitiesForView;
 using ExportManager.ViewModels.Abstract;
 using ExportManager.ViewModels.AddViewModels;
@@ -8,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
@@ -42,7 +44,25 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             base.DisplayName = "Orders";
         }
         #endregion
-
+        #region Commands
+        private BaseCommand _ShowDetailsCommand;
+        public ICommand ShowDetailsCommand
+        {
+            get
+                {
+                if(_ShowDetailsCommand == null)
+                    _ShowDetailsCommand = new BaseCommand(OnShowDetails);
+                return _ShowDetailsCommand;
+            }
+        }
+        public override IList<CommandViewModel> CreateExtraCommands()
+        {
+            return new List<CommandViewModel>
+            {
+                new CommandViewModel("Details", ShowDetailsCommand)
+            };
+        }
+        #endregion
         #region Functions
         public override void OnAdd()
         {
@@ -55,6 +75,15 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         public override void OnRemove()
         {
             SoftDelete<Orders>(SelectedItem.OrderId);
+        }
+        private void OnShowDetails()
+        {
+            if(SelectedItem == null)
+            {
+                ShowMessageBox("No order selected.");
+                return;
+            }
+            OpenNewTab(() => new AllOrderItemsViewModel(SelectedItem.OrderId));
         }
         #endregion
         #region Sorting and searching
