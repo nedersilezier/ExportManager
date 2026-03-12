@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using ExportManager.Models.EntitiesForView;
+using ExportManager.Models.BusinessLogic.ListViewsForUI;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
@@ -51,7 +52,8 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             :base()
         {
                 _OrderId = orderId;
-            base.DisplayName = "Order items";
+            //base.DisplayName = "Order items";
+            base.DisplayName = new OrderDetailsQuery(potplantsEntities).GetOrderDisplayName(orderId);
         }
         #endregion
 

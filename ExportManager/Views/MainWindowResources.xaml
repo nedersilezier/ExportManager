@@ -227,8 +227,7 @@
     </Style>
 
     <!--
-  This template explains how to render the list of commands on the left
-  side in the main window (the 'Control Panel' area).
+  This template explains how to render the list of commands
   -->
     <DataTemplate x:Key="CommandsTemplate">
         <ItemsControl IsTabStop="False" ItemsSource="{Binding}" Margin="6,2">
@@ -263,10 +262,16 @@
         VerticalContentAlignment="Bottom"
         Width="16" Height="16" 
         />
-            <ContentPresenter 
+            <!--<ContentPresenter 
         Content="{Binding Path=DisplayName}" 
-        VerticalAlignment="Center" 
-        />
+        VerticalAlignment="Center"   
+        />-->
+            <TextBlock
+            Text="{Binding DisplayName}"
+            VerticalAlignment="Center"
+            TextTrimming="CharacterEllipsis"
+            TextWrapping="NoWrap"
+            ToolTip="{Binding DisplayName}" />
         </DockPanel>
     </DataTemplate>
 

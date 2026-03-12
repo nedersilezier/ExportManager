@@ -1,6 +1,7 @@
 ﻿using ExportManager.Models.EntitiesForView;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,6 +33,17 @@ namespace ExportManager.Models.BusinessLogic.ListViewsForUI
                 ApartmentNumber = o.Addresses.ApartmentNumber,
                 ZipCode = o.Addresses.ZipCode
             });
+        }
+        public string GetOrderDisplayName(int orderId)
+        {
+            return GetOrderById(orderId)
+                .Select(o => new
+                {
+                    o.Clients.ClientCode,
+                    o.OrderDate
+                })
+                .AsEnumerable()
+                .Select(o => $"{o.ClientCode} {o.OrderDate:dd-MM-yyyy}").FirstOrDefault();
         }
         #endregion
     }
