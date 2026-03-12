@@ -211,6 +211,7 @@
     <Compile Include="Models\Extensions\IHasIsActive.cs" />
     <Compile Include="ViewModels\Abstract\NewItemViewModelBase.cs" />
     <Compile Include="ViewModels\Abstract\NewItemViewModel.cs" />
+    <Compile Include="ViewModels\AddViewModels\NewOrderItemViewModel.cs" />
     <Compile Include="ViewModels\AddViewModels\NewOrderViewModel.cs" />
     <Compile Include="ViewModels\ShowAllViewModels\AllAddressesViewModel.cs" />
     <Compile Include="ViewModels\ShowAllViewModels\AllBatchesViewModel.cs" />
@@ -253,6 +254,9 @@
     <Compile Include="ViewModels\Events\ImageWindowEventArgs.cs" />
     <Compile Include="ViewModels\Windows\ImageWindowViewModel.cs" />
     <Compile Include="ViewModels\WorkspaceViewModel.cs" />
+    <Compile Include="Views\AddViews\NewOrderItemView.xaml.cs">
+      <DependentUpon>NewOrderItemView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AddViews\NewOrderView.xaml.cs">
       <DependentUpon>NewOrderView.xaml</DependentUpon>
     </Compile>
@@ -403,6 +407,10 @@
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AddViews\NewOrderItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AddViews\NewOrderView.xaml">
       <SubType>Designer</SubType>

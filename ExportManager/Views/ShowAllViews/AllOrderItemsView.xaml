@@ -6,9 +6,35 @@
              xmlns:local="clr-namespace:ExportManager.Views"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <DataGrid AutoGenerateColumns="True" ItemsSource="{Binding List, IsAsync=True}" SelectedItem="{Binding SelectedItem}" IsReadOnly="True" Margin="2,0,2,0">
-        <!--<DataGrid.Columns>
-            <DataGridTextColumn Header="ID" Binding="{Binding OrderItemId}" Width="40"/>
-        </DataGrid.Columns>-->
+    <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding List, IsAsync=True}" SelectedItem="{Binding SelectedItem}" IsReadOnly="True" Margin="2,0,2,0">
+        <DataGrid.Columns>
+            <DataGridTextColumn Header="Line No" Binding="{Binding InternalNo}" Width="50"/>
+            <DataGridTextColumn Header="ID" Binding="{Binding OrderItemId}" Width="50"/>
+            <DataGridTextColumn Header="Product name" Binding="{Binding FullProductName}" Width="400"/>
+            <DataGridTextColumn Header="Quality" Binding="{Binding Quality}" Width="70"/>
+            <DataGridTextColumn Header="Tray" Binding="{Binding TrayType}" Width="50"/>
+            <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="80"/>
+            <DataGridTextColumn Header="Unit price" Binding="{Binding UnitPrice}" Width="80"/>
+            <DataGridTextColumn Header="Line total" Binding="{Binding TotalPriceString}" Width="100"/>
+            <DataGridTextColumn Header="Grower" Binding="{Binding GrowerName}" Width="150"/>
+            <DataGridTextColumn Header="Ordered" Binding="{Binding OrderedDate}" Width="120"/>
+            <DataGridTextColumn Header="Scanned" Binding="{Binding IsScannedString}" Width="70"/>
+            <DataGridTextColumn Header="Stock ID" Binding="{Binding StockItemId}" Width="70"/>
+            <DataGridTextColumn Header="Remarks" Binding="{Binding Remarks}" MinWidth="220" Width="SizeToCells">
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="ToolTip">
+                            <Setter.Value>
+                                <ToolTip>
+                                    <TextBlock Text="{Binding Remarks}"
+                                   TextWrapping="Wrap"
+                                   Width="400"/>
+                                </ToolTip>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+        </DataGrid.Columns>
     </DataGrid>
 </local:AllViewBase>

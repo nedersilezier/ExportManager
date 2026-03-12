@@ -37,6 +37,11 @@ namespace ExportManager.Models.BusinessLogic.ListViewsForUI
         public string GetOrderDisplayName(int orderId)
         {
             return GetOrderById(orderId)
+                .Select(o => o.Clients.ClientCode).FirstOrDefault();
+        }
+        public string GetOrderFullDisplayName(int orderId)
+        {
+            return GetOrderById(orderId)
                 .Select(o => new
                 {
                     o.Clients.ClientCode,

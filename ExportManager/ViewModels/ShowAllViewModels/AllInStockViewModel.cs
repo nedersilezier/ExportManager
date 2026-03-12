@@ -9,17 +9,18 @@ using System.Windows.Input;
 using ExportManager.Models.EntitiesForView;
 using ExportManager.ViewModels.Abstract;
 using static System.Net.Mime.MediaTypeNames;
+using ExportManager.ViewModels.Events;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
-    public class AllInStockViewModel : AllViewModel<dynamic>
+    public class AllInStockViewModel : AllViewModel<StockItemsListView>
     {
         #region Fields
         #endregion
         #region List
         public override void Load()
         {
-            List = new ObservableCollection<dynamic>(
+            List = new ObservableCollection<StockItemsListView>(
                 from stockitem in potplantsEntities.StockItems
                 where stockitem.IsActive == true
                 && stockitem.IsBlocked == false
@@ -54,6 +55,13 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         {
             base.DisplayName = "Stock items";
         }
+        public AllInStockViewModel(Action<SelectedItemEventArgs> itemSetter)
+            : base(itemSetter,
+                 generateArgsFromSelection:
+                 selectedItem => new SelectedItemEventArgs(selectedItem.StockItemId, selectedItem.DisplayName))
+        {
+            base.DisplayName = "Select the stock item";
+        }
         #endregion
         #region Commands
         public override IList<CommandViewModel> CreateExtraCommands()
@@ -80,17 +88,17 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Sorting and searching
         public override List<string> getComboBoxSortList()
         {
-            return new List<string> { "Product name", "Expiry date"};
+            return new List<string> { "Product name", "Expiry date" };
         }
         public override void Sort()
         {
             switch (SortField)
             {
                 case "Product name":
-                    List = new ObservableCollection<dynamic>(List.OrderBy(t => t.ProductName));
+                    List = new ObservableCollection<StockItemsListView>(List.OrderBy(t => t.ProductName));
                     break;
                 case "Expiry date":
-                    List = new ObservableCollection<dynamic>(List.OrderBy(t => t.ExpiryDate));
+                    List = new ObservableCollection<StockItemsListView>(List.OrderBy(t => t.ExpiryDate));
                     break;
             }
         }
@@ -104,17 +112,17 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             {
                 case "Product name":
                     Load();
-                    List = new ObservableCollection<dynamic>(List.Where(t => t.ProductName != null && t.ProductName.ToLower().StartsWith(FindTextBox.ToLower())));
+                    List = new ObservableCollection<StockItemsListView>(List.Where(t => t.ProductName != null && t.ProductName.ToLower().StartsWith(FindTextBox.ToLower())));
                     break;
                 case "Grower":
                     Load();
-                    List = new ObservableCollection<dynamic>(List.Where(t => t.GrowerName != null && t.GrowerName.ToLower().StartsWith(FindTextBox.ToLower())));
+                    List = new ObservableCollection<StockItemsListView>(List.Where(t => t.GrowerName != null && t.GrowerName.ToLower().StartsWith(FindTextBox.ToLower())));
                     break;
                 case "Pot size":
                     Load();
                     int potsize;
                     if (int.TryParse(FindTextBox, out potsize))
-                        List = new ObservableCollection<dynamic>(List.Where(t => t.Potsize == potsize));
+                        List = new ObservableCollection<StockItemsListView>(List.Where(t => t.Potsize == potsize));
                     break;
             }
         }

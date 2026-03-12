@@ -16,13 +16,28 @@ namespace ExportManager.Models.EntitiesForView
         public decimal? NetAmount { get; set; }
         public decimal? TaxAmount { get; set; }
         public decimal? GrossAmount { get; set; }
+        //public string FullName
+        //{
+        //    get
+        //    {
+        //        return Name
+        //            + (Potsize != null ? " d" + Potsize.Value.ToString("G29") + " " : string.Empty)
+        //            + (Height != null ? " h" + Height.Value.ToString("G29") : string.Empty);
+        //    }
+        //}
         public string FullName
         {
             get
             {
-                return Name 
-                    + (Potsize != null ? " d" + Potsize.Value.ToString("G29") + " " : string.Empty) 
-                    + (Height != null ? " h" + Height.Value.ToString("G29") : string.Empty);
+                var details = new List<string>();
+
+                if (Potsize != null)
+                    details.Add($"Pot: {Potsize.Value} cm");
+
+                if (Height != null)
+                    details.Add($"H: {Height.Value} cm");
+
+                return details.Count > 0 ? $"{Name} ({string.Join(", ", details)})" : Name;
             }
         }
     }

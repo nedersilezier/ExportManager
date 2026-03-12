@@ -27,6 +27,17 @@ namespace ExportManager.Models.EntitiesForView
         public bool? IsBlocked { get; set; }
         public bool? IsInside { get; set; }
         public string Remarks { get; set; }
-
+        public string DisplayName
+        {
+            get
+            {
+                var details = new List<string>();
+                if (Potsize != null)
+                    details.Add($"Pot: {Potsize.Value} cm");
+                if (ProductHeight != null)
+                    details.Add($"H: {ProductHeight.Value} cm");
+                return details.Count > 0 ? $"{ProductName} ({string.Join(", ", details)})" : ProductName;
+            }
+        }
     }
 }

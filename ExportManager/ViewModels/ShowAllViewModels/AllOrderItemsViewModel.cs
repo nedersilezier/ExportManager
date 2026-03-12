@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using ExportManager.Models.EntitiesForView;
 using ExportManager.Models.BusinessLogic.ListViewsForUI;
+using ExportManager.ViewModels.AddViewModels;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
     public class AllOrderItemsViewModel : AllViewModel<OrderItemsListView>
     {
         #region Fields
-        private int _OrderId;
+        private readonly int _OrderId;
         #endregion
         #region List
         public override void Load()
@@ -28,12 +29,10 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                     OrderItemId = orderitem.OrderItemId,
                     StockItemId = orderitem.StockItemId,
                     ProductName = orderitem.StockItems.Products.Name,
-                    ProtuctHeight = orderitem.StockItems.Products.Height,
+                    ProductHeight = orderitem.StockItems.Products.Height,
                     ProductPotsize = orderitem.StockItems.Products.Potsize,
                     Quantity = orderitem.Quantity,
                     UnitPrice = orderitem.UnitPrice,
-                    StorageCost = orderitem.StorageCost,
-                    TransportCost = orderitem.TransportCost,
                     Discount = orderitem.Discount,
                     TotalPrice = orderitem.TotalPrice,
                     Remarks = orderitem.Remarks,
@@ -53,14 +52,15 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         {
                 _OrderId = orderId;
             //base.DisplayName = "Order items";
-            base.DisplayName = new OrderDetailsQuery(potplantsEntities).GetOrderDisplayName(orderId);
+            base.DisplayName = new OrderDetailsQuery(potplantsEntities).GetOrderDisplayName(orderId) + " details";
+            base.FullDisplayName = new OrderDetailsQuery(potplantsEntities).GetOrderFullDisplayName(orderId) + " details";
         }
         #endregion
 
         #region Functions
         public override void OnAdd()
         {
-            return;
+            OpenNewTab(() => new NewOrderItemViewModel(_OrderId), Load);
         }
         public override void OnEdit()
         {

@@ -20,7 +20,11 @@
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Padding" Value="2,0,2,0"/>
     </Style>
+    
+    
     <!--Main functions-->
+    
+    
     <DataTemplate DataType="{x:Type vmShow:AllProductsViewModel}">
         <vwShow:AllProductsView/>
     </DataTemplate>
@@ -39,7 +43,11 @@
     <DataTemplate DataType="{x:Type vmShow:AllInvoicesViewModel}">
         <vwShow:AllInvoicesView/>
     </DataTemplate>
+    
+    
     <!--Dictionary tables-->
+    
+    
     <DataTemplate DataType="{x:Type vmShow:AllCarrierTypesViewModel}">
         <vwShow:AllCarrierTypesView/>
     </DataTemplate>
@@ -64,7 +72,10 @@
     <DataTemplate DataType="{x:Type vmShow:AllTrayTypesViewModel}">
         <vwShow:AllTrayTypesView/>
     </DataTemplate>
+    
     <!--Clients, Growers...-->
+    
+    
     <DataTemplate DataType="{x:Type vmShow:AllAddressesViewModel}">
         <vwShow:AllAddressesView/>
     </DataTemplate>
@@ -74,7 +85,11 @@
     <DataTemplate DataType="{x:Type vmShow:AllGrowersViewModel}">
         <vwShow:AllGrowersView/>
     </DataTemplate>
+    
+    
     <!--Creating new items-->
+    
+    
     <DataTemplate DataType="{x:Type vmAdd:NewColorViewModel}">
         <vwAdd:NewColorView/>
     </DataTemplate>
@@ -117,7 +132,14 @@
     <DataTemplate DataType="{x:Type vmAdd:NewOrderViewModel}">
         <vwAdd:NewOrderView/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type vmAdd:NewOrderItemViewModel}">
+        <vwAdd:NewOrderItemView/>
+    </DataTemplate>
+    
+    
     <!--Report views-->
+    
+    
     <DataTemplate DataType="{x:Type vmReport:VolumeReportViewModel}">
         <vwReport:VolumeReportView/>
     </DataTemplate>
@@ -127,7 +149,11 @@
     <DataTemplate DataType="{x:Type vmReport:InvoiceReportViewModel}">
         <vwReport:InvoiceReportView/>
     </DataTemplate>
+    
+    
     <!--Own button style-->
+    
+    
     <Style x:Key="CustomButtonStyle" TargetType="Button">
         <Setter Property="Foreground" Value="Black"/>
         <Setter Property="Template">
@@ -164,7 +190,11 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    
     <!--HeaderedContentControl style for main window-->
+    
+    
     <Style x:Key="MainHCCStyle" TargetType="{x:Type HeaderedContentControl}">
         <Setter Property="HeaderTemplate">
             <Setter.Value>
@@ -269,9 +299,10 @@
             <TextBlock
             Text="{Binding DisplayName}"
             VerticalAlignment="Center"
+            Padding="1, 0, 1, 0"
             TextTrimming="CharacterEllipsis"
             TextWrapping="NoWrap"
-            ToolTip="{Binding DisplayName}" />
+            ToolTip="{Binding FullDisplayName}" />
         </DockPanel>
     </DataTemplate>
 

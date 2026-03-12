@@ -11,6 +11,7 @@ namespace ExportManager.ViewModels
     {
         #region DisplayName
         public virtual string DisplayName { get; protected set; }
+        public virtual string FullDisplayName { get; protected set; }
         #endregion
         #region WindowPropertys
 
