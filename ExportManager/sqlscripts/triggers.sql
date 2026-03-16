@@ -406,23 +406,23 @@ FROM Products P
 INNER JOIN inserted i ON P.ProductId = i.ProductId; 
 END;  
 GO
-CREATE TRIGGER trg_OrderItems_InternalNo
-ON OrderItems
-AFTER INSERT
-AS
-BEGIN
-    SET NOCOUNT ON;
-    WITH Numbered AS
-    (
-        SELECT 
-            OI.OrderItemId,
-            RN = ROW_NUMBER() OVER (PARTITION BY OI.OrderId ORDER BY OI.OrderItemId)
-        FROM OrderItems OI
-        INNER JOIN inserted i ON OI.OrderItemId = i.OrderItemId
-    )
-    UPDATE OI
-    SET InternalNo = N.RN
-    FROM OrderItems OI
-    INNER JOIN Numbered N ON OI.OrderItemId = N.OrderItemId;
-END;
-GO
+--CREATE TRIGGER trg_OrderItems_InternalNo
+--ON OrderItems
+--AFTER INSERT
+--AS
+--BEGIN
+--    SET NOCOUNT ON;
+--    WITH Numbered AS
+--    (
+--        SELECT 
+--            OI.OrderItemId,
+--            RN = ROW_NUMBER() OVER (PARTITION BY OI.OrderId ORDER BY OI.OrderItemId)
+--        FROM OrderItems OI
+--        INNER JOIN inserted i ON OI.OrderItemId = i.OrderItemId
+--    )
+--    UPDATE OI
+--    SET InternalNo = N.RN
+--    FROM OrderItems OI
+--    INNER JOIN Numbered N ON OI.OrderItemId = N.OrderItemId;
+--END;
+--GO

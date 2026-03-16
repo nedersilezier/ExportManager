@@ -61,7 +61,9 @@ namespace ExportManager.ViewModels.Abstract
                 }
                 catch (Exception ex)
                 {
+                    //Developer friendly
                     //MessageBox.Show(ex.ToString());
+                    //User friendly
                     MessageBox.Show(ex.Message);
                 }
             else

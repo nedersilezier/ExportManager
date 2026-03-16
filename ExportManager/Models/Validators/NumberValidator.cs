@@ -22,5 +22,21 @@ namespace ExportManager.Models.Validators
             }
             return null;
         }
+        public static string IsPercentage(object number)
+        {
+            if (number == null)
+                return "Invalid value.";
+            try
+            {
+                if (!(Convert.ToDecimal(number) >= 0m))
+                    return "Value cannot be negative.";
+                if (!(Convert.ToDecimal(number) <= 100m))
+                    return "Value cannot be higher than 100.";
+            }
+            catch
+            {
+            }
+            return null;
+        }
     }
 }

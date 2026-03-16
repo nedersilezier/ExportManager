@@ -30,11 +30,11 @@
     <Label Grid.Row="1" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Pot size</Label>
         <TextBox Grid.Row="1" Grid.Column="1" Margin="0, 2, 0, 2" 
                  Text="{Binding Path=Potsize, 
-            UpdateSourceTrigger=PropertyChanged}"/>
+            UpdateSourceTrigger=LostFocus}"/>
         <Label Grid.Row="2" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Height</Label>
         <TextBox Grid.Row="2" Grid.Column="1" Margin="0, 2, 0, 2" Text="{Binding Path=Height, UpdateSourceTrigger=LostFocus}"/>
     <Label Grid.Row="3" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Weight</Label>
-    <TextBox Grid.Row="3" Grid.Column="1" Margin="0, 2, 0, 2" Text="{Binding Path=Weight, UpdateSourceTrigger=PropertyChanged}"/>
+    <TextBox Grid.Row="3" Grid.Column="1" Margin="0, 2, 0, 2" Text="{Binding Path=Weight, UpdateSourceTrigger=LostFocus}"/>
     <Label Grid.Row="4" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Protected by CITES</Label>
     <CheckBox Grid.Row="4" Grid.Column="1" Margin="0, 2, 0, 2" IsChecked="{Binding Cites}" VerticalAlignment="Center"/>
     <Label Grid.Row="5" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Category</Label>

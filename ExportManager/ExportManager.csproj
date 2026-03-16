@@ -89,6 +89,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Behaviors\NumericTextBoxBehavior.cs" />
     <Compile Include="Helper\BaseCommand.cs" />
     <Compile Include="Models\Addresses.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
@@ -102,11 +103,13 @@
     <Compile Include="Models\BusinessLogic\ListViewsForUI\CountriesForEntities.cs" />
     <Compile Include="Models\BusinessLogic\DatabaseClass.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\CultivationsForGrowers.cs" />
+    <Compile Include="Models\BusinessLogic\ListViewsForUI\GrowerDetailsQuery.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\GrowersForStockItems.cs" />
     <Compile Include="Models\BusinessLogic\InvoiceCalculator.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\InvoicesForReports.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\OrderDetailsQuery.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\OrdersForReports.cs" />
+    <Compile Include="Models\BusinessLogic\ListViewsForUI\StockItemDetailsQuery.cs" />
     <Compile Include="Models\BusinessLogic\OrderWeightCalculator.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\ProductsForStockItems.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\QualitiesForStockItems.cs" />

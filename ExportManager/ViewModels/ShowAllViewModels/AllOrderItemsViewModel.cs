@@ -1,14 +1,15 @@
-﻿using ExportManager.ViewModels;
+﻿using ExportManager.Models;
+using ExportManager.Models.BusinessLogic.ListViewsForUI;
+using ExportManager.Models.EntitiesForView;
+using ExportManager.ViewModels;
 using ExportManager.ViewModels.Abstract;
+using ExportManager.ViewModels.AddViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Collections.ObjectModel;
-using ExportManager.Models.EntitiesForView;
-using ExportManager.Models.BusinessLogic.ListViewsForUI;
-using ExportManager.ViewModels.AddViewModels;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
@@ -68,7 +69,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         public override void OnRemove()
         {
-            return;
+            SoftDelete<OrderItems>(SelectedItem.OrderItemId);
         }
         #endregion
         #region Sorting and searching
