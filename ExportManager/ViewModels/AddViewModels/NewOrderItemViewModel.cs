@@ -21,7 +21,7 @@ namespace ExportManager.ViewModels.AddViewModels
         private readonly int _OrderId;
         private string _GrowerDisplayName;
         private decimal? _CostPrice;
-        private string _UnitPriceString;
+        private int? _AvailableStock;
         #endregion
         #region Properties
         public string GrowerDisplayName
@@ -35,6 +35,19 @@ namespace ExportManager.ViewModels.AddViewModels
                 if (_GrowerDisplayName != value)
                     _GrowerDisplayName = value;
                 OnPropertyChanged(() => GrowerDisplayName);
+            }
+        }
+        public int? AvailableStock
+        {
+            get
+            {
+                return _AvailableStock;
+            }
+            set
+            {
+                if (_AvailableStock != value)
+                    _AvailableStock = value;
+                OnPropertyChanged(() => AvailableStock);
             }
         }
         public decimal? CostPrice
@@ -62,6 +75,7 @@ namespace ExportManager.ViewModels.AddViewModels
                 {
                     item.Quantity = value;
                     OnPropertyChanged(() => Quantity);
+                    OnPropertyChanged(() => QuantityValidationMessage);
                 }
             }
         }
@@ -154,6 +168,17 @@ namespace ExportManager.ViewModels.AddViewModels
                 }
             }
         }
+        public string QuantityValidationMessage
+        {
+            get
+            {
+                if (Quantity < 1)
+                    return "Quantity must be at least 1";
+                if (Quantity > AvailableStock)
+                    return $"Available stock: {AvailableStock}";
+                return null;
+            }
+        }
         #endregion
         #region Constructor
         public NewOrderItemViewModel(int orderId)
@@ -221,8 +246,10 @@ namespace ExportManager.ViewModels.AddViewModels
                 Key = e.ItemId,
                 Value = e.DisplayName
             };
-            GrowerDisplayName = new StockItemDetailsQuery(potplantsEntities).GetGrowerDisplayNameByStockItemId(e.ItemId);
-            CostPrice = new StockItemDetailsQuery(potplantsEntities).GetStockItemCostPriceById(e.ItemId);
+            var stockItemDetails = new StockItemDetailsQuery(potplantsEntities).GetStockItemDetailsForNewOrderItem(e.ItemId).FirstOrDefault();
+            GrowerDisplayName = stockItemDetails.GrowerName;
+            CostPrice = stockItemDetails.CostPrice;
+            AvailableStock = stockItemDetails.Quantity;
         }
         public void openSelectStockItemTab()
         {

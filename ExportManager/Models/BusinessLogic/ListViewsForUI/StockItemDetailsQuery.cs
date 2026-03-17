@@ -33,6 +33,19 @@ namespace ExportManager.Models.BusinessLogic.ListViewsForUI
                        return GetStockItemById(stockItemId).Select(s => s.CostPrice).FirstOrDefault();
 
         }
+        public IQueryable<StockItemsListView> GetStockItemDetailsForNewOrderItem(int stockItemId)
+        {
+            return GetStockItemById(stockItemId).Select(s => new StockItemsListView
+            {
+                StockItemId = s.StockItemId,
+                ProductName = s.Products.Name,
+                Potsize = s.Products.Potsize,
+                ProductHeight = s.Products.Height,
+                GrowerName = s.Growers.Name,
+                CostPrice = s.CostPrice,
+                Quantity = s.Quantity
+            });
+        }
         #endregion
     }
 }

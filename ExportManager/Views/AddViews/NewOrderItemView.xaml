@@ -43,6 +43,7 @@ IsReadOnly="True"/>
 IsReadOnly="True"/>
         <Label Grid.Row="4" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Quantity</Label>
         <TextBox Grid.Row="4" Grid.Column="1" Margin="0, 2, 0, 2" Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}" MaxLength="7" behaviors:NumericTextBoxBehavior.IsPositiveInteger="True"/>
+        <TextBlock Grid.Row="4" Grid.Column="2" Margin="5, 0, 0, 0" VerticalAlignment="Center" Text="{Binding QuantityValidationMessage}" Foreground="Red"/>
         <Label Grid.Row="5" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Unit price</Label>
         <!--<TextBox Grid.Row="5" Grid.Column="1" Margin="0, 2, 0, 2" Text="{Binding UnitPrice, UpdateSourceTrigger=LostFocus, StringFormat='#.00', ConverterCulture={x:Static sysglb:CultureInfo.CurrentCulture}}" MaxLength="10"/>-->
         <TextBox x:Name="UnitPriceBox" Grid.Row="5" Grid.Column="1" Margin="0, 2, 0, 2">
@@ -117,5 +118,7 @@ IsReadOnly="True"/>
              TextWrapping="Wrap"
              VerticalContentAlignment="Top"
              VerticalScrollBarVisibility="Auto"/>
+        <Label Grid.Row="10" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">TEST</Label>
+        <TextBox Grid.Row="10" Grid.Column="1" Margin="0, 2, 0, 2" Text="{Binding AvailableStock, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
 </local:NewItemViewBase>
