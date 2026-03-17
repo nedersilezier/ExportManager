@@ -23,10 +23,10 @@ namespace ExportManager.Models
         public int OrderItemId { get; set; }
         public int OrderId { get; set; }
         public int Quantity { get; set; }
-        public decimal UnitPrice { get; set; }
-        public decimal StorageCost { get; set; }
-        public decimal TransportCost { get; set; }
-        public decimal Discount { get; set; }
+        public Nullable<decimal> UnitPrice { get; set; }
+        public Nullable<decimal> StorageCost { get; set; }
+        public Nullable<decimal> TransportCost { get; set; }
+        public Nullable<decimal> Discount { get; set; }
         public Nullable<decimal> TotalPrice { get; set; }
         public bool IsActive { get; set; }
         public System.DateTime CreatedAt { get; set; }

@@ -65,7 +65,7 @@ namespace ExportManager.ViewModels.AddViewModels
                 }
             }
         }
-        public decimal UnitPrice
+        public decimal? UnitPrice
         {
             get
             {
@@ -80,7 +80,7 @@ namespace ExportManager.ViewModels.AddViewModels
                 }
             }
         }
-        public decimal TransportCost
+        public decimal? TransportCost
         {
             get
             {
@@ -95,7 +95,7 @@ namespace ExportManager.ViewModels.AddViewModels
                 }
             }
         }
-        public decimal StorageCost
+        public decimal? StorageCost
         {
             get
             {
@@ -110,7 +110,7 @@ namespace ExportManager.ViewModels.AddViewModels
                 }
             }
         }
-        public decimal Discount
+        public decimal? Discount
         {
             get
             {
@@ -118,21 +118,21 @@ namespace ExportManager.ViewModels.AddViewModels
             }
             set
             {
-                if (item.Discount != value)
+                if(item.Discount != value)
                 {
                     item.Discount = value;
                     OnPropertyChanged(() => Discount);
                 }
             }
         }
-        public decimal TotalUnitCost
+        public decimal? TotalUnitCost
         {
             get
             {
-                return Quantity * UnitPrice * (1 - Discount / 100);
+                return item.TotalPrice;
             }
         }
-        public decimal TotalCost
+        public decimal? TotalCost
         {
             get
             {
@@ -157,7 +157,7 @@ namespace ExportManager.ViewModels.AddViewModels
         #endregion
         #region Constructor
         public NewOrderItemViewModel(int orderId)
-            : base(new[] { "UnitPrice" })
+            : base(new[] { "UnitPrice", "StorageCost", "TransportCost", "Discount", "Quantity" })
         {
             _OrderId = orderId;
             base.DisplayName = "New order item";
@@ -237,17 +237,17 @@ namespace ExportManager.ViewModels.AddViewModels
                 string message = null;
                 switch (name)
                 {
-                    case "UnitPrice":
+                    case nameof(UnitPrice):
                         message = NumberValidator.IsPositive(this.UnitPrice);
                         break;
-                    case "StorageCost":
-                        message = NumberValidator.IsPositive(this.UnitPrice);
+                    case nameof(StorageCost):
+                        message = NumberValidator.IsPositive(this.StorageCost);
                         break;
-                    case "TransportCost":
-                        message = NumberValidator.IsPositive(this.UnitPrice);
+                    case nameof(TransportCost):
+                        message = NumberValidator.IsPositive(this.TransportCost);
                         break;
-                    case "Discount":
-                        message = NumberValidator.IsPercentage(this.UnitPrice);
+                    case nameof(Discount):
+                        message = NumberValidator.IsPercentage(this.Discount);
                         break;
                 }
 
@@ -256,9 +256,12 @@ namespace ExportManager.ViewModels.AddViewModels
         }
         public override bool IsValid()
         {
-            if (this["UnitPrice"] == null)
-                return true;
-            return false;
+            foreach(var property in ValidatedFields)
+            {
+                if (this[property] != null)
+                    return false;
+            }
+            return true;
         }
         #endregion 
     }

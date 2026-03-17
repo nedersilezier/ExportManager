@@ -14,13 +14,15 @@ namespace ExportManager.Models.Validators
                 return "Invalid value.";
             try
             {
-                if(!(Convert.ToDecimal(number) >= 0m))
+                var decimalValue = Convert.ToDecimal(number);
+                if (decimalValue < 0m)
                     return "Value cannot be negative.";
+                return null;
             }
             catch
             {
+                return "Ivalid number format.";
             }
-            return null;
         }
         public static string IsPercentage(object number)
         {

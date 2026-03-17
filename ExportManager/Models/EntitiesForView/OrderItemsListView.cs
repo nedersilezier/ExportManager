@@ -31,8 +31,10 @@ namespace ExportManager.Models.EntitiesForView
             }
         }
         public int Quantity { get; set; }
-        public decimal UnitPrice { get; set; }
-        public decimal Discount { get; set; }
+        public decimal? UnitPrice { get; set; }
+        public decimal? TransportCost { get; set; }
+        public decimal? StorageCost { get; set; }
+        public decimal? Discount { get; set; }
         public decimal? TotalPrice { get; set; }
         public string TotalPriceString
         {

@@ -15,7 +15,10 @@
             <DataGridTextColumn Header="Tray" Binding="{Binding TrayType}" Width="50"/>
             <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="80"/>
             <DataGridTextColumn Header="Unit price" Binding="{Binding UnitPrice}" Width="80"/>
+            <DataGridTextColumn Header="Discount" Binding="{Binding Discount}" Width="80"/>
             <DataGridTextColumn Header="Line total" Binding="{Binding TotalPriceString}" Width="100"/>
+            <DataGridTextColumn Header="Storage cost" Binding="{Binding StorageCost}" Width="100"/>
+            <DataGridTextColumn Header="Transport cost" Binding="{Binding TransportCost}" Width="100"/>
             <DataGridTextColumn Header="Grower" Binding="{Binding GrowerName}" Width="150"/>
             <DataGridTextColumn Header="Ordered" Binding="{Binding OrderedDate}" Width="120"/>
             <DataGridTextColumn Header="Scanned" Binding="{Binding IsScannedString}" Width="70"/>

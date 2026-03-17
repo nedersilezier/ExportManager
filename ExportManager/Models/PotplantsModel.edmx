@@ -253,11 +253,10 @@
           <Property Name="OrderItemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OrderId" Type="int" Nullable="false" />
           <Property Name="Quantity" Type="int" Nullable="false" />
-          <Property Name="UnitPrice" Type="decimal" Precision="10" Scale="2" Nullable="false" />
-          <Property Name="StorageCost" Type="decimal" Precision="10" Scale="2" Nullable="false" />
-          <Property Name="TransportCost" Type="decimal" Precision="10" Scale="2" Nullable="false" />
-          <Property Name="Discount" Type="decimal" Precision="5" Scale="2" Nullable="false" />
-          <Property Name="TotalPrice" Type="decimal" Precision="32" Scale="8" StoreGeneratedPattern="Computed" />
+          <Property Name="UnitPrice" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="StorageCost" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="TransportCost" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Discount" Type="decimal" Precision="5" Scale="2" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="CreatedAt" Type="datetime2" Precision="0" Nullable="false" />
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
@@ -271,6 +270,7 @@
           <Property Name="DeliveredDate" Type="datetime2" Precision="0" />
           <Property Name="StockItemId" Type="int" Nullable="false" />
           <Property Name="IsScanned" Type="bit" Nullable="false" />
+          <Property Name="TotalPrice" Type="decimal" Precision="32" Scale="8" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Orders">
           <Key>
@@ -1031,10 +1031,10 @@
           <Property Name="OrderItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="OrderId" Type="Int32" Nullable="false" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
-          <Property Name="UnitPrice" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
-          <Property Name="StorageCost" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
-          <Property Name="TransportCost" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
-          <Property Name="Discount" Type="Decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="UnitPrice" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="StorageCost" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="TransportCost" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Discount" Type="Decimal" Precision="5" Scale="2" />
           <Property Name="TotalPrice" Type="Decimal" Precision="32" Scale="8" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="0" />

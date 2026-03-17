@@ -34,6 +34,8 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                     ProductPotsize = orderitem.StockItems.Products.Potsize,
                     Quantity = orderitem.Quantity,
                     UnitPrice = orderitem.UnitPrice,
+                    StorageCost = orderitem.StorageCost,
+                    TransportCost = orderitem.TransportCost,
                     Discount = orderitem.Discount,
                     TotalPrice = orderitem.TotalPrice,
                     Remarks = orderitem.Remarks,

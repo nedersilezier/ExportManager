@@ -7,74 +7,74 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="2, 0, 2, 0">
-    <Grid.RowDefinitions>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="70"/>
-        <RowDefinition Height="10"/>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
-    </Grid.RowDefinitions>
-    <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="150"/>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="Auto"/>
-    </Grid.ColumnDefinitions>
-    <Label Grid.Row="0" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Name</Label>
-    <TextBox Grid.Row="0" Grid.Column="1" Margin="0, 2, 0, 2" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"/>
-    <Label Grid.Row="1" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Pot size</Label>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Name</Label>
+        <TextBox Grid.Row="0" Grid.Column="1" Margin="0, 2, 0, 2" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"/>
+        <Label Grid.Row="1" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Pot size</Label>
         <TextBox Grid.Row="1" Grid.Column="1" Margin="0, 2, 0, 2" 
                  Text="{Binding Path=Potsize, 
             UpdateSourceTrigger=LostFocus}"/>
         <Label Grid.Row="2" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Height</Label>
         <TextBox Grid.Row="2" Grid.Column="1" Margin="0, 2, 0, 2" Text="{Binding Path=Height, UpdateSourceTrigger=LostFocus}"/>
-    <Label Grid.Row="3" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Weight</Label>
-    <TextBox Grid.Row="3" Grid.Column="1" Margin="0, 2, 0, 2" Text="{Binding Path=Weight, UpdateSourceTrigger=LostFocus}"/>
-    <Label Grid.Row="4" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Protected by CITES</Label>
-    <CheckBox Grid.Row="4" Grid.Column="1" Margin="0, 2, 0, 2" IsChecked="{Binding Cites}" VerticalAlignment="Center"/>
-    <Label Grid.Row="5" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Category</Label>
-    <ComboBox Grid.Row="5" Grid.Column="1" Margin="0, 2, 0, 2" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}">
-        <ComboBox.ItemTemplate>
-            <DataTemplate>
-                <TextBlock Text="{Binding Value}"/>
-            </DataTemplate>
-        </ComboBox.ItemTemplate>
-    </ComboBox>
-    <Button Grid.Row="5" Grid.Column="2" Margin="0, 2, 0, 2" Content="New" Command="{Binding NewCategoryCommand}"/>
-    <Label Grid.Row="6" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Color</Label>
-    <ComboBox Grid.Row="6" Grid.Column="1" Margin="0, 2, 0, 2" ItemsSource="{Binding Colors}" SelectedItem="{Binding SelectedColor}">
-        <ComboBox.ItemTemplate>
-            <DataTemplate>
-                <TextBlock Text="{Binding Value}"/>
-            </DataTemplate>
-        </ComboBox.ItemTemplate>
-    </ComboBox>
-    <Button Grid.Row="6" Grid.Column="2" Margin="0, 2, 0, 2" Content="New" Command="{Binding NewColorCommand}"/>
+        <Label Grid.Row="3" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Weight</Label>
+        <TextBox Grid.Row="3" Grid.Column="1" Margin="0, 2, 0, 2" Text="{Binding Path=Weight, UpdateSourceTrigger=LostFocus}"/>
+        <Label Grid.Row="4" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Protected by CITES</Label>
+        <CheckBox Grid.Row="4" Grid.Column="1" Margin="0, 2, 0, 2" IsChecked="{Binding Cites}" VerticalAlignment="Center"/>
+        <Label Grid.Row="5" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Category</Label>
+        <ComboBox Grid.Row="5" Grid.Column="1" Margin="0, 2, 0, 2" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Value}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Button Grid.Row="5" Grid.Column="2" Margin="0, 2, 0, 2" Content="New" Command="{Binding NewCategoryCommand}"/>
+        <Label Grid.Row="6" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Color</Label>
+        <ComboBox Grid.Row="6" Grid.Column="1" Margin="0, 2, 0, 2" ItemsSource="{Binding Colors}" SelectedItem="{Binding SelectedColor}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Value}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Button Grid.Row="6" Grid.Column="2" Margin="0, 2, 0, 2" Content="New" Command="{Binding NewColorCommand}"/>
 
-    <Label Grid.Row="7" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Description</Label>
-    <TextBox Grid.Row="7" Grid.Column="1" Margin="0, 2, 0, 2"
+        <Label Grid.Row="7" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Description</Label>
+        <TextBox Grid.Row="7" Grid.Column="1" Margin="0, 2, 0, 2"
                  Text="{Binding Path=Remarks, UpdateSourceTrigger=PropertyChanged}"
                  TextWrapping="Wrap"
                  VerticalContentAlignment="Top"
                  VerticalScrollBarVisibility="Auto"/>
-    <Border Grid.Row="8" Grid.ColumnSpan="3" Background="LightGray" Height="1" VerticalAlignment="Center"/>
-    <Grid Grid.Row="9" Grid.ColumnSpan="3" Margin="0, 10, 0, 0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        <Label Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center" VerticalAlignment="Center">Image</Label>
-        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-            <Button Margin="0, 2, 0, 2" Content="Upload" Command="{Binding SelectImageCommand}" Style="{StaticResource CustomButtonStyle}"/>
-            <Button Margin="0, 2, 0, 2" Content="Remove" Command="{Binding RemoveImageCommand}" Style="{StaticResource CustomButtonStyle}"/>
-        </StackPanel>
-    </Grid>
-    <Label Grid.Row="10" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center" VerticalAlignment="Center">Preview</Label>
-    <Image Grid.Row="10" Grid.Column="1" Margin="0, 2, 0, 2" Width="200" Height="200" Source="{Binding Image}" Stretch="Uniform" HorizontalAlignment="Left"/>
+        <Border Grid.Row="8" Grid.ColumnSpan="3" Background="LightGray" Height="1" VerticalAlignment="Center"/>
+        <Grid Grid.Row="9" Grid.ColumnSpan="3" Margin="0, 10, 0, 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center" VerticalAlignment="Center">Image</Label>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                <Button Margin="0, 2, 0, 2" Content="Upload" Command="{Binding SelectImageCommand}" Style="{StaticResource CustomButtonStyle}"/>
+                <Button Margin="0, 2, 0, 2" Content="Remove" Command="{Binding RemoveImageCommand}" Style="{StaticResource CustomButtonStyle}"/>
+            </StackPanel>
+        </Grid>
+        <Label Grid.Row="10" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center" VerticalAlignment="Center">Preview</Label>
+        <Image Grid.Row="10" Grid.Column="1" Margin="0, 2, 0, 2" Width="200" Height="200" Source="{Binding Image}" Stretch="Uniform" HorizontalAlignment="Left"/>
     </Grid>
 </local:NewItemViewBase>

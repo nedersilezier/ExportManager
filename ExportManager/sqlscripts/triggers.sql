@@ -426,3 +426,28 @@ GO
 --    INNER JOIN Numbered N ON OI.OrderItemId = N.OrderItemId;
 --END;
 --GO
+ALTER TRIGGER [dbo].[trg_OrderItems_InternalNo]
+ON [dbo].[OrderItems]
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE OI
+    SET InternalNo = ISNULL(M.MaxInternalNo, 0) + RN
+    FROM OrderItems OI
+    INNER JOIN
+    (
+        SELECT 
+            i.OrderItemId,
+            RN = ROW_NUMBER() OVER (PARTITION BY i.OrderId ORDER BY i.OrderItemId),
+            i.OrderId
+        FROM inserted i
+    ) x ON OI.OrderItemId = x.OrderItemId
+    LEFT JOIN
+    (
+        SELECT OrderId, MAX(InternalNo) AS MaxInternalNo
+        FROM OrderItems
+        WHERE InternalNo IS NOT NULL
+        GROUP BY OrderId
+    ) M ON M.OrderId = x.OrderId
+END;

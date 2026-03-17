@@ -59,7 +59,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         {
             return new List<CommandViewModel>
             {
-                new CommandViewModel("Details", ShowDetailsCommand)
+                new CommandViewModel("Order items", ShowDetailsCommand)
             };
         }
         #endregion
