@@ -8,7 +8,7 @@ namespace ExportManager.Models.Validators
 {
     public class NumberValidator : Validator
     {
-        public static string IsPositive(object number) 
+        public static string IsPositive(object number)
         {
             if (number == null)
                 return "Invalid value.";
@@ -39,6 +39,22 @@ namespace ExportManager.Models.Validators
             {
             }
             return null;
+        }
+        public static string IsQuantity(object number)
+        {
+            if (number == null)
+                return "Invalid value.";
+            try
+            {
+                var intValue = Convert.ToInt32(number);
+                if (intValue <= 0)
+                    return "Value must be greater than 0";
+                return null;
+            }
+            catch
+            {
+                return "Ivalid number format.";
+            }
         }
     }
 }

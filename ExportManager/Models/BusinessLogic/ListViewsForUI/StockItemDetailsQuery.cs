@@ -43,7 +43,7 @@ namespace ExportManager.Models.BusinessLogic.ListViewsForUI
                 ProductHeight = s.Products.Height,
                 GrowerName = s.Growers.Name,
                 CostPrice = s.CostPrice,
-                Quantity = s.Quantity
+                QuantityLeft = s.QuantityLeft
             });
         }
         #endregion

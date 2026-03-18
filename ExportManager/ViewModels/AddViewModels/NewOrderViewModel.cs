@@ -82,18 +82,18 @@ namespace ExportManager.ViewModels.AddViewModels
                 }
             }
         }
-        public bool IsEditMode
-        {
-            get { return _IsEditMode; }
-            set
-            {
-                if (_IsEditMode != value)
-                {
-                    _IsEditMode = value;
-                    OnPropertyChanged(() => IsEditMode);
-                }
-            }
-        }
+        //public bool IsEditMode
+        //{
+        //    get { return _IsEditMode; }
+        //    set
+        //    {
+        //        if (_IsEditMode != value)
+        //        {
+        //            _IsEditMode = value;
+        //            OnPropertyChanged(() => IsEditMode);
+        //        }
+        //    }
+        //}
         //address related
         public bool IsAddressesNeeded
         {

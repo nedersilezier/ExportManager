@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
@@ -51,9 +52,9 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #endregion
         #region Constructor
         public AllOrderItemsViewModel(int orderId)
-            :base()
+            : base()
         {
-                _OrderId = orderId;
+            _OrderId = orderId;
             //base.DisplayName = "Order items";
             base.DisplayName = new OrderDetailsQuery(potplantsEntities).GetOrderDisplayName(orderId) + " details";
             base.FullDisplayName = new OrderDetailsQuery(potplantsEntities).GetOrderFullDisplayName(orderId) + " details";
@@ -67,11 +68,22 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         public override void OnEdit()
         {
-            return;
+            OpenNewTab(() => new NewOrderItemViewModel(_OrderId, SelectedItem.OrderItemId), Load);
         }
         public override void OnRemove()
         {
-            SoftDelete<OrderItems>(SelectedItem.OrderItemId);
+            var result = MessageBox.Show(
+                        "Delete this item and return it to stock?",
+                        $"{SelectedItem.FullProductName}",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                int quantityToReturn = SelectedItem.Quantity;
+                new StockItemCommand(potplantsEntities).UpdateStockItemQuantity(SelectedItem.StockItemId, -quantityToReturn);
+                SoftDelete<OrderItems>(SelectedItem.OrderItemId);
+            }
         }
         #endregion
         #region Sorting and searching

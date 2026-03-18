@@ -10,6 +10,7 @@
                 <ResourceDictionary Source="/Views/MainWindowResources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+            <converters:ProfitToFontColorConverter x:Key="ProfitToFontColor"/>
             <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibility"/>
         </ResourceDictionary>
     </Application.Resources>

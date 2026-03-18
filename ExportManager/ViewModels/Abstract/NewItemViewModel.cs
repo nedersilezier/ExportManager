@@ -19,6 +19,20 @@ namespace ExportManager.ViewModels.Abstract
         protected bool _IsEditMode = false;
         protected string errorMessage = null;
         #endregion
+        #region Properties
+        public bool IsEditMode
+        {
+            get { return _IsEditMode; }
+            set
+            {
+                if (_IsEditMode != value)
+                {
+                    _IsEditMode = value;
+                    OnPropertyChanged(() => IsEditMode);
+                }
+            }
+        }
+        #endregion
         #region Database
         protected T item;
         #endregion

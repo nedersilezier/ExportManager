@@ -19,9 +19,15 @@ namespace ExportManager.ViewModels.AddViewModels
     {
         #region Fields
         private readonly int _OrderId;
+        private decimal? _UnitPrice;
+        private int _Quantity;
+        private decimal? _StorageCost;
+        private decimal? _TransportCost;
+        private decimal? _Discount;
         private string _GrowerDisplayName;
         private decimal? _CostPrice;
         private int? _AvailableStock;
+        private readonly int _OriginalQuantity;
         #endregion
         #region Properties
         public string GrowerDisplayName
@@ -67,15 +73,18 @@ namespace ExportManager.ViewModels.AddViewModels
         {
             get
             {
-                return item.Quantity;
+                return _Quantity;
             }
             set
             {
-                if (item.Quantity != value)
+                if (_Quantity != value)
                 {
-                    item.Quantity = value;
+                    _Quantity = value;
                     OnPropertyChanged(() => Quantity);
                     OnPropertyChanged(() => QuantityValidationMessage);
+                    OnPropertyChanged(() => TotalProductCost);
+                    OnPropertyChanged(() => TotalCost);
+                    OnPropertyChanged(() => Profit);
                 }
             }
         }
@@ -83,14 +92,17 @@ namespace ExportManager.ViewModels.AddViewModels
         {
             get
             {
-                return item.UnitPrice;
+                return _UnitPrice;
             }
             set
             {
-                if (item.UnitPrice != value)
+                if (_UnitPrice != value)
                 {
-                    item.UnitPrice = value;
+                    _UnitPrice = value;
                     OnPropertyChanged(() => UnitPrice);
+                    OnPropertyChanged(() => TotalProductCost);
+                    OnPropertyChanged(() => TotalCost);
+                    OnPropertyChanged(() => Profit);
                 }
             }
         }
@@ -98,14 +110,15 @@ namespace ExportManager.ViewModels.AddViewModels
         {
             get
             {
-                return item.TransportCost;
+                return _TransportCost;
             }
             set
             {
-                if (item.TransportCost != value)
+                if (_TransportCost != value)
                 {
-                    item.TransportCost = value;
+                    _TransportCost = value;
                     OnPropertyChanged(() => TransportCost);
+                    OnPropertyChanged(() => TotalCost);
                 }
             }
         }
@@ -113,14 +126,15 @@ namespace ExportManager.ViewModels.AddViewModels
         {
             get
             {
-                return item.StorageCost;
+                return _StorageCost;
             }
             set
             {
-                if (item.StorageCost != value)
+                if (_StorageCost != value)
                 {
-                    item.StorageCost = value;
+                    _StorageCost = value;
                     OnPropertyChanged(() => StorageCost);
+                    OnPropertyChanged(() => TotalCost);
                 }
             }
         }
@@ -128,29 +142,39 @@ namespace ExportManager.ViewModels.AddViewModels
         {
             get
             {
-                return item.Discount;
+                return _Discount;
             }
             set
             {
-                if(item.Discount != value)
+                if (_Discount != value)
                 {
-                    item.Discount = value;
+                    _Discount = value;
                     OnPropertyChanged(() => Discount);
+                    OnPropertyChanged(() => TotalProductCost);
+                    OnPropertyChanged(() => TotalCost);
+                    OnPropertyChanged(() => Profit);
                 }
             }
         }
-        public decimal? TotalUnitCost
+        public decimal? TotalProductCost
         {
             get
             {
-                return item.TotalPrice;
+                return UnitPrice * Quantity * (1 - Discount / 100);
             }
         }
         public decimal? TotalCost
         {
             get
             {
-                return TotalUnitCost + TransportCost + StorageCost;
+                return TotalProductCost + TransportCost + StorageCost;
+            }
+        }
+        public decimal? Profit
+        {
+            get
+            {
+                return TotalProductCost - (CostPrice * Quantity);
             }
         }
         public string Remarks
@@ -187,6 +211,7 @@ namespace ExportManager.ViewModels.AddViewModels
             _OrderId = orderId;
             base.DisplayName = "New order item";
             base.FullDisplayName = new OrderDetailsQuery(potplantsEntities).GetOrderFullDisplayName(orderId);
+            _OriginalQuantity = 0;
             item = new OrderItems
             {
                 OrderId = _OrderId,
@@ -195,20 +220,71 @@ namespace ExportManager.ViewModels.AddViewModels
                 OrderedDate = DateTime.Now.Date
             };
         }
+        public NewOrderItemViewModel(int orderId, int orderItemId)
+            : base(new[] { "UnitPrice", "StorageCost", "TransportCost", "Discount", "Quantity" })
+        {
+            IsEditMode = true;
+            _OrderId = orderId;
+            item = potplantsEntities.OrderItems.FirstOrDefault(oi => oi.OrderItemId == orderItemId);
+            Quantity = item.Quantity;
+            UnitPrice = item.UnitPrice;
+            TransportCost = item.TransportCost;
+            StorageCost = item.StorageCost;
+            Discount = item.Discount;
+            base.DisplayName = "Edit order item";
+            base.FullDisplayName = new OrderDetailsQuery(potplantsEntities).GetOrderFullDisplayName(orderId);
+            var stockItemDetails = new StockItemDetailsQuery(potplantsEntities).GetStockItemDetailsForNewOrderItem(item.StockItemId).FirstOrDefault();
+            SelectedStockItem = new KeyAndValue
+            {
+                Key = item.StockItemId,
+                Value = stockItemDetails.DisplayName
+            };
+            GrowerDisplayName = stockItemDetails.GrowerName;
+            CostPrice = stockItemDetails.CostPrice;
+            AvailableStock = stockItemDetails.QuantityLeft;
+            _OriginalQuantity = item.Quantity;
+        }
         #endregion
         #region Functions
         public override void Save()
-        {   
-            if(SelectedStockItem.Key == 0)
+        {
+            if (SelectedStockItem.Key == 0)
             {
                 throw new Exception("Please select a stock item before saving.");
             }
-            if (!_IsEditMode)
+            int quantityDifference = Quantity - _OriginalQuantity;
+            if (quantityDifference > AvailableStock)
             {
-                item.StockItemId = SelectedStockItem.Key;
-                potplantsEntities.OrderItems.Add(item);
+                throw new Exception($"Quantity cannot exceed available stock ({AvailableStock}).");
             }
-            potplantsEntities.SaveChanges();
+            using (var transaction = potplantsEntities.Database.BeginTransaction())
+
+            {
+                try
+                {
+                    item.Quantity = Quantity;
+                    item.UnitPrice = UnitPrice;
+                    item.TransportCost = TransportCost;
+                    item.StorageCost = StorageCost;
+                    item.Discount = Discount;
+                    
+                    if (!_IsEditMode)
+                    {
+                        item.StockItemId = SelectedStockItem.Key;
+                        potplantsEntities.OrderItems.Add(item);
+                    }
+                    new StockItemCommand(potplantsEntities).UpdateStockItemQuantity(SelectedStockItem.Key, quantityDifference);
+
+                    potplantsEntities.SaveChanges();
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+
         }
         #endregion
         #region Item picker
@@ -249,7 +325,7 @@ namespace ExportManager.ViewModels.AddViewModels
             var stockItemDetails = new StockItemDetailsQuery(potplantsEntities).GetStockItemDetailsForNewOrderItem(e.ItemId).FirstOrDefault();
             GrowerDisplayName = stockItemDetails.GrowerName;
             CostPrice = stockItemDetails.CostPrice;
-            AvailableStock = stockItemDetails.Quantity;
+            AvailableStock = stockItemDetails.QuantityLeft;
         }
         public void openSelectStockItemTab()
         {
@@ -276,6 +352,9 @@ namespace ExportManager.ViewModels.AddViewModels
                     case nameof(Discount):
                         message = NumberValidator.IsPercentage(this.Discount);
                         break;
+                    case nameof(Quantity):
+                        message = NumberValidator.IsQuantity(this.Quantity);
+                        break;
                 }
 
                 return message;
@@ -283,7 +362,7 @@ namespace ExportManager.ViewModels.AddViewModels
         }
         public override bool IsValid()
         {
-            foreach(var property in ValidatedFields)
+            foreach (var property in ValidatedFields)
             {
                 if (this[property] != null)
                     return false;
