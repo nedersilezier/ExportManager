@@ -110,6 +110,7 @@
     <Compile Include="Models\BusinessLogic\InvoiceCalculator.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\InvoicesForReports.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\OrderDetailsQuery.cs" />
+    <Compile Include="Models\BusinessLogic\ListViewsForUI\OrderItemDetailsQuery.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\OrdersForReports.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\StockItemCommand.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\StockItemDetailsQuery.cs" />

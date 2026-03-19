@@ -50,6 +50,13 @@ namespace ExportManager.Models.BusinessLogic.ListViewsForUI
                 .AsEnumerable()
                 .Select(o => $"{o.ClientCode} {o.OrderDate:dd-MM-yyyy}").FirstOrDefault();
         }
+        public bool OrderContainsActiveItem(int orderId, int stockItemId)
+        {
+            return GetOrderById(orderId).SelectMany(o => o.OrderItems).Any(
+                oi => oi.StockItemId == stockItemId
+                && oi.IsActive == true 
+                && oi.Quantity > 0);
+        }
         #endregion
     }
 }

@@ -46,10 +46,11 @@ IsReadOnly="True"/>
         <TextBox Grid.Row="4" Grid.Column="1" Margin="0, 2, 0, 2" Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}" MaxLength="7" behaviors:NumericTextBoxBehavior.IsPositiveInteger="True"/>
         <TextBlock Grid.Row="4" Grid.Column="2" Margin="5, 0, 0, 0" VerticalAlignment="Center" Text="{Binding QuantityValidationMessage}" Foreground="Red"/>
         <Label Grid.Row="5" Grid.Column="0" Margin="0, 2, 0, 2" HorizontalAlignment="Center">Unit price</Label>
+        
         <TextBox x:Name="UnitPriceBox" Grid.Row="5" Grid.Column="1" Margin="0, 2, 0, 2">
             <TextBox.Text>
                 <Binding Path="UnitPrice"
-                 UpdateSourceTrigger="LostFocus">
+                 UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
                         <behaviors:MoneyValidationRule ValidationStep="RawProposedValue"/>
                     </Binding.ValidationRules>

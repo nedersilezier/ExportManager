@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ExportManager.ViewModels.AddViewModels
@@ -28,6 +29,7 @@ namespace ExportManager.ViewModels.AddViewModels
         private decimal? _CostPrice;
         private int? _AvailableStock;
         private readonly int _OriginalQuantity;
+
         #endregion
         #region Properties
         public string GrowerDisplayName
@@ -267,7 +269,6 @@ namespace ExportManager.ViewModels.AddViewModels
                     item.TransportCost = TransportCost;
                     item.StorageCost = StorageCost;
                     item.Discount = Discount;
-                    
                     if (!_IsEditMode)
                     {
                         item.StockItemId = SelectedStockItem.Key;
@@ -317,6 +318,9 @@ namespace ExportManager.ViewModels.AddViewModels
         }
         public void setStockItem(SelectedItemEventArgs e)
         {
+            bool stockItemExists = new OrderDetailsQuery(potplantsEntities).OrderContainsActiveItem(_OrderId, e.ItemId);
+            if (stockItemExists)
+                throw new Exception("Stock item already exists in this order.");
             SelectedStockItem = new KeyAndValue
             {
                 Key = e.ItemId,

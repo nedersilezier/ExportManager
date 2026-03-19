@@ -230,18 +230,25 @@ namespace ExportManager.ViewModels.Abstract
         public void selectAndClose()
         {
             //_ItemSelected?.Invoke(SelectedItem);
-            if(SelectedItem == null)
+            if (SelectedItem == null)
             {
                 //throw new InvalidOperationException("No item is selected.");
                 ShowMessageBox("No item is selected.");
                 return;
             }
-            if(_GenerateArgsFromSelection == null)
+            if (_GenerateArgsFromSelection == null)
             {
                 throw new InvalidOperationException("GenerateArgsFromSelection function is not set.");
             }
-            _ItemSelected?.Invoke(_GenerateArgsFromSelection(SelectedItem));
-            OnRequestClose();
+            try
+            {
+                _ItemSelected?.Invoke(_GenerateArgsFromSelection(SelectedItem));
+                OnRequestClose();
+            }
+            catch (Exception ex)
+            {
+                ShowMessageBox(ex.Message);
+            }
         }
         //public virtual SelectedItemEventArgs GenerateArgsFromSelection()
         //{
