@@ -46,7 +46,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                     TrayType = orderitem.StockItems.TrayTypes.Name,
                     Quality = orderitem.StockItems.Qualities.Name,
                     OrderedDate = orderitem.OrderedDate,
-                    IsScanned = orderitem.IsScanned,
+                    IsScanned = orderitem.IsScanned
                 });
         }
         #endregion

@@ -246,6 +246,14 @@
           <Property Name="TotalGross" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="TotalTax" Type="decimal" Precision="18" Scale="2" Nullable="false" />
         </EntityType>
+        <EntityType Name="OrderItemCarriers">
+          <Key>
+            <PropertyRef Name="OrderItemId" />
+            <PropertyRef Name="CarrierId" />
+          </Key>
+          <Property Name="OrderItemId" Type="int" Nullable="false" />
+          <Property Name="CarrierId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="OrderItems">
           <Key>
             <PropertyRef Name="OrderItemId" />
@@ -555,6 +563,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_OrderItemCarriers_Carriers">
+          <End Role="Carriers" Type="Self.Carriers" Multiplicity="1" />
+          <End Role="OrderItemCarriers" Type="Self.OrderItemCarriers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Carriers">
+              <PropertyRef Name="CarrierId" />
+            </Principal>
+            <Dependent Role="OrderItemCarriers">
+              <PropertyRef Name="CarrierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderItemCarriers_OrderItems">
+          <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="1" />
+          <End Role="OrderItemCarriers" Type="Self.OrderItemCarriers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderItems">
+              <PropertyRef Name="OrderItemId" />
+            </Principal>
+            <Dependent Role="OrderItemCarriers">
+              <PropertyRef Name="OrderItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_OrderItems_Orders">
           <End Role="Orders" Type="Self.Orders" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -727,6 +759,7 @@
           <EntitySet Name="InvoiceItems" EntityType="Self.InvoiceItems" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InvoiceParties" EntityType="Self.InvoiceParties" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Invoices" EntityType="Self.Invoices" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderItemCarriers" EntityType="Self.OrderItemCarriers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderItems" EntityType="Self.OrderItems" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PaymentMethods" EntityType="Self.PaymentMethods" Schema="dbo" store:Type="Tables" />
@@ -778,6 +811,14 @@
           <AssociationSet Name="FK_Invoices_PaymentMethods" Association="Self.FK_Invoices_PaymentMethods">
             <End Role="PaymentMethods" EntitySet="PaymentMethods" />
             <End Role="Invoices" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderItemCarriers_Carriers" Association="Self.FK_OrderItemCarriers_Carriers">
+            <End Role="Carriers" EntitySet="Carriers" />
+            <End Role="OrderItemCarriers" EntitySet="OrderItemCarriers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderItemCarriers_OrderItems" Association="Self.FK_OrderItemCarriers_OrderItems">
+            <End Role="OrderItems" EntitySet="OrderItems" />
+            <End Role="OrderItemCarriers" EntitySet="OrderItemCarriers" />
           </AssociationSet>
           <AssociationSet Name="FK_OrderItems_Orders" Association="Self.FK_OrderItems_Orders">
             <End Role="Orders" EntitySet="Orders" />
@@ -1052,6 +1093,7 @@
           <NavigationProperty Name="StockMovements" Relationship="PotplantsModel.FK_StockMovements_OrderItems" FromRole="OrderItems" ToRole="StockMovements" />
           <Property Name="IsScanned" Type="Boolean" Nullable="false" />
           <Property Name="InternalNo" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Carriers" Relationship="PotplantsModel.OrderItemCarriers" FromRole="OrderItems" ToRole="Carriers" />
         </EntityType>
         <EntityType Name="Orders">
           <Key>
@@ -1441,6 +1483,10 @@
             <End Role="Orders" EntitySet="Orders" />
             <End Role="Carriers" EntitySet="Carriers" />
           </AssociationSet>
+          <AssociationSet Name="OrderItemCarriers" Association="PotplantsModel.OrderItemCarriers">
+            <End Role="Carriers" EntitySet="Carriers" />
+            <End Role="OrderItems" EntitySet="OrderItems" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1688,6 +1734,7 @@
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CarrierTypes" Relationship="PotplantsModel.FK_Carriers_CarrierTypes" FromRole="Carriers" ToRole="CarrierTypes" />
           <NavigationProperty Name="Orders" Relationship="PotplantsModel.FK_Carriers_Orders" FromRole="Carriers" ToRole="Orders" />
+          <NavigationProperty Name="OrderItems" Relationship="PotplantsModel.OrderItemCarriers" FromRole="Carriers" ToRole="OrderItems" />
         </EntityType>
         <Association Name="FK_Carriers_CarrierTypes">
           <End Type="PotplantsModel.CarrierTypes" Role="CarrierTypes" Multiplicity="1" />
@@ -1714,6 +1761,10 @@
               <PropertyRef Name="OrderId" />
             </Dependent>
           </ReferentialConstraint>
+        </Association>
+        <Association Name="OrderItemCarriers">
+          <End Type="PotplantsModel.Carriers" Role="Carriers" Multiplicity="*" />
+          <End Type="PotplantsModel.OrderItems" Role="OrderItems" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -2153,6 +2204,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="OrderItemCarriers" TypeName="PotplantsModel.OrderItemCarriers" StoreEntitySet="OrderItemCarriers">
+            <EndProperty Name="OrderItems">
+              <ScalarProperty Name="OrderItemId" ColumnName="OrderItemId" />
+            </EndProperty>
+            <EndProperty Name="Carriers">
+              <ScalarProperty Name="CarrierId" ColumnName="CarrierId" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

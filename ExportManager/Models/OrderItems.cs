@@ -18,6 +18,7 @@ namespace ExportManager.Models
         public OrderItems()
         {
             this.StockMovements = new HashSet<StockMovements>();
+            this.Carriers = new HashSet<Carriers>();
         }
     
         public int OrderItemId { get; set; }
@@ -46,5 +47,7 @@ namespace ExportManager.Models
         public virtual StockItems StockItems { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockMovements> StockMovements { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Carriers> Carriers { get; set; }
     }
 }

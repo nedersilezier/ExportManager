@@ -48,6 +48,7 @@
         <EntityTypeShape EntityType="PotplantsModel.Carriers" Width="1.5" PointX="11.625" PointY="0.5" />
         <AssociationConnector Association="PotplantsModel.FK_Carriers_CarrierTypes" />
         <AssociationConnector Association="PotplantsModel.FK_Carriers_Orders" />
+        <AssociationConnector Association="PotplantsModel.OrderItemCarriers" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

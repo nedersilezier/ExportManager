@@ -55,11 +55,22 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 return _ShowDetailsCommand;
             }
         }
+        private BaseCommand _ShowCarriersCommand;
+        public ICommand ShowCarriersCommand
+        {
+            get
+            {
+                if (_ShowCarriersCommand == null)
+                    _ShowCarriersCommand = new BaseCommand(OnShowCarriers);
+                return _ShowCarriersCommand;
+            }
+        }
         public override IList<CommandViewModel> CreateExtraCommands()
         {
             return new List<CommandViewModel>
             {
-                new CommandViewModel("Order items", ShowDetailsCommand)
+                new CommandViewModel("Order items", ShowDetailsCommand),
+                new CommandViewModel("Carriers", ShowCarriersCommand)
             };
         }
         #endregion
@@ -84,6 +95,15 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 return;
             }
             OpenNewTab(() => new AllOrderItemsViewModel(SelectedItem.OrderId));
+        }
+        private void OnShowCarriers()
+        {
+            if (SelectedItem == null)
+            {
+                ShowMessageBox("No order selected.");
+                return;
+            }
+            OpenNewTab(() => new AllOrderItemCarriersViewModel(SelectedItem.OrderId));
         }
         #endregion
         #region Sorting and searching

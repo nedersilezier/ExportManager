@@ -109,6 +109,7 @@
     <Compile Include="Models\BusinessLogic\ListViewsForUI\GrowersForStockItems.cs" />
     <Compile Include="Models\BusinessLogic\InvoiceCalculator.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\InvoicesForReports.cs" />
+    <Compile Include="Models\BusinessLogic\ListViewsForUI\OrderItemCarriersListView.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\OrderDetailsQuery.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\OrderItemDetailsQuery.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\OrdersForReports.cs" />
@@ -231,6 +232,7 @@
     <Compile Include="ViewModels\ShowAllViewModels\AllCultivationsViewModel.cs" />
     <Compile Include="ViewModels\ShowAllViewModels\AllGrowersViewModel.cs" />
     <Compile Include="ViewModels\ShowAllViewModels\AllInvoicesViewModel.cs" />
+    <Compile Include="ViewModels\ShowAllViewModels\AllOrderItemCarriersViewModel.cs" />
     <Compile Include="ViewModels\ShowAllViewModels\AllOrdersViewModel.cs" />
     <Compile Include="ViewModels\ShowAllViewModels\AllPaymentMethodsViewModel.cs" />
     <Compile Include="ViewModels\ShowAllViewModels\AllQualitiesViewModel.cs" />
@@ -300,6 +302,9 @@
     </Compile>
     <Compile Include="Views\ShowAllViews\AllInvoicesView.xaml.cs">
       <DependentUpon>AllInvoicesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ShowAllViews\AllOrderItemCarriersView.xaml.cs">
+      <DependentUpon>AllOrderItemCarriersView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShowAllViews\AllOrdersView.xaml.cs">
       <DependentUpon>AllOrdersView.xaml</DependentUpon>
@@ -465,6 +470,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ShowAllViews\AllInvoicesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ShowAllViews\AllOrderItemCarriersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
