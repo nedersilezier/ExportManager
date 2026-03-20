@@ -583,6 +583,8 @@
     <Resource Include="Icons\left-arrow.png" />
     <Resource Include="Icons\right-arrow.png" />
     <Resource Include="Icons\camera.png" />
+    <Resource Include="Icons\down-arrow.png" />
+    <Resource Include="Icons\top-arrow.png" />
     <Content Include="Models\PotplantsModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>PotplantsModel.edmx</DependentUpon>
