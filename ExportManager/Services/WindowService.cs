@@ -21,7 +21,6 @@ namespace ExportManager.ViewModels.Windows
             var window = BuildWindow(viewModelType, parameter);
             window.Show();
         }
-
         public bool? ShowDialog(Type viewModelType, object parameter = null)
         {
             var window = BuildWindow(viewModelType, parameter);
@@ -53,7 +52,7 @@ namespace ExportManager.ViewModels.Windows
             return BuildWindow(typeof(TViewModel), parameter);
         }
 
-        private Window BuildWindow(Type viewModelType, object parameter)
+        private Window BuildWindow(Type viewModelType, object parameter, Action refreshEvent = null)
         {
             var viewModel = _serviceProvider.GetRequiredService(viewModelType);
             SetParameterIfSupported(viewModel, parameter);
@@ -61,6 +60,8 @@ namespace ExportManager.ViewModels.Windows
             var windowType = MapViewModelToWindow(viewModelType);
             var window = (Window)Activator.CreateInstance(windowType);
             window.DataContext = viewModel;
+            if (refreshEvent != null && viewModel is NewOrderItemCarrierViewModel vm)
+                vm.CarrierAdded += refreshEvent;
             return window;
         }
 
@@ -100,8 +101,6 @@ namespace ExportManager.ViewModels.Windows
                 case Type t when t == typeof(NewOrderItemCarrierViewModel):
                     return typeof(NewOrderItemCarrierView);
             }
-                //if (viewModelType == typeof(ImageWindowViewModel))
-                //return typeof(ImageWindowView);
 
             throw new Exception($"No window mapped for {viewModelType.Name}");
         }

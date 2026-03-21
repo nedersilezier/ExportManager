@@ -14,9 +14,6 @@ namespace ExportManager.ViewModels
         public virtual string DisplayName { get; protected set; }
         public virtual string FullDisplayName { get; protected set; }
         #endregion
-        #region WindowService
-
-        #endregion
         #region WindowPropertys
 
         public void ShowMessageBox(string message)

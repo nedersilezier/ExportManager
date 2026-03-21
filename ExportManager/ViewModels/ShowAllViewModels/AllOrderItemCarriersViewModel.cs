@@ -119,7 +119,8 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         {
             OnRequestWindow<NewOrderItemCarrierViewModel>(new NewOrderItemCarrierWindowParameter(
                 _orderId, 
-                new OrderDetailsQuery(potplantsEntities).GetOrderDisplayName(_orderId) + " - New carrier"
+                new OrderDetailsQuery(potplantsEntities).GetOrderFullDisplayName(_orderId) + " - New carrier",
+                Load
                 ));
         }
         public override void OnEdit()

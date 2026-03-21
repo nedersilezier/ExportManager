@@ -34,7 +34,7 @@
           <Property Name="CarrierTypeId" Type="int" Nullable="false" />
           <Property Name="AmountOfShelfs" Type="int" Nullable="false" />
           <Property Name="AmountOfExtensions" Type="int" Nullable="false" />
-          <Property Name="CreatedBy" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="150" Nullable="false" StoreGeneratedPattern="Computed" />
           <Property Name="CreatedAt" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdatedBy" Type="nvarchar" MaxLength="100" />
           <Property Name="UpdatedAt" Type="datetime2" Precision="7" />
@@ -1725,7 +1725,7 @@
           <Property Name="CarrierTypeId" Type="Int32" Nullable="false" />
           <Property Name="AmountOfShelfs" Type="Int32" Nullable="false" />
           <Property Name="AmountOfExtensions" Type="Int32" Nullable="false" />
-          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedAt" Type="DateTime" Precision="7" />

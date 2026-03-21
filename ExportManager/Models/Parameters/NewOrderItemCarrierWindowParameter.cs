@@ -10,10 +10,12 @@ namespace ExportManager.Models.Parameters
     {
         public int OrderId { get; private set; }
         public string Title { get; private set; }
-        public NewOrderItemCarrierWindowParameter(int orderId, string title)
+        public Action RefreshEvent { get; private set; }
+        public NewOrderItemCarrierWindowParameter(int orderId, string title, Action refreshEvent)
         {
             OrderId = orderId;
             Title = title;
+            RefreshEvent = refreshEvent;
         }
     }
 }

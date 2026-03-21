@@ -10,6 +10,7 @@ namespace ExportManager.ViewModels.Events
     {
         public Type ViewModelType { get; private set; }
         public object Parameter { get; private set; }
+        public Action RefreshRequest;
 
         public WindowRequestEventArgs(Type viewModelType, object parameter = null)
         {
