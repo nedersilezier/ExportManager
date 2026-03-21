@@ -24,7 +24,15 @@
         <Border  TextBlock.BaselineOffset="5" Grid.Row="0" Grid.Column="1" BorderBrush="LightGray" Background="LightGray" BorderThickness="0,0,0,1" Margin="1, 0, 0, 1">
             <TextBlock Text="Assigned order items" FontSize="14" FontWeight="Medium" Margin="1, 1, 1, 1" HorizontalAlignment="Center"/>
         </Border>
-        <DataGrid Grid.Row="1" Grid.Column="0" Grid.RowSpan="4" AutoGenerateColumns="False" ItemsSource="{Binding List, IsAsync=True}" SelectedItem="{Binding SelectedItem}" IsReadOnly="True" Margin="0, 0, 1, 0" BorderBrush="LightGray">
+        <DataGrid Grid.Row="1" Grid.Column="0" Grid.RowSpan="4" AutoGenerateColumns="False" ItemsSource="{Binding List, IsAsync=True}" SelectedItem="{Binding SelectedCarrier}" 
+                  IsReadOnly="True" 
+                  IsSynchronizedWithCurrentItem="False" 
+                  Margin="0, 0, 1, 0" 
+                  BorderBrush="LightGray">
+            <DataGrid.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{x:Static SystemColors.HighlightColor}"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="White"/>
+            </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Carrier ID" Binding="{Binding CarrierId}" Width="70"/>
                 <DataGridTextColumn Header="Type" Binding="{Binding CarrierType}" Width="100"/>
@@ -33,7 +41,7 @@
                 <DataGridTextColumn Header="Amount of plants" Binding="{Binding AmountOfPlants}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
-        <DataGrid Grid.Row="1" Grid.Column="1" AutoGenerateColumns="True" ItemsSource="{Binding AssignedOrderItems, IsAsync=True}" SelectedItem="{Binding SelectedAssignedOrderItem}" IsReadOnly="True" Margin="1, 0, 0, 1" BorderBrush="LightGray">
+        <DataGrid Grid.Row="1" Grid.Column="1" AutoGenerateColumns="True" ItemsSource="{Binding AssignedOrderItems, IsAsync=True}" SelectedItem="{Binding SelectedAssignedOrderItem}" IsReadOnly="True" IsSynchronizedWithCurrentItem="False" Margin="1, 0, 0, 1" BorderBrush="LightGray">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Line No" Binding="{Binding InternalNo}" Width="70"/>
                 <DataGridTextColumn Header="Order item ID" Binding="{Binding OrderItemId}" Width="85"/>
@@ -47,7 +55,7 @@
         <Border  TextBlock.BaselineOffset="5" Grid.Row="2" Grid.Column="1" BorderBrush="LightGray" Background="LightGray" BorderThickness="0,0,0,1" Margin="1, 1, 0, 1">
             <TextBlock Text="Available order items" FontSize="14" FontWeight="Medium" Margin="1, 1, 1, 1" HorizontalAlignment="Center"/>
         </Border>
-        <DataGrid Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" AutoGenerateColumns="False" ItemsSource="{Binding AvailableOrderItems, IsAsync=True}" SelectedItem="{Binding SelectedAvailableOrderItem}" IsReadOnly="True" Margin="1, 1, 0, 0" BorderBrush="LightGray">
+        <DataGrid Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" AutoGenerateColumns="False" ItemsSource="{Binding UnassignedOrderItems, IsAsync=True}" SelectedItem="{Binding SelectedUnassignedOrderItem}" IsReadOnly="True" IsSynchronizedWithCurrentItem="False" Margin="1, 1, 0, 0" BorderBrush="LightGray">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Line No" Binding="{Binding InternalNo}" Width="70"/>
                 <DataGridTextColumn Header="Order item ID" Binding="{Binding OrderItemId}" Width="85"/>
@@ -60,10 +68,10 @@
         </DataGrid>
         <Grid Grid.Row="0" Grid.Column="2" Grid.RowSpan="4" Background="GhostWhite" Margin="1, 0, 0, 0">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Button Margin="0, 2, 0, 2" Height="32" Width="28" Command="">
+                <Button Margin="0, 2, 0, 2" Height="32" Width="28" Command="{Binding AssignOrderItemCommand}">
                     <Image Source="/Icons/top-arrow.png"/>
                 </Button>
-                <Button Margin="0, 5, 0, 2" Height="32" Width="28" Command="">
+                <Button Margin="0, 5, 0, 2" Height="32" Width="28" Command="{Binding UnassignOrderItemCommand}">
                     <Image Source="/Icons/down-arrow.png"/>
                 </Button>
             </StackPanel>

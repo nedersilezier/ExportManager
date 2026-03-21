@@ -24,7 +24,9 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         private readonly int _orderId;
         private ObservableCollection<OrderItemsListView> _AssignedOrderItems;
         private ObservableCollection<OrderItemsListView> _UnassignedOrderItems;
+        private OrderItemCarriersListView _SelectedCarrier;
         private OrderItemsListView _SelectedAssignedOrderItem;
+        private OrderItemsListView _SelectedUnassignedOrderItem;
         #endregion
         #region Constructor
         public AllOrderItemCarriersViewModel(int orderId)
@@ -52,6 +54,18 @@ namespace ExportManager.ViewModels.ShowAllViewModels
 
             }
         }
+        public ObservableCollection<OrderItemsListView> UnassignedOrderItems
+        {
+            get { return _UnassignedOrderItems; }
+            set
+            {
+                if (_UnassignedOrderItems != value)
+                {
+                    _UnassignedOrderItems = value;
+                    OnPropertyChanged(() => UnassignedOrderItems);
+                }
+            }
+        }
         public OrderItemsListView SelectedAssignedOrderItem
         {
             get
@@ -64,6 +78,34 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 {
                     _SelectedAssignedOrderItem = value;
                     OnPropertyChanged(() => SelectedAssignedOrderItem);
+                }
+            }
+        }
+        public OrderItemsListView SelectedUnassignedOrderItem
+        {
+            get
+            {
+                return _SelectedUnassignedOrderItem;
+            }
+            set
+            {
+                if (SelectedUnassignedOrderItem != value)
+                {
+                    _SelectedUnassignedOrderItem = value;
+                    OnPropertyChanged(() => SelectedUnassignedOrderItem);
+                }
+            }
+        }
+        public OrderItemCarriersListView SelectedCarrier
+        {
+            get { return _SelectedCarrier; }
+            set
+            {
+                if (_SelectedCarrier != value)
+                {
+                    _SelectedCarrier = value;
+                    OnPropertyChanged(() => SelectedCarrier);
+                    LoadAssignedOrderItems();
                 }
             }
         }
@@ -100,25 +142,47 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                     AmountOfPlants = carrier.AmountOfPlants
                 });
             }
+            LoadUnAssignedOrderItems();
         }
         #endregion
         #region Commands
-        private BaseCommand _LoadAssignedOrderItems;
-        public ICommand LoadAssignedOrderItemsCommand
+        //private BaseCommand _LoadAssignedOrderItems;
+        //public ICommand LoadAssignedOrderItemsCommand
+        //{
+        //    get
+        //    {
+        //        if (_LoadAssignedOrderItems == null)
+        //            _LoadAssignedOrderItems = new BaseCommand(LoadAssignedOrderItems);
+        //        return _LoadAssignedOrderItems;
+        //    }
+        //}
+        private BaseCommand _AssignOrderItemCommand;
+        public ICommand AssignOrderItemCommand
         {
             get
             {
-                if (_LoadAssignedOrderItems == null)
-                    _LoadAssignedOrderItems = new BaseCommand(LoadAssignedOrderItems);
-                return _LoadAssignedOrderItems;
+                if (_AssignOrderItemCommand == null)
+                    _AssignOrderItemCommand = new BaseCommand(AssignOrderItem);
+                return _AssignOrderItemCommand;
             }
         }
+        private BaseCommand _UnassignOrderItemCommand;
+        public ICommand UnassignOrderItemCommand
+        {
+            get
+            {
+                if (_UnassignOrderItemCommand == null)
+                    _UnassignOrderItemCommand = new BaseCommand(UnassignOrderItem);
+                return _UnassignOrderItemCommand;
+            }
+        }
+        
         #endregion
         #region Functions
         public override void OnAdd()
         {
             OnRequestWindow<NewOrderItemCarrierViewModel>(new NewOrderItemCarrierWindowParameter(
-                _orderId, 
+                _orderId,
                 new OrderDetailsQuery(potplantsEntities).GetOrderFullDisplayName(_orderId) + " - New carrier",
                 Load
                 ));
@@ -133,11 +197,11 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         public void LoadAssignedOrderItems()
         {
-            if (SelectedItem == null)
+            if (SelectedCarrier == null)
                 return;
-            AssignedOrderItems.Clear();
+            //AssignedOrderItems.Clear();
             AssignedOrderItems = new ObservableCollection<OrderItemsListView>(
-                potplantsEntities.OrderItems.Where(oi => SelectedItem.OrderItemIds.Contains(oi.OrderItemId)).Select(oi => new OrderItemsListView
+                potplantsEntities.OrderItems.Where(oi => SelectedCarrier.OrderItemIds.Contains(oi.OrderItemId)).Select(oi => new OrderItemsListView
                 {
                     OrderItemId = oi.OrderItemId,
                     StockItemId = oi.StockItemId,
@@ -150,6 +214,47 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                     TrayType = oi.StockItems.TrayTypes.Name,
                     Quality = oi.StockItems.Qualities.Name
                 }));
+        }
+        public void LoadUnAssignedOrderItems()
+        {
+            //UnassignedOrderItems.Clear();
+            UnassignedOrderItems = new ObservableCollection<OrderItemsListView>(
+                potplantsEntities.OrderItems.Where(oi => oi.IsScanned == false).Select(oi => new OrderItemsListView
+                {
+                    OrderItemId = oi.OrderItemId,
+                    StockItemId = oi.StockItemId,
+                    ProductName = oi.StockItems.Products.Name,
+                    ProductHeight = oi.StockItems.Products.Height,
+                    ProductPotsize = oi.StockItems.Products.Potsize,
+                    Quantity = oi.Quantity,
+                    InternalNo = oi.InternalNo,
+                    ProductInternalNo = oi.StockItems.InternalNo,
+                    TrayType = oi.StockItems.TrayTypes.Name,
+                    Quality = oi.StockItems.Qualities.Name
+                }));
+        }
+        private void AssignOrderItem()
+        {
+            if(SelectedCarrier == null)
+            {
+                MessageBox.Show("No carrier selected.");
+                return;
+            }
+                
+            if (SelectedUnassignedOrderItem == null)
+            {
+                MessageBox.Show("No order item selected to assign.");
+                return;
+            }
+        }
+
+        private void UnassignOrderItem()
+        {
+            if (SelectedCarrier == null)
+                MessageBox.Show("No carrier selected.");
+
+            if (SelectedAssignedOrderItem == null)
+                MessageBox.Show("No order item selected to remove from the carrier.");
         }
         #endregion
         #region Sorting and searching
