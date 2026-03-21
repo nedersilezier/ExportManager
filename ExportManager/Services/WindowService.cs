@@ -93,8 +93,15 @@ namespace ExportManager.ViewModels.Windows
 
         private Type MapViewModelToWindow(Type viewModelType)
         {
-            if (viewModelType == typeof(ImageWindowViewModel))
-                return typeof(ImageWindowView);
+            switch (viewModelType)
+            {
+                case Type t when t == typeof(ImageWindowViewModel):
+                    return typeof(ImageWindowView);
+                case Type t when t == typeof(NewOrderItemCarrierViewModel):
+                    return typeof(NewOrderItemCarrierView);
+            }
+                //if (viewModelType == typeof(ImageWindowViewModel))
+                //return typeof(ImageWindowView);
 
             throw new Exception($"No window mapped for {viewModelType.Name}");
         }

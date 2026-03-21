@@ -2,7 +2,9 @@
 using ExportManager.Models;
 using ExportManager.Models.BusinessLogic.ListViewsForUI;
 using ExportManager.Models.EntitiesForView;
+using ExportManager.Models.Parameters;
 using ExportManager.ViewModels.Abstract;
+using ExportManager.ViewModels.Windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,6 +12,7 @@ using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -114,7 +117,10 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Functions
         public override void OnAdd()
         {
-            return;
+            OnRequestWindow<NewOrderItemCarrierViewModel>(new NewOrderItemCarrierWindowParameter(
+                _orderId, 
+                new OrderDetailsQuery(potplantsEntities).GetOrderDisplayName(_orderId) + " - New carrier"
+                ));
         }
         public override void OnEdit()
         {
