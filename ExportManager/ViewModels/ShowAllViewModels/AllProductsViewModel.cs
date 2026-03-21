@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,9 +10,9 @@ using System.Windows.Input;
 using System.Windows;
 using ExportManager.ViewModels.AddViewModels;
 using ExportManager.Models;
-using ExportManager.ViewModels.Windows;
-using ExportManager.Views.Windows;
 using ExportManager.ViewModels.Events;
+using ExportManager.ViewModels.Windows;
+using ExportManager.Models.Parameters;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
@@ -51,8 +51,8 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             : base()
         {
             base.DisplayName = "Products";
-
         }
+
         public AllProductsViewModel(Action<SelectedItemEventArgs> itemSetter)
             : base(itemSetter,
                   generateArgsFromSelection:
@@ -89,13 +89,13 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         private void OnShowPicture()
         {
-            if (SelectedItem != null && SelectedItem is ProductsListView)   
+            if (SelectedItem != null && SelectedItem is ProductsListView)
             {
                 int productId = SelectedItem.ProductId;
                 var image = potplantsEntities.Products.Where(t => t.ProductId == productId).Select(t => t.Image).FirstOrDefault();
                 if (image != null && image.Length > 0)
                 {
-                    OnRequestImageWindow(new ImageWindowEventArgs(image, SelectedItem.Name));
+                    OnRequestWindow<ImageWindowViewModel>(new ImageWindowParameter(image, SelectedItem.Name));
                 }
                 else
                 {

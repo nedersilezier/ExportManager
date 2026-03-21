@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,16 +44,18 @@ namespace ExportManager.ViewModels
                 handler(this, EventArgs.Empty);
         }
         #endregion
-        #region RequestOpen
+        #region RequestTabOpen
         public event EventHandler<WorkspaceViewModel> RequestOpen;
         protected void OnRequestOpen(WorkspaceViewModel workspace)
         {
             this.RequestOpen?.Invoke(this, workspace);
         }
-        public event EventHandler<ImageWindowEventArgs> RequestImageWindow;
-        protected void OnRequestImageWindow(ImageWindowEventArgs e)
+        #endregion
+        #region RequestWindowOpen
+        public event EventHandler<WindowRequestEventArgs> RequestWindow;
+        protected void OnRequestWindow<TWindowViewModel>(object parameter = null) where TWindowViewModel : class
         {
-            this.RequestImageWindow?.Invoke(this, e);
+            this.RequestWindow?.Invoke(this, new WindowRequestEventArgs(typeof(TWindowViewModel), parameter));
         }
         #endregion
         #region Loading
@@ -84,20 +86,6 @@ namespace ExportManager.ViewModels
             }
             OnRequestOpen(viewModel);
         }
-        //protected void OpenNewTab<T>(Action refreshEvent) where T : WorkspaceViewModel, new()
-        //{
-        //    var viewModel = new T();
-        //    if (viewModel is NewItemViewModelBase newItemViewModel)
-        //    {
-        //        void handler()
-        //        {
-        //            refreshEvent();
-        //            newItemViewModel.Added -= handler;
-        //        }
-        //        newItemViewModel.Added += handler;
-        //    }
-        //    OnRequestOpen(viewModel);
-        //}
         #endregion
 
     }

@@ -1,5 +1,9 @@
-﻿using ExportManager.ViewModels;
+using ExportManager.Models;
+using ExportManager.ViewModels;
+using ExportManager.ViewModels.ShowAllViewModels;
+using ExportManager.ViewModels.Windows;
 using ExportManager.Views;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -13,6 +17,8 @@ namespace ExportManager
 {
     public partial class App : Application
     {
+        public IServiceProvider ServiceProvider { get; private set; }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -21,12 +27,24 @@ namespace ExportManager
             CultureInfo.DefaultThreadCurrentCulture = culture;
             CultureInfo.DefaultThreadCurrentUICulture = culture;
 
+            var services = new ServiceCollection();
+
+            services.AddSingleton<IWindowService, WindowService>();
+
+            services.AddSingleton<PotplantsEntities>();
+
+            // ViewModele
+            services.AddTransient<MainWindowViewModel>();
+            services.AddTransient<ImageWindowViewModel>();
+
+            ServiceProvider = services.BuildServiceProvider();
+
             FrameworkElement.LanguageProperty.OverrideMetadata(
                 typeof(FrameworkElement),
                 new FrameworkPropertyMetadata(
                     XmlLanguage.GetLanguage(culture.IetfLanguageTag)));
             MainWindow window = new MainWindow();
-            var viewModel = new MainWindowViewModel();
+            var viewModel = ServiceProvider.GetRequiredService<MainWindowViewModel>();
             window.DataContext = viewModel;
             window.Show();
         }
