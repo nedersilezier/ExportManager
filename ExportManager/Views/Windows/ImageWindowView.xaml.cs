@@ -1,4 +1,3 @@
-﻿using ExportManager.ViewModels.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +19,9 @@ namespace ExportManager.Views.Windows
     /// </summary>
     public partial class ImageWindowView : Window
     {
-        public ImageWindowView(ImageWindowViewModel imageWindowViewModel)
+        public ImageWindowView()
         {
             InitializeComponent();
-            DataContext = imageWindowViewModel;
-            base.Title = imageWindowViewModel.DisplayName;
         }
     }
 }

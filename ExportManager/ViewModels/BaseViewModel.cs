@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Windows;
 using System.Windows.Input;
 using ExportManager.Helper;
+using ExportManager.ViewModels.Windows;
 
 namespace ExportManager.ViewModels
 {
@@ -12,6 +13,9 @@ namespace ExportManager.ViewModels
         #region DisplayName
         public virtual string DisplayName { get; protected set; }
         public virtual string FullDisplayName { get; protected set; }
+        #endregion
+        #region WindowService
+
         #endregion
         #region WindowPropertys
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,13 +15,12 @@ using ExportManager.ViewModels.ReportViewModels;
 using ExportManager.ViewModels.Events;
 using System.Windows;
 using ExportManager.ViewModels.Windows;
-using ExportManager.Views.Windows;
-
 namespace ExportManager.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
     {
         #region Fields
+        private readonly IWindowService _windowService;
         private ReadOnlyCollection<CommandViewModel> _Commands;
         private ReadOnlyCollection<CommandViewModel> _GlobalCommands;
         private ReadOnlyCollection<CommandViewModel> _DatabaseDictionaryCommands;
@@ -49,6 +48,10 @@ namespace ExportManager.ViewModels
             }
         }
         #endregion
+        public MainWindowViewModel(IWindowService windowService)
+        {
+            _windowService = windowService;
+        }
         #region Commands
         public ReadOnlyCollection<CommandViewModel> Commands
         {
@@ -221,7 +224,7 @@ namespace ExportManager.ViewModels
                     workspace.RequestOpen += OnWorkspaceRequestOpen;
                     workspace.LoadingStarted += OnWorkspaceLoadingStarted;
                     workspace.LoadingFinished += OnWorkspaceLoadingEnded;
-                    workspace.RequestImageWindow += OnWorkspaceWindowRequest;
+                    workspace.RequestWindow += OnWorkspaceWindowRequest;
                 }
             if (e.OldItems != null && e.OldItems.Count != 0)
                 foreach (WorkspaceViewModel workspace in e.OldItems)
@@ -230,7 +233,7 @@ namespace ExportManager.ViewModels
                     workspace.RequestOpen -= OnWorkspaceRequestOpen;
                     workspace.LoadingStarted -= OnWorkspaceLoadingStarted;
                     workspace.LoadingFinished -= OnWorkspaceLoadingEnded;
-                    workspace.RequestImageWindow -= OnWorkspaceWindowRequest;
+                    workspace.RequestWindow -= OnWorkspaceWindowRequest;
                 }
         }
         private void OnWorkspaceRequestClose(object sender, EventArgs e)
@@ -260,10 +263,9 @@ namespace ExportManager.ViewModels
                 Console.WriteLine(IsLoading);
             }
         }
-        private void OnWorkspaceWindowRequest(object sender, ImageWindowEventArgs e)
+        private void OnWorkspaceWindowRequest(object sender, WindowRequestEventArgs e)
         {
-            var window = new ImageWindowViewModel(e.Title, e.ImageData);
-            new ImageWindowView(window).Show();
+            _windowService.Show(e.ViewModelType, e.Parameter);
         }
         #endregion // Workspaces
 
