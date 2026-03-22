@@ -100,6 +100,8 @@ namespace ExportManager.ViewModels.Windows
                     return typeof(ImageWindowView);
                 case Type t when t == typeof(NewOrderItemCarrierViewModel):
                     return typeof(NewOrderItemCarrierView);
+                case Type t when t == typeof(EditCarrierAddonsViewModel):
+                    return typeof(EditCarrierAddonsView);
             }
 
             throw new Exception($"No window mapped for {viewModelType.Name}");

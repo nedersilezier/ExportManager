@@ -258,6 +258,19 @@ namespace ExportManager.ViewModels
 
             this.SetActiveWorkspace(workspace);
         }
+        public void ShowAll<T>(Func<T> constructor) where T: WorkspaceViewModel
+        {
+            T workspace =
+                this.Workspaces.OfType<T>().FirstOrDefault(
+                    vm => vm is IAllViewable allViewModel && allViewModel.IsSelectMode == false);
+            if (workspace == null)
+            {
+                workspace = constructor();
+                this.Workspaces.Add(workspace);
+            }
+
+            this.SetActiveWorkspace(workspace);
+        }
         public void CreateView(WorkspaceViewModel workspace)
         {
             this.Workspaces.Add(workspace);

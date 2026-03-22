@@ -196,6 +196,7 @@
     </Compile>
     <Compile Include="Models\Parameters\ImageWindowParameter.cs" />
     <Compile Include="Models\Parameters\NewOrderItemCarrierWindowParameter.cs" />
+    <Compile Include="Models\Parameters\OrderItemCarrierParameter.cs" />
     <Compile Include="Models\PaymentMethods.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
@@ -283,6 +284,7 @@
     <Compile Include="ViewModels\ReportViewModels\OrderWeightReportViewModel.cs" />
     <Compile Include="ViewModels\ShowAllViewModels\IAllViewable.cs" />
     <Compile Include="ViewModels\Events\SelectedItemEventArgs.cs" />
+    <Compile Include="ViewModels\Windows\EditCarrierAddonsViewModel.cs" />
     <Compile Include="ViewModels\Windows\ImageWindowViewModel.cs" />
     <Compile Include="ViewModels\Abstract\IParameterReceiver.cs" />
     <Compile Include="Services\IWindowService.cs" />
@@ -401,6 +403,9 @@
     </Compile>
     <Compile Include="Views\ReportViews\VolumeReportView.xaml.cs">
       <DependentUpon>VolumeReportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\EditCarrierAddonsView.xaml.cs">
+      <DependentUpon>EditCarrierAddonsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Windows\ImageWindowView.xaml.cs">
       <DependentUpon>ImageWindowView.xaml</DependentUpon>
@@ -598,6 +603,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ReportViews\VolumeReportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Windows\EditCarrierAddonsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
