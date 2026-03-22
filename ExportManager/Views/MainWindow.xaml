@@ -3,10 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  
         Title="ExportManager" Height="300" Width="300" WindowState="Maximized"
         xmlns:vm="clr-namespace:ExportManager.Views"
+        xmlns:msbehaviors="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:behaviors="clr-namespace:ExportManager.Behaviors"
         >
     <Window.Resources>
         <ResourceDictionary Source="MainWindowResources.xaml"  />
     </Window.Resources>
+    <msbehaviors:Interaction.Behaviors>
+        <behaviors:ClosingBehavior ClosingCommand="{Binding ClosingCommand}" />
+    </msbehaviors:Interaction.Behaviors>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -80,18 +85,18 @@
                                         ContentTemplate="{StaticResource WorkspacesTemplate}"
                                         Style="{StaticResource MainHCCStyle}"/>
             </Border>
-            <Border Background="#80000000" Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}">
+            <!--<Border Background="#80000000" Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}">
                 <ProgressBar IsIndeterminate="True" Width="240" Height="14"/>
-            </Border>
+            </Border>-->
         </Grid>
         <!--Status bar-->
-        <StatusBar Grid.Row="3" Grid.ColumnSpan="2">
+        <StatusBar Grid.Row="3" Grid.ColumnSpan="2" Margin="10, 0, 0, 0">
             <StatusBarItem>
-                <TextBlock>TEXTBLOCK1!</TextBlock>
+                <TextBlock>Your company name</TextBlock>
             </StatusBarItem>
-            <Separator/>
-            <StatusBarItem>
-                <TextBlock>TEXTBLOCK2!</TextBlock>
+            <!--<Separator/>-->
+            <StatusBarItem HorizontalAlignment="Center">
+                <ProgressBar IsIndeterminate="True" Width="240" Height="14" Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}"/>
             </StatusBarItem>
         </StatusBar>
     </Grid>

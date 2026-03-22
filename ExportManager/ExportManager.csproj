@@ -107,6 +107,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Behaviors\ClosingBehavior.cs" />
     <Compile Include="Behaviors\DiscountValidationRule.cs" />
     <Compile Include="Behaviors\MoneyValidationRule.cs" />
     <Compile Include="Behaviors\NumericTextBoxBehavior.cs" />

@@ -8,6 +8,8 @@ using ExportManager.ViewModels.Windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
+using System.Data.Entity.Migrations.Model;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
@@ -27,12 +29,14 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         private OrderItemCarriersListView _SelectedCarrier;
         private OrderItemsListView _SelectedAssignedOrderItem;
         private OrderItemsListView _SelectedUnassignedOrderItem;
+        private bool _IsChanged;
         #endregion
         #region Constructor
         public AllOrderItemCarriersViewModel(int orderId)
             : base()
         {
             _orderId = orderId;
+            _IsChanged = false;
             base.DisplayName = new OrderDetailsQuery(potplantsEntities).GetOrderDisplayName(orderId) + " carriers";
             base.FullDisplayName = new OrderDetailsQuery(potplantsEntities).GetOrderFullDisplayName(orderId) + " carriers";
         }
@@ -89,7 +93,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             }
             set
             {
-                if (SelectedUnassignedOrderItem != value)
+                if (_SelectedUnassignedOrderItem != value)
                 {
                     _SelectedUnassignedOrderItem = value;
                     OnPropertyChanged(() => SelectedUnassignedOrderItem);
@@ -103,11 +107,17 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             {
                 if (_SelectedCarrier != value)
                 {
+                    if (_IsChanged)
+                        UpdateDatabase();
                     _SelectedCarrier = value;
                     OnPropertyChanged(() => SelectedCarrier);
                     LoadAssignedOrderItems();
                 }
             }
+        }
+        public bool IsChanged
+        {
+            get { return _IsChanged; } 
         }
         #endregion
         #region List
@@ -143,6 +153,8 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 });
             }
             LoadUnAssignedOrderItems();
+            if (_IsChanged)
+                UpdateDatabase();
         }
         #endregion
         #region Commands
@@ -176,7 +188,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 return _UnassignOrderItemCommand;
             }
         }
-        
+
         #endregion
         #region Functions
         public override void OnAdd()
@@ -199,7 +211,6 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         {
             if (SelectedCarrier == null)
                 return;
-            //AssignedOrderItems.Clear();
             AssignedOrderItems = new ObservableCollection<OrderItemsListView>(
                 potplantsEntities.OrderItems.Where(oi => SelectedCarrier.OrderItemIds.Contains(oi.OrderItemId)).Select(oi => new OrderItemsListView
                 {
@@ -217,9 +228,10 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         public void LoadUnAssignedOrderItems()
         {
-            //UnassignedOrderItems.Clear();
             UnassignedOrderItems = new ObservableCollection<OrderItemsListView>(
-                potplantsEntities.OrderItems.Where(oi => oi.IsScanned == false).Select(oi => new OrderItemsListView
+                potplantsEntities.OrderItems.Where(oi => oi.OrderId == _orderId 
+                && oi.IsScanned == false
+                && oi.IsActive == true).Select(oi => new OrderItemsListView
                 {
                     OrderItemId = oi.OrderItemId,
                     StockItemId = oi.StockItemId,
@@ -235,26 +247,102 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         private void AssignOrderItem()
         {
-            if(SelectedCarrier == null)
+            if (SelectedCarrier == null)
             {
                 MessageBox.Show("No carrier selected.");
                 return;
             }
-                
+
             if (SelectedUnassignedOrderItem == null)
             {
                 MessageBox.Show("No order item selected to assign.");
                 return;
             }
+            int carrierindex = List.IndexOf(SelectedCarrier);
+            int itemindex = UnassignedOrderItems.IndexOf(SelectedUnassignedOrderItem);
+            AssignedOrderItems.Add(SelectedUnassignedOrderItem);
+            SelectedCarrier.OrderItemIds.Add(SelectedUnassignedOrderItem.OrderItemId);
+            SelectedCarrier.AmountOfPlants += SelectedUnassignedOrderItem.Quantity;
+            OnPropertyChanged(() => List);
+            SelectedCarrier = List[carrierindex];
+            UnassignedOrderItems.Remove(SelectedUnassignedOrderItem);
+            if(UnassignedOrderItems.Count > 0)
+            {
+                if(itemindex >= UnassignedOrderItems.Count)
+                    itemindex = UnassignedOrderItems.Count - 1;
+                SelectedUnassignedOrderItem = UnassignedOrderItems[itemindex];
+            }
+            _IsChanged = true;
         }
-
         private void UnassignOrderItem()
         {
             if (SelectedCarrier == null)
+            {
                 MessageBox.Show("No carrier selected.");
-
+                return;
+            }
             if (SelectedAssignedOrderItem == null)
+            {
                 MessageBox.Show("No order item selected to remove from the carrier.");
+                return; 
+            }
+            int carrierindex = List.IndexOf(SelectedCarrier);
+            int itemindex = AssignedOrderItems.IndexOf(SelectedAssignedOrderItem);
+            UnassignedOrderItems.Add(SelectedAssignedOrderItem);
+            SelectedCarrier.OrderItemIds.Remove(SelectedAssignedOrderItem.OrderItemId);
+            SelectedCarrier.AmountOfPlants -= SelectedAssignedOrderItem.Quantity;
+            OnPropertyChanged(() => List);
+            SelectedCarrier = List[carrierindex];
+            AssignedOrderItems.Remove(SelectedAssignedOrderItem);
+            if(AssignedOrderItems.Count > 0)
+            {
+                if (itemindex >= AssignedOrderItems.Count)
+                    itemindex = AssignedOrderItems.Count - 1;
+                SelectedAssignedOrderItem = AssignedOrderItems[itemindex];
+            }
+            _IsChanged = true;
+        }
+        private void UpdateDatabase()
+        {
+            using (var shortLivedPotplantsEntities = new PotplantsEntities())
+            {
+                foreach (var carrier in List)
+                {
+                    var carrierEF = shortLivedPotplantsEntities.Carriers.Include(c => c.OrderItems).First(c => c.CarrierId == carrier.CarrierId);
+                    var toRemove = carrierEF.OrderItems.Where(oi => !carrier.OrderItemIds.Contains(oi.OrderItemId)).ToList();
+                    foreach (var itemToRemove in toRemove)
+                    {
+                        itemToRemove.IsScanned = false;
+                        carrierEF.OrderItems.Remove(itemToRemove);
+                    }
+                    var oldIDset = carrierEF.OrderItems.Select(oi => oi.OrderItemId).ToList();
+                    var idsToAdd = carrier.OrderItemIds.Except(oldIDset).ToList();
+                    foreach (var idToAdd in idsToAdd)
+                    {
+                        var orderitem = shortLivedPotplantsEntities.OrderItems.Find(idToAdd);
+                        if (orderitem != null)
+                        {
+                            orderitem.IsScanned = true;
+                            carrierEF.OrderItems.Add(orderitem);
+                        }
+                            
+                    }
+
+                }
+                shortLivedPotplantsEntities.SaveChanges();
+            }
+            _IsChanged = false;
+        }
+        public void SaveChangesExternal()
+        {
+            if(_IsChanged)
+                UpdateDatabase();
+        }
+        protected override void OnRequestClose()
+        {
+            if (_IsChanged)
+                UpdateDatabase();
+            base.OnRequestClose();
         }
         #endregion
         #region Sorting and searching

@@ -37,7 +37,7 @@ namespace ExportManager.ViewModels
         #region Events
         #region RequestClose
         public event EventHandler RequestClose;
-        protected void OnRequestClose()
+        protected virtual void OnRequestClose()
         {
             EventHandler handler = this.RequestClose;
             if (handler != null)

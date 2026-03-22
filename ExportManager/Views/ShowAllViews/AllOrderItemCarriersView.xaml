@@ -14,7 +14,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="6*"/>
             <ColumnDefinition Width="10*"/>
             <ColumnDefinition Width="40"/>
         </Grid.ColumnDefinitions>
@@ -35,18 +35,22 @@
             </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Carrier ID" Binding="{Binding CarrierId}" Width="70"/>
-                <DataGridTextColumn Header="Type" Binding="{Binding CarrierType}" Width="100"/>
+                <DataGridTextColumn Header="Type" Binding="{Binding CarrierType}" Width="150"/>
                 <DataGridTextColumn Header="Shelves" Binding="{Binding AmountOfShelves}" Width="100"/>
                 <DataGridTextColumn Header="Extensions" Binding="{Binding AmountOfExtensions}" Width="100"/>
                 <DataGridTextColumn Header="Amount of plants" Binding="{Binding AmountOfPlants}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
-        <DataGrid Grid.Row="1" Grid.Column="1" AutoGenerateColumns="True" ItemsSource="{Binding AssignedOrderItems, IsAsync=True}" SelectedItem="{Binding SelectedAssignedOrderItem}" IsReadOnly="True" IsSynchronizedWithCurrentItem="False" Margin="1, 0, 0, 1" BorderBrush="LightGray">
+        <DataGrid Grid.Row="1" Grid.Column="1" AutoGenerateColumns="False" ItemsSource="{Binding AssignedOrderItems, IsAsync=True}" SelectedItem="{Binding SelectedAssignedOrderItem}" IsReadOnly="True" IsSynchronizedWithCurrentItem="False" Margin="1, 0, 0, 1" BorderBrush="LightGray">
+            <DataGrid.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{x:Static SystemColors.HighlightColor}"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="White"/>
+            </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Line No" Binding="{Binding InternalNo}" Width="70"/>
                 <DataGridTextColumn Header="Order item ID" Binding="{Binding OrderItemId}" Width="85"/>
                 <DataGridTextColumn Header="Product name" Binding="{Binding FullProductName}" Width="400"/>
-                <DataGridTextColumn Header="Tray" Binding="{Binding TrayType}" Width="60"/>
+                <DataGridTextColumn Header="Tray" Binding="{Binding TrayType}" Width="*"/>
                 <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="80"/>
                 <DataGridTextColumn Header="Quality" Binding="{Binding Quality}" Width="70"/>
                 <DataGridTextColumn Header="Stock ID" Binding="{Binding StockItemId}" Width="70"/>
@@ -56,11 +60,15 @@
             <TextBlock Text="Available order items" FontSize="14" FontWeight="Medium" Margin="1, 1, 1, 1" HorizontalAlignment="Center"/>
         </Border>
         <DataGrid Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" AutoGenerateColumns="False" ItemsSource="{Binding UnassignedOrderItems, IsAsync=True}" SelectedItem="{Binding SelectedUnassignedOrderItem}" IsReadOnly="True" IsSynchronizedWithCurrentItem="False" Margin="1, 1, 0, 0" BorderBrush="LightGray">
+            <DataGrid.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{x:Static SystemColors.HighlightColor}"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="White"/>
+            </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Line No" Binding="{Binding InternalNo}" Width="70"/>
                 <DataGridTextColumn Header="Order item ID" Binding="{Binding OrderItemId}" Width="85"/>
                 <DataGridTextColumn Header="Product name" Binding="{Binding FullProductName}" Width="400"/>
-                <DataGridTextColumn Header="Tray" Binding="{Binding TrayType}" Width="50"/>
+                <DataGridTextColumn Header="Tray" Binding="{Binding TrayType}" Width="*"/>
                 <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="80"/>
                 <DataGridTextColumn Header="Quality" Binding="{Binding Quality}" Width="70"/>
                 <DataGridTextColumn Header="Stock ID" Binding="{Binding StockItemId}" Width="70"/>
