@@ -40,6 +40,7 @@ namespace ExportManager
             services.AddTransient<ImageWindowViewModel>();
             services.AddTransient<NewOrderItemCarrierViewModel>();
             services.AddTransient<EditCarrierAddonsViewModel>();
+            services.AddTransient<EditCarrierTypeViewModel>();
 
             ServiceProvider = services.BuildServiceProvider();
 

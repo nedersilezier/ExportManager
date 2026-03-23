@@ -202,19 +202,33 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         public override void OnEdit()
         {
-            return;
+            OnRequestWindow<EditCarrierTypeViewModel>(new CarrierTypeParameter(
+                SelectedCarrier.CarrierId,
+                SelectedCarrier.CarrierType,
+                $"Edit {SelectedCarrier.CarrierType} ID: {SelectedCarrier.CarrierId}",
+                Load
+                ));
         }
         public override void Remove()
-        {
-            OnRemove();
-        }
-        public override void OnRemove()
         {
             if (SelectedCarrier == null)
             {
                 MessageBox.Show("No carrier selected.");
                 return;
             }
+            OnRemove();
+        }
+        public override void Edit()
+        {
+            if (SelectedCarrier == null)
+            {
+                MessageBox.Show("No carrier selected.");
+                return;
+            }
+            OnEdit();
+        }
+        public override void OnRemove()
+        {
             var result = MessageBox.Show(
                         "Are you sure you want to delete this carrier? All assigned items will be unassigned.",
                         $"{SelectedCarrier.CarrierType}",

@@ -15,27 +15,27 @@ using System.Windows.Input;
 
 namespace ExportManager.ViewModels.Windows
 {
-    public class NewOrderItemCarrierViewModel : BaseViewModel, IParameterReceiver<NewOrderItemCarrierWindowParameter>
+    public class EditCarrierTypeViewModel : BaseViewModel, IParameterReceiver<CarrierTypeParameter>
     {
         #region Fields
-        private int _orderId;
+        private int _carrierId;
         private PotplantsEntities potplantsEntities;
+        private Carriers carrier;
         private ObservableCollection<KeyAndValue> _CarrierTypes;
         private KeyAndValue _SelectedCarrierType;
-        private int _Quantity;
         private bool _IsClosing;
-        public event Action CarrierAdded;
+        public event Action CarrierEdited;
         #endregion
         #region Properties
-        public int OrderId
+        public int CarrierId
         {
-            get { return _orderId; }
+            get { return _carrierId; }
             set
             {
-                if (_orderId != value)
+                if (_carrierId != value)
                 {
-                    _orderId = value;
-                    OnPropertyChanged(() => OrderId);
+                    _carrierId = value;
+                    OnPropertyChanged(() => CarrierId);
                 }
             }
         }
@@ -60,7 +60,10 @@ namespace ExportManager.ViewModels.Windows
         }
         public KeyAndValue SelectedCarrierType
         {
-            get { return _SelectedCarrierType; }
+            get
+            {
+                return _SelectedCarrierType;
+            }
             set
             {
                 if (_SelectedCarrierType != value)
@@ -70,24 +73,12 @@ namespace ExportManager.ViewModels.Windows
                 }
             }
         }
-        public int Quantity
-        {
-            get { return _Quantity; }
-            set
-            {
-                if (_Quantity != value)
-                {
-                    _Quantity = value;
-                    OnPropertyChanged(() => Quantity);
-                }
-            }
-        }
         public bool IsClosing
         {
             get { return _IsClosing; }
             set
             {
-                if(_IsClosing != value)
+                if (_IsClosing != value)
                 {
                     _IsClosing = value;
                     OnPropertyChanged(() => IsClosing);
@@ -96,25 +87,25 @@ namespace ExportManager.ViewModels.Windows
         }
         #endregion
         #region Constructor
-        public NewOrderItemCarrierViewModel()
+        public EditCarrierTypeViewModel()
         {
             potplantsEntities = new PotplantsEntities();
         }
         #endregion
         #region Commands
-        private BaseCommand _AddCarrierCommand;
-        public ICommand AddCarrierCommand
+        private BaseCommand _EditCarrierTypeCommand;
+        public ICommand EditCarrierTypeCommand
         {
             get
             {
-                if (_AddCarrierCommand == null)
-                    _AddCarrierCommand = new BaseCommand(OnAddCarrier);
-                return _AddCarrierCommand;
+                if (_EditCarrierTypeCommand == null)
+                    _EditCarrierTypeCommand = new BaseCommand(OnEditCarrier);
+                return _EditCarrierTypeCommand;
             }
         }
         #endregion
         #region Functions
-        public void SetParameter(NewOrderItemCarrierWindowParameter parameter)
+        public void SetParameter(CarrierTypeParameter parameter)
         {
             if (parameter == null)
             {
@@ -122,29 +113,22 @@ namespace ExportManager.ViewModels.Windows
             }
 
             DisplayName = parameter.Title;
-            OrderId = parameter.OrderId;
-            CarrierAdded += parameter.RefreshEvent;
+            CarrierId = parameter.CarrierId;
+            SelectedCarrierType = CarrierTypes.FirstOrDefault(ct => ct.Value == parameter.CarrierTypeName);
+            CarrierEdited += parameter.RefreshEvent;
             OnPropertyChanged(() => DisplayName);
         }
-        private void OnAddCarrier()
+        private void OnEditCarrier()
         {
             if (SelectedCarrierType == null)
             {
                 ShowMessageBox("Please select a carrier type.");
                 return;
             }
-            for(int i = 0; i < Quantity; i++)
-            {
-                var carrier = new Carriers
-                {
-                    OrderId = OrderId,
-                    CarrierTypeId = SelectedCarrierType.Key,
-                    IsActive = true
-                };
-                potplantsEntities.Carriers.Add(carrier);
-            }
+            carrier = potplantsEntities.Carriers.FirstOrDefault(c => c.CarrierId == CarrierId);
+            carrier.CarrierTypeId = SelectedCarrierType.Key;
             potplantsEntities.SaveChanges();
-            CarrierAdded?.Invoke();
+            CarrierEdited?.Invoke();
             IsClosing = true;
         }
         #endregion
