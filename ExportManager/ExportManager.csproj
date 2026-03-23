@@ -116,6 +116,7 @@
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\BusinessLogic\ListViewsForUI\AddressesForEntities.cs" />
+    <Compile Include="Models\BusinessLogic\ListViewsForUI\CarrierCommand.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\CarrierTypesForReports.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\CategoriesForProducts.cs" />
     <Compile Include="Models\BusinessLogic\ListViewsForUI\ClientDetailsQuery.cs" />

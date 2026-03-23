@@ -112,7 +112,7 @@ namespace ExportManager.ViewModels.Abstract
             }
         }
         public abstract void OnRemove();
-        public void Remove()
+        public virtual void Remove()
         {
             if (SelectedItem != null)
             {

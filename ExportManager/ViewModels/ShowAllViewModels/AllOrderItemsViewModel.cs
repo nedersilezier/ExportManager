@@ -72,6 +72,11 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         public override void OnRemove()
         {
+            if (SelectedItem == null)
+            {
+                MessageBox.Show("No order item selected.");
+                return;
+            }
             var result = MessageBox.Show(
                         "Delete this item and return it to stock?",
                         $"{SelectedItem.FullProductName}",

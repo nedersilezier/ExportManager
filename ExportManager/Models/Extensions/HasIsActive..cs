@@ -10,6 +10,9 @@ namespace ExportManager.Models
     public partial class Addresses: IHasIsActive
     {
     }
+    public partial class Carriers : IHasIsActive
+    {
+    }
     public partial class CarrierTypes: IHasIsActive
     {
     }
