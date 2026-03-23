@@ -9,6 +9,7 @@ namespace ExportManager.Models.BusinessLogic.ListViewsForUI
     public class OrderItemCarriersListView
     {
         public int CarrierId { get; set; }
+        public int CarrierTypeId { get; set; }
         public int OrderId { get; set; }
         public List<int> OrderItemIds { get; set; }
         public string CarrierType { get; set; }

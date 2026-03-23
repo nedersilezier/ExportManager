@@ -25,6 +25,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
     {
         #region Fields
         private readonly int _orderId;
+        private List<OrderItemsListView> _CachedOrderItems;
         private ObservableCollection<OrderItemsListView> _AssignedOrderItems;
         private ObservableCollection<OrderItemsListView> _UnassignedOrderItems;
         private OrderItemCarriersListView _SelectedCarrier;
@@ -43,6 +44,18 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         #endregion
         #region Properties
+        public List<OrderItemsListView> CachedOrderItems
+        {
+            get { return _CachedOrderItems; }
+            set
+            {
+                if (_CachedOrderItems != value)
+                {
+                    _CachedOrderItems = value;
+                    OnPropertyChanged(() => CachedOrderItems);
+                }
+            }
+        }
         public ObservableCollection<OrderItemsListView> AssignedOrderItems
         {
             get
@@ -108,8 +121,6 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             {
                 if (_SelectedCarrier != value)
                 {
-                    if (_IsOrderItemsChanged)
-                        UpdateDatabase();
                     _SelectedCarrier = value;
                     OnPropertyChanged(() => SelectedCarrier);
                     LoadAssignedOrderItems();
@@ -124,6 +135,8 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region List
         public override void Load()
         {
+            if (_IsOrderItemsChanged)
+                UpdateDatabase();
             using (var shortLivedPotplantsEntities = new PotplantsEntities())
             {
                 var carriers = shortLivedPotplantsEntities.Carriers
@@ -131,6 +144,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 .Select(c => new
                 {
                     c.CarrierId,
+                    c.CarrierTypeId,
                     c.OrderId,
                     CarrierType = c.CarrierTypes.Name,
                     c.AmountOfExtensions,
@@ -145,6 +159,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 select new OrderItemCarriersListView
                 {
                     CarrierId = carrier.CarrierId,
+                    CarrierTypeId = carrier.CarrierTypeId,
                     OrderId = carrier.OrderId,
                     CarrierType = carrier.CarrierType,
                     AmountOfExtensions = carrier.AmountOfExtensions,
@@ -152,23 +167,25 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                     OrderItemIds = carrier.OrderItemIds,
                     AmountOfPlants = carrier.AmountOfPlants
                 });
+                CachedOrderItems = shortLivedPotplantsEntities.OrderItems.Where(oi => oi.OrderId == _orderId && oi.IsActive == true).Select(oi => new OrderItemsListView
+                {
+                    OrderItemId = oi.OrderItemId,
+                    StockItemId = oi.StockItemId,
+                    ProductName = oi.StockItems.Products.Name,
+                    ProductHeight = oi.StockItems.Products.Height,
+                    ProductPotsize = oi.StockItems.Products.Potsize,
+                    Quantity = oi.Quantity,
+                    InternalNo = oi.InternalNo,
+                    ProductInternalNo = oi.StockItems.InternalNo,
+                    TrayType = oi.StockItems.TrayTypes.Name,
+                    Quality = oi.StockItems.Qualities.Name,
+                    IsScanned = oi.IsScanned
+                }).ToList();
             }
             LoadUnassignedOrderItems();
-            //if (_IsOrderItemsChanged)
-            //    UpdateDatabase();
         }
         #endregion
         #region Commands
-        //private BaseCommand _LoadAssignedOrderItems;
-        //public ICommand LoadAssignedOrderItemsCommand
-        //{
-        //    get
-        //    {
-        //        if (_LoadAssignedOrderItems == null)
-        //            _LoadAssignedOrderItems = new BaseCommand(LoadAssignedOrderItems);
-        //        return _LoadAssignedOrderItems;
-        //    }
-        //}
         private BaseCommand _AssignOrderItemCommand;
         public ICommand AssignOrderItemCommand
         {
@@ -237,7 +254,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
 
             if (result == MessageBoxResult.Yes)
             {
-                foreach(var item in AssignedOrderItems.ToList())
+                foreach (var item in AssignedOrderItems.ToList())
                 {
                     item.IsScanned = false;
                     SelectedCarrier.OrderItemIds.Remove(item.OrderItemId);
@@ -253,38 +270,13 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             if (SelectedCarrier == null)
                 return;
             AssignedOrderItems = new ObservableCollection<OrderItemsListView>(
-                potplantsEntities.OrderItems.Where(oi => oi.IsActive == true && SelectedCarrier.OrderItemIds.Contains(oi.OrderItemId)).Select(oi => new OrderItemsListView
-                {
-                    OrderItemId = oi.OrderItemId,
-                    StockItemId = oi.StockItemId,
-                    ProductName = oi.StockItems.Products.Name,
-                    ProductHeight = oi.StockItems.Products.Height,
-                    ProductPotsize = oi.StockItems.Products.Potsize,
-                    Quantity = oi.Quantity,
-                    InternalNo = oi.InternalNo,
-                    ProductInternalNo = oi.StockItems.InternalNo,
-                    TrayType = oi.StockItems.TrayTypes.Name,
-                    Quality = oi.StockItems.Qualities.Name
-                }));
+                CachedOrderItems.Where(oi => SelectedCarrier.OrderItemIds.Contains(oi.OrderItemId)));
         }
         public void LoadUnassignedOrderItems()
         {
+            var assignedOrderItemsIds = List.SelectMany(oi => oi.OrderItemIds).ToHashSet();
             UnassignedOrderItems = new ObservableCollection<OrderItemsListView>(
-                potplantsEntities.OrderItems.Where(oi => oi.OrderId == _orderId
-                && oi.IsScanned == false
-                && oi.IsActive == true).Select(oi => new OrderItemsListView
-                {
-                    OrderItemId = oi.OrderItemId,
-                    StockItemId = oi.StockItemId,
-                    ProductName = oi.StockItems.Products.Name,
-                    ProductHeight = oi.StockItems.Products.Height,
-                    ProductPotsize = oi.StockItems.Products.Potsize,
-                    Quantity = oi.Quantity,
-                    InternalNo = oi.InternalNo,
-                    ProductInternalNo = oi.StockItems.InternalNo,
-                    TrayType = oi.StockItems.TrayTypes.Name,
-                    Quality = oi.StockItems.Qualities.Name
-                }));
+                CachedOrderItems.Where(oi => !assignedOrderItemsIds.Contains(oi.OrderItemId)).ToList());
         }
         private void AssignOrderItem()
         {
@@ -302,6 +294,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             int carrierindex = List.IndexOf(SelectedCarrier);
             int itemindex = UnassignedOrderItems.IndexOf(SelectedUnassignedOrderItem);
             AssignedOrderItems.Add(SelectedUnassignedOrderItem);
+            SelectedUnassignedOrderItem.IsScanned = true;
             SelectedCarrier.OrderItemIds.Add(SelectedUnassignedOrderItem.OrderItemId);
             SelectedCarrier.AmountOfPlants += SelectedUnassignedOrderItem.Quantity;
             OnPropertyChanged(() => List);
@@ -330,6 +323,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             int carrierindex = List.IndexOf(SelectedCarrier);
             int itemindex = AssignedOrderItems.IndexOf(SelectedAssignedOrderItem);
             UnassignedOrderItems.Add(SelectedAssignedOrderItem);
+            SelectedAssignedOrderItem.IsScanned = false;
             SelectedCarrier.OrderItemIds.Remove(SelectedAssignedOrderItem.OrderItemId);
             SelectedCarrier.AmountOfPlants -= SelectedAssignedOrderItem.Quantity;
             OnPropertyChanged(() => List);
@@ -359,6 +353,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                     var carrierEF = carriersDict[carrier.CarrierId];
                     carrierEF.AmountOfShelfs = carrier.AmountOfShelves;
                     carrierEF.AmountOfExtensions = carrier.AmountOfExtensions;
+                    carrierEF.CarrierTypeId = carrier.CarrierTypeId;
                     var currentOrderItemIds = carrierEF.OrderItems.Select(oi => oi.OrderItemId).ToHashSet();
                     var newOrderItemIds = carrier.OrderItemIds.ToHashSet();
                     var toRemove = carrierEF.OrderItems.Where(oi => !newOrderItemIds.Contains(oi.OrderItemId)).ToList();
@@ -381,37 +376,6 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             }
             _IsOrderItemsChanged = false;
         }
-        //private void UpdateDatabase()
-        //{
-        //    using (var shortLivedPotplantsEntities = new PotplantsEntities())
-        //    {
-        //        foreach (var carrier in List)
-        //        {
-        //            var carrierEF = shortLivedPotplantsEntities.Carriers.Include(c => c.OrderItems).First(c => c.CarrierId == carrier.CarrierId);
-        //            var toRemove = carrierEF.OrderItems.Where(oi => !carrier.OrderItemIds.Contains(oi.OrderItemId)).ToList();
-        //            foreach (var itemToRemove in toRemove)
-        //            {
-        //                itemToRemove.IsScanned = false;
-        //                carrierEF.OrderItems.Remove(itemToRemove);
-        //            }
-        //            var oldIDset = carrierEF.OrderItems.Select(oi => oi.OrderItemId).ToList();
-        //            var idsToAdd = carrier.OrderItemIds.Except(oldIDset).ToList();
-        //            foreach (var idToAdd in idsToAdd)
-        //            {
-        //                var orderitem = shortLivedPotplantsEntities.OrderItems.Find(idToAdd);
-        //                if (orderitem != null)
-        //                {
-        //                    orderitem.IsScanned = true;
-        //                    carrierEF.OrderItems.Add(orderitem);
-        //                }
-
-        //            }
-
-        //        }
-        //        shortLivedPotplantsEntities.SaveChanges();
-        //    }
-        //    _IsOrderItemsChanged = false;
-        //}
         public void SaveChangesExternal()
         {
             if (_IsOrderItemsChanged)
@@ -432,11 +396,11 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         private void OnEditShelvesExtensions()
         {
-            if(SelectedCarrier == null)
+            if (SelectedCarrier == null)
             {
                 MessageBox.Show("No carrier selected.");
                 return;
-            }    
+            }
             OnRequestWindow<EditCarrierAddonsViewModel>(new OrderItemCarrierParameter(
                 SelectedCarrier.CarrierId,
                 SelectedCarrier.CarrierType,
@@ -466,3 +430,4 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #endregion
     }
 }
+
