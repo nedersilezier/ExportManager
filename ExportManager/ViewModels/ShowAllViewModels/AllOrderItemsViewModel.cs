@@ -56,8 +56,8 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         {
             _OrderId = orderId;
             //base.DisplayName = "Order items";
-            base.DisplayName = new OrderDetailsQuery(potplantsEntities).GetOrderDisplayName(orderId) + " details";
-            base.FullDisplayName = new OrderDetailsQuery(potplantsEntities).GetOrderFullDisplayName(orderId) + " details";
+            base.DisplayName = new OrderDetailsQuery(potplantsEntities).GetOrderDisplayName(orderId) + " order items";
+            base.FullDisplayName = new OrderDetailsQuery(potplantsEntities).GetOrderFullDisplayName(orderId) + " order items";
         }
         #endregion
 

@@ -2,6 +2,7 @@
 using ExportManager.Models;
 using ExportManager.Models.BusinessLogic.ListViewsForUI;
 using ExportManager.Models.EntitiesForView;
+using ExportManager.Models.Extensions;
 using ExportManager.ViewModels.Abstract;
 using ExportManager.ViewModels.AddViewModels;
 using System;
@@ -67,12 +68,35 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 return _ShowCarriersCommand;
             }
         }
+        private BaseCommand _CloseOrderCommand;
+        public ICommand CloseOrderCommand
+        {
+            get
+            {
+                if (_CloseOrderCommand == null)
+                    _CloseOrderCommand = new BaseCommand(OnCloseOrder);
+                return _CloseOrderCommand;
+            }
+        }
+        private BaseCommand _CancelOrderCommand;
+        public ICommand CancelOrderCommand
+        {
+            get
+            {
+                if (_CancelOrderCommand == null)
+                    _CancelOrderCommand = new BaseCommand(OnCancelOrder);
+                return _CancelOrderCommand;
+            }
+        }
+
         public override IList<CommandViewModel> CreateExtraCommands()
         {
             return new List<CommandViewModel>
             {
                 new CommandViewModel("Order items", ShowDetailsCommand),
-                new CommandViewModel("Carriers", ShowCarriersCommand)
+                new CommandViewModel("Carriers", ShowCarriersCommand),
+                new CommandViewModel("Close order", CloseOrderCommand),
+                new CommandViewModel("Cancel order", CancelOrderCommand),
             };
         }
         #endregion
@@ -83,7 +107,10 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         public override void OnEdit()
         {
-            OpenNewTab(() => new NewOrderViewModel(SelectedItem.OrderId), Load);
+            if (SelectedItem.Status == OrderStatuses.Open)
+                OpenNewTab(() => new NewOrderViewModel(SelectedItem.OrderId), Load);
+            else
+                MessageBox.Show("This order cannot be modified anymore.");
         }
         public override void Remove()
         {
@@ -108,20 +135,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 {
                     try
                     {
-                        var carriers = potplantsEntities.Carriers.Where(c => c.OrderId ==  SelectedItem.OrderId).ToList();
-                        carriers.ForEach(c =>
-                        { 
-                            c.IsActive = false;
-                            c.DeletedAt = DateTime.Now;
-                            });
-                        var orderItems = potplantsEntities.OrderItems.Where(oi => oi.IsActive == true && oi.OrderId == SelectedItem.OrderId).ToList();
-                        var stockItemIdsDict = orderItems.ToDictionary(oi => oi.StockItemId, oi => oi.Quantity);
-                        var stockItems = potplantsEntities.StockItems.Where(si => stockItemIdsDict.Keys.Contains(si.StockItemId)).ToList();
-                        foreach (var stockItem in stockItems)
-                        {
-                            stockItem.QuantityLeft += stockItemIdsDict[stockItem.StockItemId];
-                        }
-                        orderItems.ForEach(oi => oi.IsActive = false);
+                        OrderCleanup();
                         SoftDelete<Orders>(SelectedItem.OrderId);
                         transaction.Commit();
                     }
@@ -141,6 +155,11 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 ShowMessageBox("No order selected.");
                 return;
             }
+            if (SelectedItem.Status != OrderStatuses.Open)
+            {
+                ShowMessageBox("Not available.");
+                return;
+            }
             OpenNewTab(() => new AllOrderItemsViewModel(SelectedItem.OrderId));
         }
         private void OnShowCarriers()
@@ -150,7 +169,70 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 ShowMessageBox("No order selected.");
                 return;
             }
+            if (SelectedItem.Status != OrderStatuses.Open)
+            {
+                ShowMessageBox("Not available.");
+                return;
+            }
             OpenNewTab(() => new AllOrderItemCarriersViewModel(SelectedItem.OrderId));
+        }
+        private void OnCancelOrder()
+        {
+            if (SelectedItem == null)
+            {
+                MessageBox.Show("No order selected.");
+                return;
+            }
+            var order = potplantsEntities.Orders.Where(o => o.OrderId == SelectedItem.OrderId).FirstOrDefault();
+            if (order != null)
+            {
+                using (var transaction = potplantsEntities.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        order.Status = OrderStatuses.Canceled;
+                        OrderCleanup();
+                        potplantsEntities.SaveChanges();
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+        private void OnCloseOrder()
+        {
+            if (SelectedItem == null)
+            {
+                MessageBox.Show("No order selected.");
+                return;
+            }
+            if (SelectedItem.Status != OrderStatuses.Open)
+            {
+                ShowMessageBox("Not available.");
+                return;
+            }
+            throw new NotImplementedException("TO BE CONTINUED");
+        }
+        private void OrderCleanup()
+        {
+            var carriers = potplantsEntities.Carriers.Where(c => c.OrderId == SelectedItem.OrderId).ToList();
+            carriers.ForEach(c =>
+            {
+                c.IsActive = false;
+                c.DeletedAt = DateTime.Now;
+            });
+            var orderItems = potplantsEntities.OrderItems.Where(oi => oi.IsActive == true && oi.OrderId == SelectedItem.OrderId).ToList();
+            var stockItemIdsDict = orderItems.ToDictionary(oi => oi.StockItemId, oi => oi.Quantity);
+            var stockItems = potplantsEntities.StockItems.Where(si => stockItemIdsDict.Keys.Contains(si.StockItemId)).ToList();
+            foreach (var stockItem in stockItems)
+            {
+                stockItem.QuantityLeft += stockItemIdsDict[stockItem.StockItemId];
+            }
+            orderItems.ForEach(oi => oi.IsActive = false);
         }
         #endregion
         #region Sorting and searching
