@@ -183,6 +183,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 }).ToList();
             }
             LoadUnassignedOrderItems();
+            LoadAssignedOrderItems();
         }
         #endregion
         #region Commands
@@ -346,7 +347,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             {
                 var carriersEF = shortLivedPotplantsEntities.Carriers.Include(c => c.OrderItems).Where(c => carrierIds.Contains(c.CarrierId)).ToList();
                 var carriersDict = carriersEF.ToDictionary(c => c.CarrierId);
-                var orderItemsEF = shortLivedPotplantsEntities.OrderItems.Where(oi => orderItemIds.Contains(oi.OrderItemId)).ToList();
+                var orderItemsEF = shortLivedPotplantsEntities.OrderItems.Where(oi => oi.IsActive == true && orderItemIds.Contains(oi.OrderItemId)).ToList();
                 var orderItemsDict = orderItemsEF.ToDictionary(oi => oi.OrderItemId);
                 foreach (var carrier in List)
                 {
@@ -391,9 +392,22 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         {
             return new List<CommandViewModel>
             {
-                new CommandViewModel("Edit shelves/extensions", new BaseCommand(OnEditShelvesExtensions))
+                new CommandViewModel("Edit shelves/extensions", new BaseCommand(OnEditShelvesExtensions)),
+                new CommandViewModel("Remove empty carriers", new BaseCommand(OnRemoveEmptyCarriers))
                 };
         }
+
+        private void OnRemoveEmptyCarriers()
+        {
+            var emptyCarrierIds = List.Where(c => c.AmountOfPlants == 0).Select(c => c.CarrierId);
+            if(emptyCarrierIds.Any())
+            {
+                foreach (var carrierId in  emptyCarrierIds)
+                    SoftDelete<Carriers>(carrierId);
+                _IsOrderItemsChanged = true;
+            }
+        }
+
         private void OnEditShelvesExtensions()
         {
             if (SelectedCarrier == null)
