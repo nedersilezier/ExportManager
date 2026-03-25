@@ -56,8 +56,8 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         {
             _OrderId = orderId;
             //base.DisplayName = "Order items";
-            base.DisplayName = new OrderDetailsQuery(potplantsEntities).GetOrderDisplayName(orderId) + " order items";
-            base.FullDisplayName = new OrderDetailsQuery(potplantsEntities).GetOrderFullDisplayName(orderId) + " order items";
+            base.DisplayName = new OrdersQuery(potplantsEntities).GetOrderDisplayName(orderId) + " order items";
+            base.FullDisplayName = new OrdersQuery(potplantsEntities).GetOrderFullDisplayName(orderId) + " order items";
         }
         #endregion
 
@@ -86,7 +86,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             if (result == MessageBoxResult.Yes)
             {
                 int quantityToReturn = SelectedItem.Quantity;
-                new StockItemCommand(potplantsEntities).UpdateStockItemQuantity(SelectedItem.StockItemId, -quantityToReturn);
+                new StockItemsCommand(potplantsEntities).UpdateStockItemQuantity(SelectedItem.StockItemId, -quantityToReturn);
                 SoftDelete<OrderItems>(SelectedItem.OrderItemId);
             }
         }

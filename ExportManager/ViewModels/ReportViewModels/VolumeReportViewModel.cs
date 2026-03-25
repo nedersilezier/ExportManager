@@ -87,11 +87,11 @@ namespace ExportManager.ViewModels.ReportViewModels
         }
         public ObservableCollection<KeyAndValue> ClientsItems
         {
-            get { return new ClientsForReports(potplantsEntities).GetClientsListItems(); }
+            get { return new ClientsQuery(potplantsEntities).GetClientsListItems(); }
         }
         public ObservableCollection<KeyAndValue> CarrierTypesItems
         {
-            get { return new CarrierTypesForReports(potplantsEntities).GetCarrierTypesListItems(); }
+            get { return new CarrierTypesQuery(potplantsEntities).GetCarrierTypesListItems(); }
         }
         public KeyAndValue SelectedClient
         {

@@ -115,30 +115,27 @@
     <Compile Include="Models\Addresses.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\AddressesForEntities.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\CarrierCommand.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\CarrierTypesForReports.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\CategoriesForProducts.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\ClientDetailsQuery.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\ClientsForReports.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\ColorsForProducts.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\CountriesForEntities.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\AddressesQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Commands\CarriersCommand.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\CarrierTypesQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\CategoriesQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\ClientsQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\ColorsQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\CountriesQuery.cs" />
     <Compile Include="Models\BusinessLogic\DatabaseClass.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\CultivationsForGrowers.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\GrowerDetailsQuery.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\GrowersForStockItems.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\CultivationsQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\GrowersQuery.cs" />
     <Compile Include="Models\BusinessLogic\InvoiceCalculator.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\InvoicesForReports.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\OrderItemCarriersListView.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\OrderDetailsQuery.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\OrderItemDetailsQuery.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\OrdersForReports.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\StockItemCommand.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\StockItemDetailsQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\InvoicesQuery.cs" />
+    <Compile Include="Models\DTO\OrderItemCarriersListView.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\OrdersQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\OrderItemsQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Commands\StockItemsCommand.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\StockItemsQuery.cs" />
     <Compile Include="Models\BusinessLogic\OrderWeightCalculator.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\ProductsForStockItems.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\QualitiesForStockItems.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\TrayTypesForStockItems.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\ProductsQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\QualitiesQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\TrayTypesQuery.cs" />
     <Compile Include="Models\BusinessLogic\VolumeCalculator.cs" />
     <Compile Include="Models\Carriers.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
@@ -163,17 +160,17 @@
     <Compile Include="Models\Cultivations.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\EntitiesForView\AddressesListView.cs" />
-    <Compile Include="Models\EntitiesForView\ClientsListView.cs" />
-    <Compile Include="Models\EntitiesForView\CountriesListView.cs" />
-    <Compile Include="Models\EntitiesForView\GrowersListView.cs" />
-    <Compile Include="Models\EntitiesForView\InvoiceReportItemsListView.cs" />
-    <Compile Include="Models\EntitiesForView\KeyAndValue.cs" />
-    <Compile Include="Models\EntitiesForView\OrderItemsListView.cs" />
-    <Compile Include="Models\EntitiesForView\OrdersListView.cs" />
-    <Compile Include="Models\EntitiesForView\ProductsListView.cs" />
-    <Compile Include="Models\EntitiesForView\StockItemsListView.cs" />
-    <Compile Include="Models\EntitiesForView\WeightReportListView.cs" />
+    <Compile Include="Models\DTO\AddressesListView.cs" />
+    <Compile Include="Models\DTO\ClientsListView.cs" />
+    <Compile Include="Models\DTO\CountriesListView.cs" />
+    <Compile Include="Models\DTO\GrowersListView.cs" />
+    <Compile Include="Models\DTO\InvoiceReportItemsListView.cs" />
+    <Compile Include="Models\DTO\KeyAndValue.cs" />
+    <Compile Include="Models\DTO\OrderItemsListView.cs" />
+    <Compile Include="Models\DTO\OrdersListView.cs" />
+    <Compile Include="Models\DTO\ProductsListView.cs" />
+    <Compile Include="Models\DTO\StockItemsListView.cs" />
+    <Compile Include="Models\DTO\WeightReportListView.cs" />
     <Compile Include="Models\Extensions\HasIsActive..cs" />
     <Compile Include="Models\Extensions\OrderStatuses.cs" />
     <Compile Include="Models\Extensions\StringExtensions.cs" />

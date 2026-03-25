@@ -45,7 +45,7 @@ namespace ExportManager.ViewModels.Windows
             {
                 if (_CarrierTypes == null)
                 {
-                    _CarrierTypes = new CarrierTypesForReports(potplantsEntities).GetCarrierTypesListItems();
+                    _CarrierTypes = new CarrierTypesQuery(potplantsEntities).GetCarrierTypesListItems();
                 }
                 return _CarrierTypes;
             }

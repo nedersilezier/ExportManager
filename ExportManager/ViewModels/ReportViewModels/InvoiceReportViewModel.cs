@@ -76,7 +76,7 @@ namespace ExportManager.ViewModels.ReportViewModels
                 if (_Date != value)
                 {
                     _Date = value;
-                    _InvoiceComboBoxItems = new InvoicesForReports(potplantsEntities).GetInvoicesListItemsPerDate(Date);
+                    _InvoiceComboBoxItems = new InvoicesQuery(potplantsEntities).GetInvoicesListItemsPerDate(Date);
                     OnPropertyChanged(() => Date);
                     OnPropertyChanged(() => InvoiceComboBoxItems);
                 }

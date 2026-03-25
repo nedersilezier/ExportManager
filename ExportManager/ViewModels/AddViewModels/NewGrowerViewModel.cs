@@ -202,7 +202,7 @@ namespace ExportManager.ViewModels.AddViewModels
             get
             {
                 if(_Countries == null)
-                    _Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
+                    _Countries = new CountriesQuery(potplantsEntities).GetCountriesListItems();
                 //_Countries = new ObservableCollection<KeyAndValue>();
                 return _Countries;
             }
@@ -265,7 +265,7 @@ namespace ExportManager.ViewModels.AddViewModels
             get
             {
                 if(_AllCultivations == null)
-                    _AllCultivations = new CultivationsForGrowers(potplantsEntities).GetCultivationsKeyAndValueItems();
+                    _AllCultivations = new CultivationsQuery(potplantsEntities).GetCultivationsKeyAndValueItems();
                 return _AllCultivations;
             }
             set
@@ -481,7 +481,7 @@ namespace ExportManager.ViewModels.AddViewModels
         }
         private void RefreshCountries()
         {
-            Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
+            Countries = new CountriesQuery(potplantsEntities).GetCountriesListItems();
         }
         private void onAddCultivation()
         {

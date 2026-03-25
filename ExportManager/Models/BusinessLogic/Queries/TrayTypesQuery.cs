@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace ExportManager.Models.BusinessLogic.ListViewsForUI    
 {
-    public class TrayTypesForStockItems:DatabaseClass
+    public class TrayTypesQuery:DatabaseClass
     {
         #region Constructor
-        public TrayTypesForStockItems(PotplantsEntities potplantsEntities)
+        public TrayTypesQuery(PotplantsEntities potplantsEntities)
             : base(potplantsEntities)
         {
         }

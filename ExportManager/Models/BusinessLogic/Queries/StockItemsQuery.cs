@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace ExportManager.Models.BusinessLogic.ListViewsForUI
 {
-    public class StockItemDetailsQuery : DatabaseClass
+    public class StockItemsQuery : DatabaseClass
     {
         #region Constructor
-        public StockItemDetailsQuery(PotplantsEntities potplantsEntities)
+        public StockItemsQuery(PotplantsEntities potplantsEntities)
             : base(potplantsEntities)
         {
         }

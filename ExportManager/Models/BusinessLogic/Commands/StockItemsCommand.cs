@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ExportManager.Models.BusinessLogic.ListViewsForUI
 {
-    public class StockItemCommand : DatabaseClass
+    public class StockItemsCommand : DatabaseClass
     {
         #region Constructor
-        public StockItemCommand(PotplantsEntities potplantsEntities)
+        public StockItemsCommand(PotplantsEntities potplantsEntities)
             : base(potplantsEntities)
         {
         }

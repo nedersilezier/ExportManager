@@ -39,8 +39,8 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         {
             _orderId = orderId;
             _IsOrderItemsChanged = false;
-            base.DisplayName = new OrderDetailsQuery(potplantsEntities).GetOrderDisplayName(orderId) + " carriers";
-            base.FullDisplayName = new OrderDetailsQuery(potplantsEntities).GetOrderFullDisplayName(orderId) + " carriers";
+            base.DisplayName = new OrdersQuery(potplantsEntities).GetOrderDisplayName(orderId) + " carriers";
+            base.FullDisplayName = new OrdersQuery(potplantsEntities).GetOrderFullDisplayName(orderId) + " carriers";
         }
         #endregion
         #region Properties
@@ -214,7 +214,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         {
             OnRequestWindow<NewOrderItemCarrierViewModel>(new NewOrderItemCarrierWindowParameter(
                 _orderId,
-                new OrderDetailsQuery(potplantsEntities).GetOrderFullDisplayName(_orderId) + " - New carrier",
+                new OrdersQuery(potplantsEntities).GetOrderFullDisplayName(_orderId) + " - New carrier",
                 Load
                 ));
         }

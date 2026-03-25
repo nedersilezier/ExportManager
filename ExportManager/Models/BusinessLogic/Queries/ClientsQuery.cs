@@ -1,16 +1,17 @@
 ﻿using ExportManager.Models.EntitiesForView;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ExportManager.Models.BusinessLogic.ListViewsForUI
 {
-    public class ClientDetailsQuery: DatabaseClass
+    public class ClientsQuery: DatabaseClass
     {
         #region Constructor
-        public ClientDetailsQuery(PotplantsEntities potplantsEntities)
+        public ClientsQuery(PotplantsEntities potplantsEntities)
             : base(potplantsEntities)
         {
         }
@@ -60,6 +61,15 @@ namespace ExportManager.Models.BusinessLogic.ListViewsForUI
                 Key = c.ClientId,
                 Value = c.Name + "(" + c.ClientCode + ")"
             });
+        }
+        public ObservableCollection<KeyAndValue> GetClientsListItems()
+        {
+            return new ObservableCollection<KeyAndValue>(
+                potplantsEntities.Clients.Where(t => t.IsActive == true).Select(t => new KeyAndValue
+                {
+                    Key = t.ClientId,
+                    Value = t.ClientCode + " | " + t.Name
+                }));
         }
         #endregion
     }

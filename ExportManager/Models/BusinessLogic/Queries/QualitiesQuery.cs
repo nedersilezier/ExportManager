@@ -8,24 +8,24 @@ using System.Threading.Tasks;
 
 namespace ExportManager.Models.BusinessLogic.ListViewsForUI
 {
-    public class ColorsForProducts: DatabaseClass
+    public class QualitiesQuery: DatabaseClass
     {
         #region Constructor
-        public ColorsForProducts(PotplantsEntities potplantsEntities)
+        public QualitiesQuery(PotplantsEntities potplantsEntities)
             : base(potplantsEntities)
         {
         }
         #endregion
         #region Functions
-        public ObservableCollection<KeyAndValue> GetColorsListItems()
+        public ObservableCollection<KeyAndValue> GetQualitiesListItems()
         {
             return new ObservableCollection<KeyAndValue>
             (
-                potplantsEntities.Colors
+                potplantsEntities.Qualities
                 .Where(t => t.IsActive == true)
                 .Select(t => new KeyAndValue
                 {
-                    Key = t.ColorId,
+                    Key = t.QualityId,
                     Value = t.Name
                 }).ToList()
             );

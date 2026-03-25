@@ -43,7 +43,7 @@ namespace ExportManager.ViewModels.AddViewModels
             get
             {
                 if (_Countries == null)
-                    _Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
+                    _Countries = new CountriesQuery(potplantsEntities).GetCountriesListItems();
                 return _Countries;
             }
             set
@@ -165,7 +165,7 @@ namespace ExportManager.ViewModels.AddViewModels
         }
         private void RefreshCountries()
         {
-            Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
+            Countries = new CountriesQuery(potplantsEntities).GetCountriesListItems();
         }
         #endregion
     }

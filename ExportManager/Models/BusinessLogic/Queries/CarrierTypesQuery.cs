@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace ExportManager.Models.BusinessLogic.ListViewsForUI
 {
-    public class CarrierTypesForReports: DatabaseClass
+    public class CarrierTypesQuery: DatabaseClass
     {
         #region Constructor
-        public CarrierTypesForReports(PotplantsEntities potplantsEntities)
+        public CarrierTypesQuery(PotplantsEntities potplantsEntities)
             :base(potplantsEntities)
         {
 

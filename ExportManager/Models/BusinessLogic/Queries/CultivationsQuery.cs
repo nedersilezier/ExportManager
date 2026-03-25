@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace ExportManager.Models.BusinessLogic.ListViewsForUI
 {
-    public class CultivationsForGrowers: DatabaseClass
+    public class CultivationsQuery: DatabaseClass
     {
         #region Constructor
-        public CultivationsForGrowers(PotplantsEntities potplantsEntities)
+        public CultivationsQuery(PotplantsEntities potplantsEntities)
             :base(potplantsEntities)
         {
         }

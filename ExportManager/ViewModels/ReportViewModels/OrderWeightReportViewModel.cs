@@ -95,7 +95,7 @@ namespace ExportManager.ViewModels.ReportViewModels
                 if (_Date != value)
                 {
                     _Date = value;
-                    _OrderItems = new OrdersForReports(potplantsEntities).GetOrdersListItemsPerDate(Date);
+                    _OrderItems = new OrdersQuery(potplantsEntities).GetOrdersListItemsPerDate(Date);
                     OnPropertyChanged(() => Date);
                     OnPropertyChanged(() => OrderItems);
                 }
