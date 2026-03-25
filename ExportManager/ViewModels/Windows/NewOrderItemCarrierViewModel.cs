@@ -87,7 +87,7 @@ namespace ExportManager.ViewModels.Windows
             get { return _IsClosing; }
             set
             {
-                if(_IsClosing != value)
+                if (_IsClosing != value)
                 {
                     _IsClosing = value;
                     OnPropertyChanged(() => IsClosing);
@@ -133,20 +133,36 @@ namespace ExportManager.ViewModels.Windows
                 ShowMessageBox("Please select a carrier type.");
                 return;
             }
-            for(int i = 0; i < Quantity; i++)
+            using (var transaction = potplantsEntities.Database.BeginTransaction())
             {
-                var carrier = new Carriers
+                try
                 {
-                    OrderId = OrderId,
-                    CarrierTypeId = SelectedCarrierType.Key,
-                    IsActive = true
-                };
-                potplantsEntities.Carriers.Add(carrier);
+                    for (int i = 0; i < Quantity; i++)
+                    {
+                        var carrier = new Carriers
+                        {
+                            OrderId = OrderId,
+                            CarrierTypeId = SelectedCarrierType.Key,
+                            IsActive = true,
+                            CreatedAt = DateTime.Now,
+                            CreatedBy = Environment.UserName
+                        };
+                        potplantsEntities.Carriers.Add(carrier);
+                    }
+                    potplantsEntities.SaveChanges();
+                    transaction.Commit();
+                    CarrierAdded?.Invoke();
+                    IsClosing = true;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    MessageBox.Show("Error while adding the carrier: \n" + ex.ToString());
+                }
             }
-            potplantsEntities.SaveChanges();
-            CarrierAdded?.Invoke();
-            IsClosing = true;
+
         }
-        #endregion
     }
+    #endregion
 }
+

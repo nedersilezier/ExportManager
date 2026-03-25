@@ -135,7 +135,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 {
                     try
                     {
-                        OrderCleanup();
+                        OrderCleanup(potplantsEntities);
                         SoftDelete<Orders>(SelectedItem.OrderId);
                         transaction.Commit();
                     }
@@ -183,22 +183,40 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 MessageBox.Show("No order selected.");
                 return;
             }
-            var order = potplantsEntities.Orders.Where(o => o.OrderId == SelectedItem.OrderId).FirstOrDefault();
-            if (order != null)
+            if (SelectedItem.Status != OrderStatuses.Open)
             {
-                using (var transaction = potplantsEntities.Database.BeginTransaction())
+                ShowMessageBox("Not available.");
+                return;
+            }
+            var result = MessageBox.Show(
+                        "Cancel this order? All asigned orderitems will return to stock",
+                        $"{SelectedItem.ClientName}",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                using (var shortLivedPotplantsEntities = new PotplantsEntities())
                 {
-                    try
+                    var order = shortLivedPotplantsEntities.Orders.Where(o => o.OrderId == SelectedItem.OrderId).FirstOrDefault();
+                    if (order != null)
                     {
-                        order.Status = OrderStatuses.Canceled;
-                        OrderCleanup();
-                        potplantsEntities.SaveChanges();
-                        transaction.Commit();
-                    }
-                    catch
-                    {
-                        transaction.Rollback();
-                        throw;
+                        using (var transaction = shortLivedPotplantsEntities.Database.BeginTransaction())
+                        {
+                            try
+                            {
+                                order.Status = OrderStatuses.Canceled;
+                                OrderCleanup(shortLivedPotplantsEntities);
+                                shortLivedPotplantsEntities.SaveChanges();
+                                transaction.Commit();
+                                SelectedItem.Status = OrderStatuses.Canceled;
+                                OnPropertyChanged(() => List);
+                            }
+                            catch
+                            {
+                                transaction.Rollback();
+                                throw;
+                            }
+                        }
                     }
                 }
             }
@@ -215,24 +233,66 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 ShowMessageBox("Not available.");
                 return;
             }
-            throw new NotImplementedException("TO BE CONTINUED");
+            var result = MessageBox.Show(
+                        "Close this order?",
+                        $"{SelectedItem.ClientName}",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                using (var shortLivedPotplantsEntities = new PotplantsEntities())
+                {
+                    var order = shortLivedPotplantsEntities.Orders.Where(o => o.OrderId == SelectedItem.OrderId).FirstOrDefault();
+                    if (order == null)
+                    {
+                        MessageBox.Show("Order not found.");
+                        return;
+                    }
+                    var orderitems = order.OrderItems.Where(oi => oi.IsActive == true).ToList();
+                    if (!orderitems.Any())
+                    {
+                        MessageBox.Show("There are no items in this order.");
+                        return;
+                    }
+                    var isAllScanned = orderitems.All(oi => oi.IsScanned == true);
+                    if (!isAllScanned)
+                    {
+                        MessageBox.Show("Not all order items are scanned.");
+                        return;
+                    }
+                    try
+                    {
+                        order.Status = OrderStatuses.Closed;
+                        shortLivedPotplantsEntities.SaveChanges();
+                        SelectedItem.Status = OrderStatuses.Closed;
+                        OnPropertyChanged(() => List);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error while closing the order.");
+                    }
+                }
+            }
         }
-        private void OrderCleanup()
+        private void OrderCleanup(PotplantsEntities potplantsentities)
         {
-            var carriers = potplantsEntities.Carriers.Where(c => c.OrderId == SelectedItem.OrderId).ToList();
+            var carriers = potplantsentities.Carriers.Where(c => c.OrderId == SelectedItem.OrderId).ToList();
             carriers.ForEach(c =>
             {
                 c.IsActive = false;
                 c.DeletedAt = DateTime.Now;
             });
-            var orderItems = potplantsEntities.OrderItems.Where(oi => oi.IsActive == true && oi.OrderId == SelectedItem.OrderId).ToList();
+            var orderItems = potplantsentities.OrderItems.Where(oi => oi.IsActive == true && oi.OrderId == SelectedItem.OrderId).ToList();
             var stockItemIdsDict = orderItems.ToDictionary(oi => oi.StockItemId, oi => oi.Quantity);
-            var stockItems = potplantsEntities.StockItems.Where(si => stockItemIdsDict.Keys.Contains(si.StockItemId)).ToList();
+            var stockItems = potplantsentities.StockItems.Where(si => stockItemIdsDict.Keys.Contains(si.StockItemId)).ToList();
             foreach (var stockItem in stockItems)
             {
                 stockItem.QuantityLeft += stockItemIdsDict[stockItem.StockItemId];
             }
-            orderItems.ForEach(oi => oi.IsActive = false);
+            orderItems.ForEach(oi => {
+                oi.IsActive = false;
+                oi.DeletedAt = DateTime.Now;
+                });
         }
         #endregion
         #region Sorting and searching

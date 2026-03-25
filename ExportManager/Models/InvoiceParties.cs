@@ -29,6 +29,7 @@ namespace ExportManager.Models
         public string DeletedBy { get; set; }
         public Nullable<System.DateTime> DeletedAt { get; set; }
         public bool IsActive { get; set; }
+        public string Country { get; set; }
     
         public virtual Invoices Invoices { get; set; }
     }
