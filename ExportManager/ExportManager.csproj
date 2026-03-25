@@ -223,12 +223,6 @@
     <Compile Include="Models\Qualities.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>PotplantsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sp_helpdiagrams_Result.cs">
-      <DependentUpon>PotplantsModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\StockItems.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
@@ -439,12 +433,12 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="ExportManager_1_TemporaryKey.pfx" />
+    <None Include="ExportManager_TemporaryKey.pfx" />
     <EntityDeploy Include="Models\PotplantsModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>PotplantsModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="ExportManager_1_TemporaryKey.pfx" />
-    <None Include="ExportManager_TemporaryKey.pfx" />
     <None Include="Models\PotplantsModel.edmx.diagram">
       <DependentUpon>PotplantsModel.edmx</DependentUpon>
     </None>
@@ -629,13 +623,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Resource Include="Icons\left-arrow.png" />
-    <Resource Include="Icons\right-arrow.png" />
-    <Resource Include="Icons\camera.png" />
-    <Resource Include="Icons\down-arrow.png" />
-    <Resource Include="Icons\top-arrow.png" />
     <Content Include="Models\PotplantsModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>PotplantsModel.edmx</DependentUpon>
@@ -646,6 +634,13 @@
       <DependentUpon>PotplantsModel.edmx</DependentUpon>
       <LastGenOutput>PotplantsModel.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\left-arrow.png" />
+    <Resource Include="Icons\right-arrow.png" />
+    <Resource Include="Icons\camera.png" />
+    <Resource Include="Icons\down-arrow.png" />
+    <Resource Include="Icons\top-arrow.png" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

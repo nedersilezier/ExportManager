@@ -17,6 +17,7 @@ namespace ExportManager.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public OrderItems()
         {
+            this.InvoiceItems = new HashSet<InvoiceItems>();
             this.StockMovements = new HashSet<StockMovements>();
             this.Carriers = new HashSet<Carriers>();
         }
@@ -28,7 +29,6 @@ namespace ExportManager.Models
         public Nullable<decimal> StorageCost { get; set; }
         public Nullable<decimal> TransportCost { get; set; }
         public Nullable<decimal> Discount { get; set; }
-        public Nullable<decimal> TotalPrice { get; set; }
         public bool IsActive { get; set; }
         public System.DateTime CreatedAt { get; set; }
         public string CreatedBy { get; set; }
@@ -37,12 +37,15 @@ namespace ExportManager.Models
         public Nullable<System.DateTime> DeletedAt { get; set; }
         public string DeletedBy { get; set; }
         public string Remarks { get; set; }
+        public int InternalNo { get; set; }
         public Nullable<System.DateTime> OrderedDate { get; set; }
         public Nullable<System.DateTime> DeliveredDate { get; set; }
         public int StockItemId { get; set; }
         public bool IsScanned { get; set; }
-        public int InternalNo { get; set; }
+        public Nullable<decimal> TotalPrice { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<InvoiceItems> InvoiceItems { get; set; }
         public virtual Orders Orders { get; set; }
         public virtual StockItems StockItems { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

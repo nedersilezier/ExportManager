@@ -17,8 +17,8 @@ namespace ExportManager.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Growers()
         {
-            this.Cultivations = new HashSet<Cultivations>();
             this.StockItems = new HashSet<StockItems>();
+            this.Cultivations = new HashSet<Cultivations>();
         }
     
         public int GrowerId { get; set; }
@@ -40,8 +40,8 @@ namespace ExportManager.Models
     
         public virtual Addresses Addresses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Cultivations> Cultivations { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockItems> StockItems { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Cultivations> Cultivations { get; set; }
     }
 }
