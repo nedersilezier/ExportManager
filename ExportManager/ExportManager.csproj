@@ -127,6 +127,7 @@
     <Compile Include="Models\BusinessLogic\Queries\GrowersQuery.cs" />
     <Compile Include="Models\BusinessLogic\InvoiceCalculator.cs" />
     <Compile Include="Models\BusinessLogic\Queries\InvoicesQuery.cs" />
+    <Compile Include="Models\DTO\InvoicePartyListView.cs" />
     <Compile Include="Models\DTO\InvoicesListView.cs" />
     <Compile Include="Models\DTO\OrderItemCarriersListView.cs" />
     <Compile Include="Models\BusinessLogic\Queries\OrdersQuery.cs" />
@@ -173,6 +174,7 @@
     <Compile Include="Models\DTO\StockItemsListView.cs" />
     <Compile Include="Models\DTO\WeightReportListView.cs" />
     <Compile Include="Models\Extensions\HasIsActive..cs" />
+    <Compile Include="Models\Extensions\InvoicePartyRoles.cs" />
     <Compile Include="Models\Extensions\OrderStatuses.cs" />
     <Compile Include="Models\Extensions\StringExtensions.cs" />
     <Compile Include="Models\Growers.cs">

@@ -21,22 +21,13 @@ namespace ExportManager.Models.DTO
         public decimal TotalAmount { get; set; }
         public decimal TotalGross { get; set; }
         public decimal TotalTax { get; set; }
+        public decimal TotalNet { get; set; }
         public decimal TotalStorageCost { get; set; }
         public decimal TotalTransportCost { get; set; }
         public string PaymentMethod { get; set; }
-
-        public string ClientName { get; set; }
-        public string ClientTaxId { get; set; }
-        public string ClientCity { get; set; }
-        public string ClientStreet { get; set; }
-        public string ClientPostalCode { get; set; }
-        public string ClientCountry { get; set; }
-        public string ClientCountryCode { get; set; }
-
+        public InvoicePartyListView Buyer { get; set;  }
+        public InvoicePartyListView Seller { get; set;  }
         public int TotalQuantity { get; set; }
-        public decimal TotalNetAmount { get; set; }
-        public decimal TotalTaxAmount { get; set; }
-        public decimal TotalGrossAmount { get; set; }
         public string Remarks { get; set; }
     }
 }

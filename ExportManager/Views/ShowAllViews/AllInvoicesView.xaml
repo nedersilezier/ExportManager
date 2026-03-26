@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:ExportManager.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Label>All invoices</Label>
-    </Grid>
+    <DataGrid AutoGenerateColumns="True" ItemsSource="{Binding List, IsAsync=True}" SelectedItem="{Binding SelectedItem}" IsReadOnly="True">
+
+    </DataGrid>
 </local:AllViewBase>

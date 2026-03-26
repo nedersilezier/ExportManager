@@ -41,6 +41,7 @@ namespace ExportManager.Models
         public string Remarks { get; set; }
         public decimal TotalGross { get; set; }
         public decimal TotalTax { get; set; }
+        public decimal TotalNet { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InvoiceItems> InvoiceItems { get; set; }

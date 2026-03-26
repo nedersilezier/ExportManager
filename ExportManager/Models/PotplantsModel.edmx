@@ -220,6 +220,7 @@
           <Property Name="DeletedAt" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="Country" Type="nvarchar" MaxLength="100" />
+          <Property Name="Role" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Invoices">
           <Key>
@@ -245,6 +246,7 @@
           <Property Name="Remarks" Type="nvarchar" MaxLength="500" />
           <Property Name="TotalGross" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="TotalTax" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TotalNet" Type="decimal" Precision="18" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="OrderItemCarriers">
           <Key>
@@ -1105,6 +1107,7 @@
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Invoices" Relationship="Self.FK_InvoiceParties_Invoices" FromRole="InvoiceParties" ToRole="Invoices" />
           <Property Name="Country" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Invoices">
           <Key>
@@ -1133,6 +1136,7 @@
           <NavigationProperty Name="InvoiceItems" Relationship="Self.FK_InvoiceItems_Invoices" FromRole="Invoices" ToRole="InvoiceItems" />
           <NavigationProperty Name="InvoiceParties" Relationship="Self.FK_InvoiceParties_Invoices" FromRole="Invoices" ToRole="InvoiceParties" />
           <NavigationProperty Name="PaymentMethods" Relationship="Self.FK_Invoices_PaymentMethods" FromRole="Invoices" ToRole="PaymentMethods" />
+          <Property Name="TotalNet" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="OrderItems">
           <Key>
@@ -1933,6 +1937,7 @@
           <EntitySetMapping Name="InvoiceParties">
             <EntityTypeMapping TypeName="PotplantsModel.InvoiceParties">
               <MappingFragment StoreEntitySet="InvoiceParties">
+                <ScalarProperty Name="Role" ColumnName="Role" />
                 <ScalarProperty Name="Country" ColumnName="Country" />
                 <ScalarProperty Name="InvoicePartyId" ColumnName="InvoicePartyId" />
                 <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
@@ -1955,6 +1960,7 @@
           <EntitySetMapping Name="Invoices">
             <EntityTypeMapping TypeName="PotplantsModel.Invoices">
               <MappingFragment StoreEntitySet="Invoices">
+                <ScalarProperty Name="TotalNet" ColumnName="TotalNet" />
                 <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
                 <ScalarProperty Name="InvoiceNo" ColumnName="InvoiceNo" />
                 <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
