@@ -46,7 +46,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                     TrayType = orderitem.StockItems.TrayTypes.Name,
                     Quality = orderitem.StockItems.Qualities.Name,
                     OrderedDate = orderitem.OrderedDate,
-                    IsScanned = orderitem.IsScanned,
+                    IsScanned = orderitem.IsScanned
                 });
         }
         #endregion
@@ -56,8 +56,8 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         {
             _OrderId = orderId;
             //base.DisplayName = "Order items";
-            base.DisplayName = new OrderDetailsQuery(potplantsEntities).GetOrderDisplayName(orderId) + " details";
-            base.FullDisplayName = new OrderDetailsQuery(potplantsEntities).GetOrderFullDisplayName(orderId) + " details";
+            base.DisplayName = new OrdersQuery(potplantsEntities).GetOrderDisplayName(orderId) + " order items";
+            base.FullDisplayName = new OrdersQuery(potplantsEntities).GetOrderFullDisplayName(orderId) + " order items";
         }
         #endregion
 
@@ -72,6 +72,11 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         public override void OnRemove()
         {
+            if (SelectedItem == null)
+            {
+                MessageBox.Show("No order item selected.");
+                return;
+            }
             var result = MessageBox.Show(
                         "Delete this item and return it to stock?",
                         $"{SelectedItem.FullProductName}",
@@ -81,7 +86,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             if (result == MessageBoxResult.Yes)
             {
                 int quantityToReturn = SelectedItem.Quantity;
-                new StockItemCommand(potplantsEntities).UpdateStockItemQuantity(SelectedItem.StockItemId, -quantityToReturn);
+                new StockItemsCommand(potplantsEntities).UpdateStockItemQuantity(SelectedItem.StockItemId, -quantityToReturn);
                 SoftDelete<OrderItems>(SelectedItem.OrderItemId);
             }
         }

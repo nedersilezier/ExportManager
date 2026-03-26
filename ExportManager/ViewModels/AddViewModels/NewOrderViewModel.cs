@@ -40,8 +40,8 @@ namespace ExportManager.ViewModels.AddViewModels
             item = potplantsEntities.Orders.FirstOrDefault(o => o.OrderId == orderId);
             base.DisplayName = "Edit order";
             IsEditMode = true;
-            SelectedDeliveryAddress = new OrderDetailsQuery(potplantsEntities).GetOrdersDeliveryAddress(orderId).FirstOrDefault();
-            SelectedClient = new ClientDetailsQuery(potplantsEntities).GetKeyAndValueById(item.ClientId).FirstOrDefault();
+            SelectedDeliveryAddress = new OrdersQuery(potplantsEntities).GetOrdersDeliveryAddress(orderId).FirstOrDefault();
+            SelectedClient = new ClientsQuery(potplantsEntities).GetKeyAndValueById(item.ClientId).FirstOrDefault();
             SelectedCountry = Countries.FirstOrDefault(c => c.Key == item.Addresses.Countries.CountryId);
             IsNotAddressesNeeded = true;
         }
@@ -142,7 +142,7 @@ namespace ExportManager.ViewModels.AddViewModels
             get
             {
                 if (_Countries == null)
-                    _Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
+                    _Countries = new CountriesQuery(potplantsEntities).GetCountriesListItems();
                 return _Countries;
             }
             set
@@ -397,7 +397,7 @@ namespace ExportManager.ViewModels.AddViewModels
                 Key = e.ItemId,
                 Value = e.DisplayName
             };
-            SelectedClientDetailed = new ClientDetailsQuery(potplantsEntities).GetClientAddressDetailsById(e.ItemId).FirstOrDefault();
+            SelectedClientDetailed = new ClientsQuery(potplantsEntities).GetClientAddressDetailsById(e.ItemId).FirstOrDefault();
         }
         private void openSelectClientTab()
         {
@@ -441,7 +441,7 @@ namespace ExportManager.ViewModels.AddViewModels
                 throw new Exception("An order for this client with the selected dates already exists.");
             item.ClientId = SelectedClient.Key;
             if (IsNotAddressesNeeded)
-                item.DeliveryAddressId = new AddressesForEntities(potplantsEntities).GetAddressIdByClientId(SelectedClient.Key);
+                item.DeliveryAddressId = new AddressesQuery(potplantsEntities).GetAddressIdByClientId(SelectedClient.Key);
             else
             {
                 if (SelectedCountry.Key == 0)
@@ -484,7 +484,7 @@ namespace ExportManager.ViewModels.AddViewModels
         }
         private void RefreshCountries()
         {
-            Countries = new CountriesForEntities(potplantsEntities).GetCountriesListItems();
+            Countries = new CountriesQuery(potplantsEntities).GetCountriesListItems();
         }
         #endregion
     }

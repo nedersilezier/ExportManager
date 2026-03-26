@@ -212,7 +212,7 @@ namespace ExportManager.ViewModels.AddViewModels
         {
             _OrderId = orderId;
             base.DisplayName = "New order item";
-            base.FullDisplayName = new OrderDetailsQuery(potplantsEntities).GetOrderFullDisplayName(orderId);
+            base.FullDisplayName = new OrdersQuery(potplantsEntities).GetOrderFullDisplayName(orderId);
             _OriginalQuantity = 0;
             item = new OrderItems
             {
@@ -234,8 +234,8 @@ namespace ExportManager.ViewModels.AddViewModels
             StorageCost = item.StorageCost;
             Discount = item.Discount;
             base.DisplayName = "Edit order item";
-            base.FullDisplayName = new OrderDetailsQuery(potplantsEntities).GetOrderFullDisplayName(orderId);
-            var stockItemDetails = new StockItemDetailsQuery(potplantsEntities).GetStockItemDetailsForNewOrderItem(item.StockItemId).FirstOrDefault();
+            base.FullDisplayName = new OrdersQuery(potplantsEntities).GetOrderFullDisplayName(orderId);
+            var stockItemDetails = new StockItemsQuery(potplantsEntities).GetStockItemDetailsForNewOrderItem(item.StockItemId).FirstOrDefault();
             SelectedStockItem = new KeyAndValue
             {
                 Key = item.StockItemId,
@@ -274,7 +274,7 @@ namespace ExportManager.ViewModels.AddViewModels
                         item.StockItemId = SelectedStockItem.Key;
                         potplantsEntities.OrderItems.Add(item);
                     }
-                    new StockItemCommand(potplantsEntities).UpdateStockItemQuantity(SelectedStockItem.Key, quantityDifference);
+                    new StockItemsCommand(potplantsEntities).UpdateStockItemQuantity(SelectedStockItem.Key, quantityDifference);
 
                     potplantsEntities.SaveChanges();
                     transaction.Commit();
@@ -318,7 +318,7 @@ namespace ExportManager.ViewModels.AddViewModels
         }
         public void setStockItem(SelectedItemEventArgs e)
         {
-            bool stockItemExists = new OrderDetailsQuery(potplantsEntities).OrderContainsActiveItem(_OrderId, e.ItemId);
+            bool stockItemExists = new OrdersQuery(potplantsEntities).OrderContainsActiveItem(_OrderId, e.ItemId);
             if (stockItemExists)
                 throw new Exception("Stock item already exists in this order.");
             SelectedStockItem = new KeyAndValue
@@ -326,7 +326,7 @@ namespace ExportManager.ViewModels.AddViewModels
                 Key = e.ItemId,
                 Value = e.DisplayName
             };
-            var stockItemDetails = new StockItemDetailsQuery(potplantsEntities).GetStockItemDetailsForNewOrderItem(e.ItemId).FirstOrDefault();
+            var stockItemDetails = new StockItemsQuery(potplantsEntities).GetStockItemDetailsForNewOrderItem(e.ItemId).FirstOrDefault();
             GrowerDisplayName = stockItemDetails.GrowerName;
             CostPrice = stockItemDetails.CostPrice;
             AvailableStock = stockItemDetails.QuantityLeft;

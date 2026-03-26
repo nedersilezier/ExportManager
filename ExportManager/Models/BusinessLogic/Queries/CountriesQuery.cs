@@ -8,34 +8,27 @@ using System.Threading.Tasks;
 
 namespace ExportManager.Models.BusinessLogic.ListViewsForUI
 {
-    public class GrowersForStockItems: DatabaseClass
+    public class CountriesQuery: DatabaseClass
     {
         #region Constructor
-        public GrowersForStockItems(PotplantsEntities potplantsEntities)
-            :base(potplantsEntities)
+        public CountriesQuery(PotplantsEntities potplantsEntities)
+            : base(potplantsEntities)
         {
         }
         #endregion
         #region Functions
-        public ObservableCollection<KeyAndValue> GetGrowersListItems()
+        public ObservableCollection<KeyAndValue> GetCountriesListItems()
         {
             return new ObservableCollection<KeyAndValue>
             (
-                potplantsEntities.Growers
+                potplantsEntities.Countries
                 .Where(t => t.IsActive == true)
                 .Select(t => new KeyAndValue
                 {
-                    Key = t.GrowerId,
+                    Key = t.CountryId,
                     Value = t.Name
                 }).ToList()
             );
-        }
-        public string GetGrowerDisplayNamePerId(int? id)
-        {
-            return potplantsEntities.Growers.Where(t => t.IsActive == true && t.GrowerId == id).Select(t =>new GrowersListView { 
-                GrowerName = t.Name,
-                Country = t.Addresses.Countries.Name
-            }).FirstOrDefault().DisplayName;
         }
         #endregion
     }

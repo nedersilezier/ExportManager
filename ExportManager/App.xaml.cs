@@ -33,9 +33,14 @@ namespace ExportManager
 
             services.AddSingleton<PotplantsEntities>();
 
-            // ViewModele
+            // Main window view model
             services.AddTransient<MainWindowViewModel>();
+
+            // Window view models
             services.AddTransient<ImageWindowViewModel>();
+            services.AddTransient<NewOrderItemCarrierViewModel>();
+            services.AddTransient<EditCarrierAddonsViewModel>();
+            services.AddTransient<EditCarrierTypeViewModel>();
 
             ServiceProvider = services.BuildServiceProvider();
 

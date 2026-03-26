@@ -22,7 +22,6 @@ namespace ExportManager.Models
         }
     
         public int InvoiceId { get; set; }
-        public int OrderId { get; set; }
         public string InvoiceNo { get; set; }
         public System.DateTime InvoiceDate { get; set; }
         public Nullable<System.DateTime> PaymentDate { get; set; }
@@ -42,12 +41,12 @@ namespace ExportManager.Models
         public string Remarks { get; set; }
         public decimal TotalGross { get; set; }
         public decimal TotalTax { get; set; }
+        public decimal TotalNet { get; set; }
     
-        public virtual Orders Orders { get; set; }
-        public virtual PaymentMethods PaymentMethods { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InvoiceItems> InvoiceItems { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InvoiceParties> InvoiceParties { get; set; }
+        public virtual PaymentMethods PaymentMethods { get; set; }
     }
 }

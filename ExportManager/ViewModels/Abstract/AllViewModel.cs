@@ -104,7 +104,7 @@ namespace ExportManager.ViewModels.Abstract
         public abstract void Load();
         public abstract void OnAdd();
         public abstract void OnEdit();
-        public void Edit()
+        public virtual void Edit()
         {
             if (SelectedItem != null)
             {
@@ -112,7 +112,7 @@ namespace ExportManager.ViewModels.Abstract
             }
         }
         public abstract void OnRemove();
-        public void Remove()
+        public virtual void Remove()
         {
             if (SelectedItem != null)
             {

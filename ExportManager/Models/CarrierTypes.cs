@@ -17,15 +17,14 @@ namespace ExportManager.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CarrierTypes()
         {
-            this.Orders = new HashSet<Orders>();
             this.Carriers = new HashSet<Carriers>();
+            this.Orders = new HashSet<Orders>();
         }
     
         public int CarrierTypeId { get; set; }
         public string Name { get; set; }
         public Nullable<decimal> Width { get; set; }
         public Nullable<decimal> Length { get; set; }
-        public Nullable<decimal> Area { get; set; }
         public Nullable<decimal> MaxHeight { get; set; }
         public bool IsActive { get; set; }
         public System.DateTime CreatedAt { get; set; }
@@ -36,11 +35,12 @@ namespace ExportManager.Models
         public string DeletedBy { get; set; }
         public string Remarks { get; set; }
         public decimal Weight { get; set; }
+        public Nullable<decimal> Area { get; set; }
         public decimal ShelfWeight { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Orders> Orders { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Carriers> Carriers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Orders> Orders { get; set; }
     }
 }

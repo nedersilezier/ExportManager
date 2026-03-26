@@ -17,9 +17,8 @@ namespace ExportManager.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Orders()
         {
-            this.Invoices = new HashSet<Invoices>();
-            this.OrderItems = new HashSet<OrderItems>();
             this.Carriers = new HashSet<Carriers>();
+            this.OrderItems = new HashSet<OrderItems>();
         }
     
         public int OrderId { get; set; }
@@ -43,13 +42,11 @@ namespace ExportManager.Models
         public Nullable<int> CarrierTypeId { get; set; }
     
         public virtual Addresses Addresses { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Carriers> Carriers { get; set; }
         public virtual CarrierTypes CarrierTypes { get; set; }
         public virtual Clients Clients { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Invoices> Invoices { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderItems> OrderItems { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Carriers> Carriers { get; set; }
     }
 }

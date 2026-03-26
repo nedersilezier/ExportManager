@@ -38,5 +38,6 @@ namespace ExportManager.Models
         public bool IsActive { get; set; }
     
         public virtual Invoices Invoices { get; set; }
+        public virtual OrderItems OrderItems { get; set; }
     }
 }

@@ -1,20 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections.ObjectModel;
 using ExportManager.Helper;
-using System.Diagnostics;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Windows.Data;
 using ExportManager.ViewModels;
 using ExportManager.ViewModels.Abstract;
-using ExportManager.ViewModels.ShowAllViewModels;
-using ExportManager.ViewModels.ReportViewModels;
 using ExportManager.ViewModels.Events;
-using System.Windows;
+using ExportManager.ViewModels.ReportViewModels;
+using ExportManager.ViewModels.ShowAllViewModels;
 using ExportManager.ViewModels.Windows;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Data;
+using System.Windows.Input;
 namespace ExportManager.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
@@ -53,18 +55,6 @@ namespace ExportManager.ViewModels
             _windowService = windowService;
         }
         #region Commands
-        public ReadOnlyCollection<CommandViewModel> Commands
-        {
-            get
-            {
-                if (_Commands == null)
-                {
-                    List<CommandViewModel> cmds = this.CreateCommands();
-                    _Commands = new ReadOnlyCollection<CommandViewModel>(cmds);
-                }
-                return _Commands;
-            }
-        }
         public ReadOnlyCollection<CommandViewModel> GlobalCommands
         {
             get
@@ -141,21 +131,7 @@ namespace ExportManager.ViewModels
                 return _AddressCommand;
             }
         }
-        //Bylo w szkielecie
-        private List<CommandViewModel> CreateCommands()
-        {
-            return new List<CommandViewModel>
-            {
-                //new CommandViewModel(
-                //    "Towary",
-                //    new BaseCommand(() => this.ShowAll<>())),
-
-                //new CommandViewModel(
-                //    "Towar",
-                //    new BaseCommand(() => this.CreateTowar()))
-            };
-        }
-        //Komendy w StackPanel
+        //Main StackPanel commands
         private List<CommandViewModel> CreateGlobalCommands()
         {
             return new List<CommandViewModel>
@@ -164,11 +140,10 @@ namespace ExportManager.ViewModels
                 new CommandViewModel("Stock", new BaseCommand(() => this.ShowAll<AllInStockViewModel>())),
                 new CommandViewModel("Batches", new BaseCommand(() => this.ShowAll<AllBatchesViewModel>())),
                 new CommandViewModel("Orders", new BaseCommand(() => this.ShowAll<AllOrdersViewModel>())),
-                //new CommandViewModel("Order items", new BaseCommand(() => this.ShowAll<AllOrderItemsViewModel>())),
                 new CommandViewModel("Invoices", new BaseCommand(() => this.ShowAll<AllInvoicesViewModel>()))
             };
         }
-        //Komendy w menu u gory
+        //Menu commands
         private List<CommandViewModel> CreateDatabaseDictionaryCommands()
         {
             return new List<CommandViewModel>
@@ -283,6 +258,19 @@ namespace ExportManager.ViewModels
 
             this.SetActiveWorkspace(workspace);
         }
+        public void ShowAll<T>(Func<T> constructor) where T: WorkspaceViewModel
+        {
+            T workspace =
+                this.Workspaces.OfType<T>().FirstOrDefault(
+                    vm => vm is IAllViewable allViewModel && allViewModel.IsSelectMode == false);
+            if (workspace == null)
+            {
+                workspace = constructor();
+                this.Workspaces.Add(workspace);
+            }
+
+            this.SetActiveWorkspace(workspace);
+        }
         public void CreateView(WorkspaceViewModel workspace)
         {
             this.Workspaces.Add(workspace);
@@ -296,6 +284,28 @@ namespace ExportManager.ViewModels
             if (collectionView != null)
                 collectionView.MoveCurrentTo(workspace);
         }
+        #endregion
+        #region Global events
+        private BaseCommand _ClosingCommand;
+        public ICommand ClosingCommand
+        {
+            get
+            {
+                if (_ClosingCommand == null)
+                    _ClosingCommand = new BaseCommand(OnClosing);
+                return _ClosingCommand;
+            }
+        }
+
+        private void OnClosing()
+        {
+            var vm = Workspaces.OfType<AllOrderItemCarriersViewModel>().FirstOrDefault();
+            if (vm == null)
+                return;
+            if (vm.IsChanged)
+                vm.SaveChangesExternal();
+        }
+
         #endregion
     }
 }

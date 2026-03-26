@@ -49,7 +49,7 @@ namespace ExportManager.ViewModels.AddViewModels
                 if (_SelectedProduct != value)
                 {
                     _SelectedProduct = value;
-                    TrayTypes = new TrayTypesForStockItems(potplantsEntities).GetCompatibleTrayTypes(SelectedProduct.Key);
+                    TrayTypes = new TrayTypesQuery(potplantsEntities).GetCompatibleTrayTypes(SelectedProduct.Key);
                     OnPropertyChanged(() => SelectedProduct);
                     OnPropertyChanged(() => TrayTypes);
                 }
@@ -144,13 +144,13 @@ namespace ExportManager.ViewModels.AddViewModels
             SelectedGrower = new KeyAndValue
             {
                 Key = (int)item.GrowerId,
-                Value = new GrowersForStockItems(potplantsEntities).GetGrowerDisplayNamePerId(item.GrowerId)
+                Value = new GrowersQuery(potplantsEntities).GetGrowerDisplayNamePerId(item.GrowerId)
             };
             //SelectedProduct = Products.FirstOrDefault(p => p.Key == item.ProductId);
             SelectedProduct = new KeyAndValue
             {
                 Key = (int)item.ProductId,
-                Value = new ProductsForStockItems(potplantsEntities).GetProductDisplayNamePerId(item.ProductId)
+                Value = new ProductsQuery(potplantsEntities).GetProductDisplayNamePerId(item.ProductId)
             };
             SelectedQuality = Qualities.FirstOrDefault(q => q.Key == item.QualityId);
             SelectedTrayType = TrayTypes.FirstOrDefault(t => t.Key == item.TrayTypeId);
@@ -196,7 +196,7 @@ namespace ExportManager.ViewModels.AddViewModels
             get
             {
                 if (_Qualities == null)
-                    _Qualities = new QualitiesForStockItems(potplantsEntities).GetQualitiesListItems();
+                    _Qualities = new QualitiesQuery(potplantsEntities).GetQualitiesListItems();
                 return _Qualities;
             }
             set
@@ -213,7 +213,7 @@ namespace ExportManager.ViewModels.AddViewModels
             get
             {
                 if (_TrayTypes == null)
-                    _TrayTypes = new TrayTypesForStockItems(potplantsEntities).GetTrayTypesListItems();
+                    _TrayTypes = new TrayTypesQuery(potplantsEntities).GetTrayTypesListItems();
                 return _TrayTypes;
             }
             set
@@ -440,14 +440,14 @@ namespace ExportManager.ViewModels.AddViewModels
         //}
         private void RefreshQualities()
         {
-            Qualities = new QualitiesForStockItems(potplantsEntities).GetQualitiesListItems();
+            Qualities = new QualitiesQuery(potplantsEntities).GetQualitiesListItems();
         }
         private void RefreshTrayTypes()
         {
             if(SelectedProduct == null)
-                TrayTypes = new TrayTypesForStockItems(potplantsEntities).GetTrayTypesListItems();
+                TrayTypes = new TrayTypesQuery(potplantsEntities).GetTrayTypesListItems();
             else
-                TrayTypes = new TrayTypesForStockItems(potplantsEntities).GetCompatibleTrayTypes(SelectedProduct.Key);
+                TrayTypes = new TrayTypesQuery(potplantsEntities).GetCompatibleTrayTypes(SelectedProduct.Key);
         }
         #endregion
     }

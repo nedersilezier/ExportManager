@@ -219,13 +219,14 @@
           <Property Name="DeletedBy" Type="nvarchar" MaxLength="100" />
           <Property Name="DeletedAt" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="Country" Type="nvarchar" MaxLength="100" />
+          <Property Name="Role" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Invoices">
           <Key>
             <PropertyRef Name="InvoiceId" />
           </Key>
           <Property Name="InvoiceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="OrderId" Type="int" Nullable="false" />
           <Property Name="InvoiceNo" Type="nvarchar" MaxLength="50" />
           <Property Name="InvoiceDate" Type="datetime2" Precision="0" Nullable="false" />
           <Property Name="PaymentDate" Type="datetime2" Precision="0" />
@@ -245,6 +246,15 @@
           <Property Name="Remarks" Type="nvarchar" MaxLength="500" />
           <Property Name="TotalGross" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="TotalTax" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TotalNet" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OrderItemCarriers">
+          <Key>
+            <PropertyRef Name="OrderItemId" />
+            <PropertyRef Name="CarrierId" />
+          </Key>
+          <Property Name="OrderItemId" Type="int" Nullable="false" />
+          <Property Name="CarrierId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="OrderItems">
           <Key>
@@ -517,6 +527,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_InvoiceItems_OrderItems">
+          <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="0..1" />
+          <End Role="InvoiceItems" Type="Self.InvoiceItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderItems">
+              <PropertyRef Name="OrderItemId" />
+            </Principal>
+            <Dependent Role="InvoiceItems">
+              <PropertyRef Name="SourceOrderItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_InvoiceParties_Invoices">
           <End Role="Invoices" Type="Self.Invoices" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -531,18 +553,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Invoices_Orders">
-          <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
-          <End Role="Invoices" Type="Self.Invoices" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Orders">
-              <PropertyRef Name="OrderId" />
-            </Principal>
-            <Dependent Role="Invoices">
-              <PropertyRef Name="OrderId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Invoices_PaymentMethods">
           <End Role="PaymentMethods" Type="Self.PaymentMethods" Multiplicity="1" />
           <End Role="Invoices" Type="Self.Invoices" Multiplicity="*" />
@@ -552,6 +562,30 @@
             </Principal>
             <Dependent Role="Invoices">
               <PropertyRef Name="PaymentMethodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderItemCarriers_Carriers">
+          <End Role="Carriers" Type="Self.Carriers" Multiplicity="1" />
+          <End Role="OrderItemCarriers" Type="Self.OrderItemCarriers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Carriers">
+              <PropertyRef Name="CarrierId" />
+            </Principal>
+            <Dependent Role="OrderItemCarriers">
+              <PropertyRef Name="CarrierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderItemCarriers_OrderItems">
+          <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="1" />
+          <End Role="OrderItemCarriers" Type="Self.OrderItemCarriers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderItems">
+              <PropertyRef Name="OrderItemId" />
+            </Principal>
+            <Dependent Role="OrderItemCarriers">
+              <PropertyRef Name="OrderItemId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -727,6 +761,7 @@
           <EntitySet Name="InvoiceItems" EntityType="Self.InvoiceItems" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InvoiceParties" EntityType="Self.InvoiceParties" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Invoices" EntityType="Self.Invoices" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderItemCarriers" EntityType="Self.OrderItemCarriers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderItems" EntityType="Self.OrderItems" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PaymentMethods" EntityType="Self.PaymentMethods" Schema="dbo" store:Type="Tables" />
@@ -767,17 +802,25 @@
             <End Role="Invoices" EntitySet="Invoices" />
             <End Role="InvoiceItems" EntitySet="InvoiceItems" />
           </AssociationSet>
+          <AssociationSet Name="FK_InvoiceItems_OrderItems" Association="Self.FK_InvoiceItems_OrderItems">
+            <End Role="OrderItems" EntitySet="OrderItems" />
+            <End Role="InvoiceItems" EntitySet="InvoiceItems" />
+          </AssociationSet>
           <AssociationSet Name="FK_InvoiceParties_Invoices" Association="Self.FK_InvoiceParties_Invoices">
             <End Role="Invoices" EntitySet="Invoices" />
             <End Role="InvoiceParties" EntitySet="InvoiceParties" />
           </AssociationSet>
-          <AssociationSet Name="FK_Invoices_Orders" Association="Self.FK_Invoices_Orders">
-            <End Role="Orders" EntitySet="Orders" />
-            <End Role="Invoices" EntitySet="Invoices" />
-          </AssociationSet>
           <AssociationSet Name="FK_Invoices_PaymentMethods" Association="Self.FK_Invoices_PaymentMethods">
             <End Role="PaymentMethods" EntitySet="PaymentMethods" />
             <End Role="Invoices" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderItemCarriers_Carriers" Association="Self.FK_OrderItemCarriers_Carriers">
+            <End Role="Carriers" EntitySet="Carriers" />
+            <End Role="OrderItemCarriers" EntitySet="OrderItemCarriers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderItemCarriers_OrderItems" Association="Self.FK_OrderItemCarriers_OrderItems">
+            <End Role="OrderItems" EntitySet="OrderItems" />
+            <End Role="OrderItemCarriers" EntitySet="OrderItemCarriers" />
           </AssociationSet>
           <AssociationSet Name="FK_OrderItems_Orders" Association="Self.FK_OrderItems_Orders">
             <End Role="Orders" EntitySet="Orders" />
@@ -860,6 +903,26 @@
           <NavigationProperty Name="Growers" Relationship="Self.FK_Growers_Addresses" FromRole="Addresses" ToRole="Growers" />
           <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Addresses" FromRole="Addresses" ToRole="Orders" />
         </EntityType>
+        <EntityType Name="Carriers">
+          <Key>
+            <PropertyRef Name="CarrierId" />
+          </Key>
+          <Property Name="CarrierId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderId" Type="Int32" Nullable="false" />
+          <Property Name="CarrierTypeId" Type="Int32" Nullable="false" />
+          <Property Name="AmountOfShelfs" Type="Int32" Nullable="false" />
+          <Property Name="AmountOfExtensions" Type="Int32" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedAt" Type="DateTime" Precision="7" />
+          <Property Name="DeletedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedAt" Type="DateTime" Precision="7" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CarrierTypes" Relationship="Self.FK_Carriers_CarrierTypes" FromRole="Carriers" ToRole="CarrierTypes" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_Carriers_Orders" FromRole="Carriers" ToRole="Orders" />
+          <NavigationProperty Name="OrderItems" Relationship="Self.OrderItemCarriers" FromRole="Carriers" ToRole="OrderItems" />
+        </EntityType>
         <EntityType Name="CarrierTypes">
           <Key>
             <PropertyRef Name="CarrierTypeId" />
@@ -868,7 +931,6 @@
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Width" Type="Decimal" Precision="6" Scale="2" />
           <Property Name="Length" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="Area" Type="Decimal" Precision="13" Scale="4" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="MaxHeight" Type="Decimal" Precision="6" Scale="2" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="0" />
@@ -878,10 +940,11 @@
           <Property Name="DeletedAt" Type="DateTime" Precision="0" />
           <Property Name="DeletedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_CarrierTypes" FromRole="CarrierTypes" ToRole="Orders" />
           <Property Name="Weight" Type="Decimal" Precision="6" Scale="2" Nullable="false" />
-          <NavigationProperty Name="Carriers" Relationship="PotplantsModel.FK_Carriers_CarrierTypes" FromRole="CarrierTypes" ToRole="Carriers" />
+          <Property Name="Area" Type="Decimal" Precision="13" Scale="4" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="ShelfWeight" Type="Decimal" Precision="6" Scale="2" Nullable="false" />
+          <NavigationProperty Name="Carriers" Relationship="Self.FK_Carriers_CarrierTypes" FromRole="CarrierTypes" ToRole="Carriers" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_CarrierTypes" FromRole="CarrierTypes" ToRole="Orders" />
         </EntityType>
         <EntityType Name="Categories">
           <Key>
@@ -967,8 +1030,8 @@
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Growers" Relationship="Self.GrowerCultivations" FromRole="Cultivations" ToRole="Growers" />
           <Property Name="DeletedAt" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Growers" Relationship="Self.GrowerCultivations" FromRole="Cultivations" ToRole="Growers" />
         </EntityType>
         <EntityType Name="Growers">
           <Key>
@@ -991,15 +1054,66 @@
           <Property Name="DeletedAt" Type="DateTime" Precision="0" />
           <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Addresses" Relationship="Self.FK_Growers_Addresses" FromRole="Growers" ToRole="Addresses" />
+          <NavigationProperty Name="StockItems" Relationship="Self.FK_StockItems_Growers" FromRole="Growers" ToRole="StockItems" />
           <NavigationProperty Name="Cultivations" Relationship="Self.GrowerCultivations" FromRole="Growers" ToRole="Cultivations" />
-          <NavigationProperty Name="StockItems" Relationship="PotplantsModel.FK_StockItems_Growers" FromRole="Growers" ToRole="StockItems" />
+        </EntityType>
+        <EntityType Name="InvoiceItems">
+          <Key>
+            <PropertyRef Name="InvoiceItemId" />
+          </Key>
+          <Property Name="InvoiceItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InvoiceId" Type="Int32" Nullable="false" />
+          <Property Name="ItemNo" Type="Int32" Nullable="false" />
+          <Property Name="NameSnapshot" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PotSizeSnapshot" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="HeightSnapshot" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="UnitPriceSnapshot" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TaxRateSnapshot" Type="Decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="NetAmount" Type="Decimal" Precision="29" Scale="2" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="TaxAmount" Type="Decimal" Precision="38" Scale="7" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="GrossAmount" Type="Decimal" Precision="38" Scale="6" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ProductId" Type="Int32" />
+          <Property Name="StockItemId" Type="Int32" />
+          <Property Name="SourceOrderItemId" Type="Int32" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedAt" Type="DateTime" Precision="7" />
+          <Property Name="DeletedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedAt" Type="DateTime" Precision="7" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Invoices" Relationship="Self.FK_InvoiceItems_Invoices" FromRole="InvoiceItems" ToRole="Invoices" />
+          <NavigationProperty Name="OrderItems" Relationship="Self.FK_InvoiceItems_OrderItems" FromRole="InvoiceItems" ToRole="OrderItems" />
+        </EntityType>
+        <EntityType Name="InvoiceParties">
+          <Key>
+            <PropertyRef Name="InvoicePartyId" />
+          </Key>
+          <Property Name="InvoicePartyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InvoiceId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TaxId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Street" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PostalCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CountryCode" Type="String" MaxLength="2" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedAt" Type="DateTime" Precision="7" />
+          <Property Name="DeletedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedAt" Type="DateTime" Precision="7" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Invoices" Relationship="Self.FK_InvoiceParties_Invoices" FromRole="InvoiceParties" ToRole="Invoices" />
+          <Property Name="Country" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Invoices">
           <Key>
             <PropertyRef Name="InvoiceId" />
           </Key>
           <Property Name="InvoiceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="OrderId" Type="Int32" Nullable="false" />
           <Property Name="InvoiceNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="InvoiceDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="PaymentDate" Type="DateTime" Precision="0" />
@@ -1017,12 +1131,12 @@
           <Property Name="DeletedAt" Type="DateTime" Precision="0" />
           <Property Name="DeletedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Orders" Relationship="Self.FK_Invoices_Orders" FromRole="Invoices" ToRole="Orders" />
+          <Property Name="TotalGross" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TotalTax" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <NavigationProperty Name="InvoiceItems" Relationship="Self.FK_InvoiceItems_Invoices" FromRole="Invoices" ToRole="InvoiceItems" />
+          <NavigationProperty Name="InvoiceParties" Relationship="Self.FK_InvoiceParties_Invoices" FromRole="Invoices" ToRole="InvoiceParties" />
           <NavigationProperty Name="PaymentMethods" Relationship="Self.FK_Invoices_PaymentMethods" FromRole="Invoices" ToRole="PaymentMethods" />
-          <Property Name="TotalGross" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="TotalTax" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <NavigationProperty Name="InvoiceItems" Relationship="PotplantsModel.FK_InvoiceItems_Invoices" FromRole="Invoices" ToRole="InvoiceItems" />
-          <NavigationProperty Name="InvoiceParties" Relationship="PotplantsModel.FK_InvoiceParties_Invoices" FromRole="Invoices" ToRole="InvoiceParties" />
+          <Property Name="TotalNet" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="OrderItems">
           <Key>
@@ -1035,7 +1149,6 @@
           <Property Name="StorageCost" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="TransportCost" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="Discount" Type="Decimal" Precision="5" Scale="2" />
-          <Property Name="TotalPrice" Type="Decimal" Precision="32" Scale="8" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -1044,14 +1157,17 @@
           <Property Name="DeletedAt" Type="DateTime" Precision="0" />
           <Property Name="DeletedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="InternalNo" Type="Int32" Nullable="false" />
           <Property Name="OrderedDate" Type="DateTime" Precision="0" />
           <Property Name="DeliveredDate" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="Orders" Relationship="Self.FK_OrderItems_Orders" FromRole="OrderItems" ToRole="Orders" />
           <Property Name="StockItemId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="StockItems" Relationship="PotplantsModel.FK_OrderItems_StockItems" FromRole="OrderItems" ToRole="StockItems" />
-          <NavigationProperty Name="StockMovements" Relationship="PotplantsModel.FK_StockMovements_OrderItems" FromRole="OrderItems" ToRole="StockMovements" />
           <Property Name="IsScanned" Type="Boolean" Nullable="false" />
-          <Property Name="InternalNo" Type="Int32" Nullable="false" />
+          <Property Name="TotalPrice" Type="Decimal" Precision="32" Scale="8" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="InvoiceItems" Relationship="Self.FK_InvoiceItems_OrderItems" FromRole="OrderItems" ToRole="InvoiceItems" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_OrderItems_Orders" FromRole="OrderItems" ToRole="Orders" />
+          <NavigationProperty Name="StockItems" Relationship="Self.FK_OrderItems_StockItems" FromRole="OrderItems" ToRole="StockItems" />
+          <NavigationProperty Name="StockMovements" Relationship="Self.FK_StockMovements_OrderItems" FromRole="OrderItems" ToRole="StockMovements" />
+          <NavigationProperty Name="Carriers" Relationship="Self.OrderItemCarriers" FromRole="OrderItems" ToRole="Carriers" />
         </EntityType>
         <EntityType Name="Orders">
           <Key>
@@ -1077,11 +1193,10 @@
           <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="CarrierTypeId" Type="Int32" />
           <NavigationProperty Name="Addresses" Relationship="Self.FK_Orders_Addresses" FromRole="Orders" ToRole="Addresses" />
+          <NavigationProperty Name="Carriers" Relationship="Self.FK_Carriers_Orders" FromRole="Orders" ToRole="Carriers" />
           <NavigationProperty Name="CarrierTypes" Relationship="Self.FK_Orders_CarrierTypes" FromRole="Orders" ToRole="CarrierTypes" />
           <NavigationProperty Name="Clients" Relationship="Self.FK_Orders_Clients" FromRole="Orders" ToRole="Clients" />
-          <NavigationProperty Name="Invoices" Relationship="Self.FK_Invoices_Orders" FromRole="Orders" ToRole="Invoices" />
           <NavigationProperty Name="OrderItems" Relationship="Self.FK_OrderItems_Orders" FromRole="Orders" ToRole="OrderItems" />
-          <NavigationProperty Name="Carriers" Relationship="PotplantsModel.FK_Carriers_Orders" FromRole="Orders" ToRole="Carriers" />
         </EntityType>
         <EntityType Name="PaymentMethods">
           <Key>
@@ -1117,12 +1232,12 @@
           <Property Name="DeletedAt" Type="DateTime" Precision="0" />
           <Property Name="DeletedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Categories" Relationship="Self.FK_Products_Categories" FromRole="Products" ToRole="Categories" />
-          <NavigationProperty Name="Colors" Relationship="Self.FK_Products_Colors" FromRole="Products" ToRole="Colors" />
           <Property Name="IsCites" Type="Boolean" Nullable="false" />
           <Property Name="Weight" Type="Decimal" Precision="5" Scale="2" />
-          <NavigationProperty Name="StockItems" Relationship="PotplantsModel.FK_StockItems_Products" FromRole="Products" ToRole="StockItems" />
           <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Categories" Relationship="Self.FK_Products_Categories" FromRole="Products" ToRole="Categories" />
+          <NavigationProperty Name="Colors" Relationship="Self.FK_Products_Colors" FromRole="Products" ToRole="Colors" />
+          <NavigationProperty Name="StockItems" Relationship="Self.FK_StockItems_Products" FromRole="Products" ToRole="StockItems" />
         </EntityType>
         <EntityType Name="Qualities">
           <Key>
@@ -1139,7 +1254,63 @@
           <Property Name="DeletedAt" Type="DateTime" Precision="0" />
           <Property Name="DeletedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="StockItems" Relationship="PotplantsModel.FK_StockItems_Qualities" FromRole="Qualities" ToRole="StockItems" />
+          <NavigationProperty Name="StockItems" Relationship="Self.FK_StockItems_Qualities" FromRole="Qualities" ToRole="StockItems" />
+        </EntityType>
+        <EntityType Name="StockItems">
+          <Key>
+            <PropertyRef Name="StockItemId" />
+          </Key>
+          <Property Name="StockItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="GrowerId" Type="Int32" />
+          <Property Name="TrayTypeId" Type="Int32" />
+          <Property Name="QualityId" Type="Int32" />
+          <Property Name="CostPrice" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="InternalNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsBlocked" Type="Boolean" />
+          <Property Name="IsInside" Type="Boolean" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="0" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedAt" Type="DateTime" Precision="0" />
+          <Property Name="DeletedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedAt" Type="DateTime" Precision="0" />
+          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ExpiryDate" Type="DateTime" Precision="0" />
+          <Property Name="ReceivedAt" Type="DateTime" Precision="0" />
+          <Property Name="QuantityLeft" Type="Int32" />
+          <NavigationProperty Name="Growers" Relationship="Self.FK_StockItems_Growers" FromRole="StockItems" ToRole="Growers" />
+          <NavigationProperty Name="OrderItems" Relationship="Self.FK_OrderItems_StockItems" FromRole="StockItems" ToRole="OrderItems" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_StockItems_Products" FromRole="StockItems" ToRole="Products" />
+          <NavigationProperty Name="Qualities" Relationship="Self.FK_StockItems_Qualities" FromRole="StockItems" ToRole="Qualities" />
+          <NavigationProperty Name="TrayTypes" Relationship="Self.FK_StockItems_TrayTypes" FromRole="StockItems" ToRole="TrayTypes" />
+          <NavigationProperty Name="StockMovements" Relationship="Self.FK_StockMovements_StockItems" FromRole="StockItems" ToRole="StockMovements" />
+        </EntityType>
+        <EntityType Name="StockMovements">
+          <Key>
+            <PropertyRef Name="StockMovementId" />
+          </Key>
+          <Property Name="StockMovementId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StockItemId" Type="Int32" Nullable="false" />
+          <Property Name="OrderItemId" Type="Int32" />
+          <Property Name="MovementType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Quantity" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="StockBefore" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="StockAfter" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="MovementDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Reference" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedAt" Type="DateTime" Precision="0" />
+          <Property Name="DeletedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedAt" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="OrderItems" Relationship="Self.FK_StockMovements_OrderItems" FromRole="StockMovements" ToRole="OrderItems" />
+          <NavigationProperty Name="StockItems" Relationship="Self.FK_StockMovements_StockItems" FromRole="StockMovements" ToRole="StockItems" />
         </EntityType>
         <EntityType Name="TrayTypes">
           <Key>
@@ -1149,7 +1320,6 @@
           <Property Name="Name" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Width" Type="Decimal" Precision="6" Scale="2" />
           <Property Name="Length" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="Area" Type="Decimal" Precision="13" Scale="4" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -1160,7 +1330,8 @@
           <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="FittingPotSize" Type="Decimal" Precision="5" Scale="2" />
           <Property Name="QtyPerTray" Type="Int32" />
-          <NavigationProperty Name="StockItems" Relationship="PotplantsModel.FK_StockItems_TrayTypes" FromRole="TrayTypes" ToRole="StockItems" />
+          <Property Name="Area" Type="Decimal" Precision="13" Scale="4" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="StockItems" Relationship="Self.FK_StockItems_TrayTypes" FromRole="TrayTypes" ToRole="StockItems" />
         </EntityType>
         <Association Name="FK_Addresses_Countries">
           <End Role="Countries" Type="Self.Countries" Multiplicity="0..1" />
@@ -1207,6 +1378,32 @@
             </Principal>
             <Dependent Role="Orders">
               <PropertyRef Name="DeliveryAddressId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Carriers_CarrierTypes">
+          <End Role="CarrierTypes" Type="Self.CarrierTypes" Multiplicity="1" />
+          <End Role="Carriers" Type="Self.Carriers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CarrierTypes">
+              <PropertyRef Name="CarrierTypeId" />
+            </Principal>
+            <Dependent Role="Carriers">
+              <PropertyRef Name="CarrierTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Carriers_Orders">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Carriers" Type="Self.Carriers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="Carriers">
+              <PropertyRef Name="OrderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1258,15 +1455,55 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Invoices_Orders">
-          <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
-          <End Role="Invoices" Type="Self.Invoices" Multiplicity="*" />
+        <Association Name="FK_StockItems_Growers">
+          <End Role="Growers" Type="Self.Growers" Multiplicity="0..1" />
+          <End Role="StockItems" Type="Self.StockItems" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Orders">
-              <PropertyRef Name="OrderId" />
+            <Principal Role="Growers">
+              <PropertyRef Name="GrowerId" />
             </Principal>
-            <Dependent Role="Invoices">
-              <PropertyRef Name="OrderId" />
+            <Dependent Role="StockItems">
+              <PropertyRef Name="GrowerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InvoiceItems_Invoices">
+          <End Role="Invoices" Type="Self.Invoices" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="InvoiceItems" Type="Self.InvoiceItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoices">
+              <PropertyRef Name="InvoiceId" />
+            </Principal>
+            <Dependent Role="InvoiceItems">
+              <PropertyRef Name="InvoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InvoiceItems_OrderItems">
+          <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="0..1" />
+          <End Role="InvoiceItems" Type="Self.InvoiceItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderItems">
+              <PropertyRef Name="OrderItemId" />
+            </Principal>
+            <Dependent Role="InvoiceItems">
+              <PropertyRef Name="SourceOrderItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InvoiceParties_Invoices">
+          <End Role="Invoices" Type="Self.Invoices" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="InvoiceParties" Type="Self.InvoiceParties" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoices">
+              <PropertyRef Name="InvoiceId" />
+            </Principal>
+            <Dependent Role="InvoiceParties">
+              <PropertyRef Name="InvoiceId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1283,7 +1520,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_OrderItems_Orders">
-          <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Orders">
@@ -1294,12 +1533,89 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_OrderItems_StockItems">
+          <End Role="StockItems" Type="Self.StockItems" Multiplicity="1" />
+          <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StockItems">
+              <PropertyRef Name="StockItemId" />
+            </Principal>
+            <Dependent Role="OrderItems">
+              <PropertyRef Name="StockItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockMovements_OrderItems">
+          <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="0..1" />
+          <End Role="StockMovements" Type="Self.StockMovements" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderItems">
+              <PropertyRef Name="OrderItemId" />
+            </Principal>
+            <Dependent Role="StockMovements">
+              <PropertyRef Name="OrderItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockItems_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="StockItems" Type="Self.StockItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="StockItems">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockItems_Qualities">
+          <End Role="Qualities" Type="Self.Qualities" Multiplicity="0..1" />
+          <End Role="StockItems" Type="Self.StockItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Qualities">
+              <PropertyRef Name="QualityId" />
+            </Principal>
+            <Dependent Role="StockItems">
+              <PropertyRef Name="QualityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockItems_TrayTypes">
+          <End Role="TrayTypes" Type="Self.TrayTypes" Multiplicity="0..1" />
+          <End Role="StockItems" Type="Self.StockItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TrayTypes">
+              <PropertyRef Name="TrayTypeId" />
+            </Principal>
+            <Dependent Role="StockItems">
+              <PropertyRef Name="TrayTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockMovements_StockItems">
+          <End Role="StockItems" Type="Self.StockItems" Multiplicity="1" />
+          <End Role="StockMovements" Type="Self.StockMovements" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StockItems">
+              <PropertyRef Name="StockItemId" />
+            </Principal>
+            <Dependent Role="StockMovements">
+              <PropertyRef Name="StockItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="GrowerCultivations">
           <End Role="Cultivations" Type="Self.Cultivations" Multiplicity="*" />
           <End Role="Growers" Type="Self.Growers" Multiplicity="*" />
         </Association>
+        <Association Name="OrderItemCarriers">
+          <End Role="Carriers" Type="Self.Carriers" Multiplicity="*" />
+          <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="*" />
+        </Association>
         <EntityContainer Name="PotplantsEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Addresses" EntityType="Self.Addresses" />
+          <EntitySet Name="Carriers" EntityType="Self.Carriers" />
           <EntitySet Name="CarrierTypes" EntityType="Self.CarrierTypes" />
           <EntitySet Name="Categories" EntityType="Self.Categories" />
           <EntitySet Name="Clients" EntityType="Self.Clients" />
@@ -1307,12 +1623,16 @@
           <EntitySet Name="Countries" EntityType="Self.Countries" />
           <EntitySet Name="Cultivations" EntityType="Self.Cultivations" />
           <EntitySet Name="Growers" EntityType="Self.Growers" />
+          <EntitySet Name="InvoiceItems" EntityType="Self.InvoiceItems" />
+          <EntitySet Name="InvoiceParties" EntityType="Self.InvoiceParties" />
           <EntitySet Name="Invoices" EntityType="Self.Invoices" />
           <EntitySet Name="OrderItems" EntityType="Self.OrderItems" />
           <EntitySet Name="Orders" EntityType="Self.Orders" />
           <EntitySet Name="PaymentMethods" EntityType="Self.PaymentMethods" />
           <EntitySet Name="Products" EntityType="Self.Products" />
           <EntitySet Name="Qualities" EntityType="Self.Qualities" />
+          <EntitySet Name="StockItems" EntityType="Self.StockItems" />
+          <EntitySet Name="StockMovements" EntityType="Self.StockMovements" />
           <EntitySet Name="TrayTypes" EntityType="Self.TrayTypes" />
           <AssociationSet Name="FK_Addresses_Countries" Association="Self.FK_Addresses_Countries">
             <End Role="Countries" EntitySet="Countries" />
@@ -1330,6 +1650,14 @@
             <End Role="Addresses" EntitySet="Addresses" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
+          <AssociationSet Name="FK_Carriers_CarrierTypes" Association="Self.FK_Carriers_CarrierTypes">
+            <End Role="CarrierTypes" EntitySet="CarrierTypes" />
+            <End Role="Carriers" EntitySet="Carriers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Carriers_Orders" Association="Self.FK_Carriers_Orders">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="Carriers" EntitySet="Carriers" />
+          </AssociationSet>
           <AssociationSet Name="FK_Orders_CarrierTypes" Association="Self.FK_Orders_CarrierTypes">
             <End Role="CarrierTypes" EntitySet="CarrierTypes" />
             <End Role="Orders" EntitySet="Orders" />
@@ -1346,9 +1674,21 @@
             <End Role="Colors" EntitySet="Colors" />
             <End Role="Products" EntitySet="Products" />
           </AssociationSet>
-          <AssociationSet Name="FK_Invoices_Orders" Association="Self.FK_Invoices_Orders">
-            <End Role="Orders" EntitySet="Orders" />
+          <AssociationSet Name="FK_StockItems_Growers" Association="Self.FK_StockItems_Growers">
+            <End Role="Growers" EntitySet="Growers" />
+            <End Role="StockItems" EntitySet="StockItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InvoiceItems_Invoices" Association="Self.FK_InvoiceItems_Invoices">
             <End Role="Invoices" EntitySet="Invoices" />
+            <End Role="InvoiceItems" EntitySet="InvoiceItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InvoiceItems_OrderItems" Association="Self.FK_InvoiceItems_OrderItems">
+            <End Role="OrderItems" EntitySet="OrderItems" />
+            <End Role="InvoiceItems" EntitySet="InvoiceItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InvoiceParties_Invoices" Association="Self.FK_InvoiceParties_Invoices">
+            <End Role="Invoices" EntitySet="Invoices" />
+            <End Role="InvoiceParties" EntitySet="InvoiceParties" />
           </AssociationSet>
           <AssociationSet Name="FK_Invoices_PaymentMethods" Association="Self.FK_Invoices_PaymentMethods">
             <End Role="PaymentMethods" EntitySet="PaymentMethods" />
@@ -1358,363 +1698,39 @@
             <End Role="Orders" EntitySet="Orders" />
             <End Role="OrderItems" EntitySet="OrderItems" />
           </AssociationSet>
+          <AssociationSet Name="FK_OrderItems_StockItems" Association="Self.FK_OrderItems_StockItems">
+            <End Role="StockItems" EntitySet="StockItems" />
+            <End Role="OrderItems" EntitySet="OrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockMovements_OrderItems" Association="Self.FK_StockMovements_OrderItems">
+            <End Role="OrderItems" EntitySet="OrderItems" />
+            <End Role="StockMovements" EntitySet="StockMovements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockItems_Products" Association="Self.FK_StockItems_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="StockItems" EntitySet="StockItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockItems_Qualities" Association="Self.FK_StockItems_Qualities">
+            <End Role="Qualities" EntitySet="Qualities" />
+            <End Role="StockItems" EntitySet="StockItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockItems_TrayTypes" Association="Self.FK_StockItems_TrayTypes">
+            <End Role="TrayTypes" EntitySet="TrayTypes" />
+            <End Role="StockItems" EntitySet="StockItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockMovements_StockItems" Association="Self.FK_StockMovements_StockItems">
+            <End Role="StockItems" EntitySet="StockItems" />
+            <End Role="StockMovements" EntitySet="StockMovements" />
+          </AssociationSet>
           <AssociationSet Name="GrowerCultivations" Association="Self.GrowerCultivations">
             <End Role="Cultivations" EntitySet="Cultivations" />
             <End Role="Growers" EntitySet="Growers" />
           </AssociationSet>
-          <FunctionImport Name="sp_alterdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_creatediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_dropdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(PotplantsModel.sp_helpdiagramdefinition_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(PotplantsModel.sp_helpdiagrams_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_renamediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="new_diagramname" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_upgraddiagrams" />
-          <EntitySet Name="StockItems" EntityType="PotplantsModel.StockItems" />
-          <EntitySet Name="StockMovements" EntityType="PotplantsModel.StockMovements" />
-          <AssociationSet Name="FK_StockItems_Growers" Association="PotplantsModel.FK_StockItems_Growers">
-            <End Role="Growers" EntitySet="Growers" />
-            <End Role="StockItems" EntitySet="StockItems" />
-          </AssociationSet>
-          <AssociationSet Name="FK_OrderItems_StockItems" Association="PotplantsModel.FK_OrderItems_StockItems">
-            <End Role="StockItems" EntitySet="StockItems" />
-            <End Role="OrderItems" EntitySet="OrderItems" />
-          </AssociationSet>
-          <AssociationSet Name="FK_StockMovements_OrderItems" Association="PotplantsModel.FK_StockMovements_OrderItems">
-            <End Role="OrderItems" EntitySet="OrderItems" />
-            <End Role="StockMovements" EntitySet="StockMovements" />
-          </AssociationSet>
-          <AssociationSet Name="FK_StockItems_Products" Association="PotplantsModel.FK_StockItems_Products">
-            <End Role="Products" EntitySet="Products" />
-            <End Role="StockItems" EntitySet="StockItems" />
-          </AssociationSet>
-          <AssociationSet Name="FK_StockItems_Qualities" Association="PotplantsModel.FK_StockItems_Qualities">
-            <End Role="Qualities" EntitySet="Qualities" />
-            <End Role="StockItems" EntitySet="StockItems" />
-          </AssociationSet>
-          <AssociationSet Name="FK_StockItems_TrayTypes" Association="PotplantsModel.FK_StockItems_TrayTypes">
-            <End Role="TrayTypes" EntitySet="TrayTypes" />
-            <End Role="StockItems" EntitySet="StockItems" />
-          </AssociationSet>
-          <AssociationSet Name="FK_StockMovements_StockItems" Association="PotplantsModel.FK_StockMovements_StockItems">
-            <End Role="StockItems" EntitySet="StockItems" />
-            <End Role="StockMovements" EntitySet="StockMovements" />
-          </AssociationSet>
-          <EntitySet Name="InvoiceItems" EntityType="PotplantsModel.InvoiceItems" />
-          <EntitySet Name="InvoiceParties" EntityType="PotplantsModel.InvoiceParties" />
-          <AssociationSet Name="FK_InvoiceItems_Invoices" Association="PotplantsModel.FK_InvoiceItems_Invoices">
-            <End Role="Invoices" EntitySet="Invoices" />
-            <End Role="InvoiceItems" EntitySet="InvoiceItems" />
-          </AssociationSet>
-          <AssociationSet Name="FK_InvoiceParties_Invoices" Association="PotplantsModel.FK_InvoiceParties_Invoices">
-            <End Role="Invoices" EntitySet="Invoices" />
-            <End Role="InvoiceParties" EntitySet="InvoiceParties" />
-          </AssociationSet>
-          <EntitySet Name="Carriers" EntityType="PotplantsModel.Carriers" />
-          <AssociationSet Name="FK_Carriers_CarrierTypes" Association="PotplantsModel.FK_Carriers_CarrierTypes">
-            <End Role="CarrierTypes" EntitySet="CarrierTypes" />
+          <AssociationSet Name="OrderItemCarriers" Association="Self.OrderItemCarriers">
             <End Role="Carriers" EntitySet="Carriers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Carriers_Orders" Association="PotplantsModel.FK_Carriers_Orders">
-            <End Role="Orders" EntitySet="Orders" />
-            <End Role="Carriers" EntitySet="Carriers" />
+            <End Role="OrderItems" EntitySet="OrderItems" />
           </AssociationSet>
         </EntityContainer>
-        <ComplexType Name="sp_helpdiagramdefinition_Result">
-          <Property Type="Int32" Name="version" Nullable="true" />
-          <Property Type="Binary" Name="definition" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="sp_helpdiagrams_Result">
-          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
-          <Property Type="Int32" Name="ID" Nullable="false" />
-          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
-          <Property Type="Int32" Name="OwnerID" Nullable="false" />
-        </ComplexType>
-        <EntityType Name="StockItems">
-          <Key>
-            <PropertyRef Name="StockItemId" />
-          </Key>
-          <Property Name="StockItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProductId" Type="Int32" Nullable="false" />
-          <Property Name="Quantity" Type="Int32" />
-          <Property Name="GrowerId" Type="Int32" />
-          <Property Name="TrayTypeId" Type="Int32" />
-          <Property Name="QualityId" Type="Int32" />
-          <Property Name="CostPrice" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="InternalNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="IsBlocked" Type="Boolean" />
-          <Property Name="IsInside" Type="Boolean" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedAt" Type="DateTime" Precision="0" />
-          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="UpdatedAt" Type="DateTime" Precision="0" />
-          <Property Name="DeletedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="DeletedAt" Type="DateTime" Precision="0" />
-          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Growers" Relationship="PotplantsModel.FK_StockItems_Growers" FromRole="StockItems" ToRole="Growers" />
-          <NavigationProperty Name="OrderItems" Relationship="PotplantsModel.FK_OrderItems_StockItems" FromRole="StockItems" ToRole="OrderItems" />
-          <NavigationProperty Name="Products" Relationship="PotplantsModel.FK_StockItems_Products" FromRole="StockItems" ToRole="Products" />
-          <NavigationProperty Name="Qualities" Relationship="PotplantsModel.FK_StockItems_Qualities" FromRole="StockItems" ToRole="Qualities" />
-          <NavigationProperty Name="TrayTypes" Relationship="PotplantsModel.FK_StockItems_TrayTypes" FromRole="StockItems" ToRole="TrayTypes" />
-          <NavigationProperty Name="StockMovements" Relationship="PotplantsModel.FK_StockMovements_StockItems" FromRole="StockItems" ToRole="StockMovements" />
-          <Property Name="ExpiryDate" Type="DateTime" Precision="0" />
-          <Property Name="ReceivedAt" Type="DateTime" Precision="0" />
-          <Property Name="QuantityLeft" Type="Int32" />
-        </EntityType>
-        <EntityType Name="StockMovements">
-          <Key>
-            <PropertyRef Name="StockMovementId" />
-          </Key>
-          <Property Name="StockMovementId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="StockItemId" Type="Int32" Nullable="false" />
-          <Property Name="OrderItemId" Type="Int32" />
-          <Property Name="MovementType" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Quantity" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
-          <Property Name="StockBefore" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
-          <Property Name="StockAfter" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
-          <Property Name="MovementDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Reference" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="UpdatedAt" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="OrderItems" Relationship="PotplantsModel.FK_StockMovements_OrderItems" FromRole="StockMovements" ToRole="OrderItems" />
-          <NavigationProperty Name="StockItems" Relationship="PotplantsModel.FK_StockMovements_StockItems" FromRole="StockMovements" ToRole="StockItems" />
-          <Property Name="DeletedAt" Type="DateTime" Precision="0" />
-          <Property Name="DeletedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <Association Name="FK_StockItems_Growers">
-          <End Type="PotplantsModel.Growers" Role="Growers" Multiplicity="0..1" />
-          <End Type="PotplantsModel.StockItems" Role="StockItems" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Growers">
-              <PropertyRef Name="GrowerId" />
-            </Principal>
-            <Dependent Role="StockItems">
-              <PropertyRef Name="GrowerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_OrderItems_StockItems">
-          <End Type="PotplantsModel.StockItems" Role="StockItems" Multiplicity="1" />
-          <End Type="PotplantsModel.OrderItems" Role="OrderItems" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="StockItems">
-              <PropertyRef Name="StockItemId" />
-            </Principal>
-            <Dependent Role="OrderItems">
-              <PropertyRef Name="StockItemId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_StockMovements_OrderItems">
-          <End Type="PotplantsModel.OrderItems" Role="OrderItems" Multiplicity="0..1" />
-          <End Type="PotplantsModel.StockMovements" Role="StockMovements" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="OrderItems">
-              <PropertyRef Name="OrderItemId" />
-            </Principal>
-            <Dependent Role="StockMovements">
-              <PropertyRef Name="OrderItemId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_StockItems_Products">
-          <End Type="PotplantsModel.Products" Role="Products" Multiplicity="1" />
-          <End Type="PotplantsModel.StockItems" Role="StockItems" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Products">
-              <PropertyRef Name="ProductId" />
-            </Principal>
-            <Dependent Role="StockItems">
-              <PropertyRef Name="ProductId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_StockItems_Qualities">
-          <End Type="PotplantsModel.Qualities" Role="Qualities" Multiplicity="0..1" />
-          <End Type="PotplantsModel.StockItems" Role="StockItems" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Qualities">
-              <PropertyRef Name="QualityId" />
-            </Principal>
-            <Dependent Role="StockItems">
-              <PropertyRef Name="QualityId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_StockItems_TrayTypes">
-          <End Type="PotplantsModel.TrayTypes" Role="TrayTypes" Multiplicity="0..1" />
-          <End Type="PotplantsModel.StockItems" Role="StockItems" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TrayTypes">
-              <PropertyRef Name="TrayTypeId" />
-            </Principal>
-            <Dependent Role="StockItems">
-              <PropertyRef Name="TrayTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_StockMovements_StockItems">
-          <End Type="PotplantsModel.StockItems" Role="StockItems" Multiplicity="1" />
-          <End Type="PotplantsModel.StockMovements" Role="StockMovements" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="StockItems">
-              <PropertyRef Name="StockItemId" />
-            </Principal>
-            <Dependent Role="StockMovements">
-              <PropertyRef Name="StockItemId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="InvoiceItems">
-          <Key>
-            <PropertyRef Name="InvoiceItemId" />
-          </Key>
-          <Property Name="InvoiceItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="InvoiceId" Type="Int32" Nullable="false" />
-          <Property Name="ItemNo" Type="Int32" Nullable="false" />
-          <Property Name="NameSnapshot" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="PotSizeSnapshot" Type="Decimal" Precision="5" Scale="2" />
-          <Property Name="HeightSnapshot" Type="Decimal" Precision="5" Scale="2" />
-          <Property Name="Quantity" Type="Int32" Nullable="false" />
-          <Property Name="UnitPriceSnapshot" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="TaxRateSnapshot" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
-          <Property Name="NetAmount" Type="Decimal" Precision="29" Scale="2" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="TaxAmount" Type="Decimal" Precision="38" Scale="7" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="GrossAmount" Type="Decimal" Precision="38" Scale="6" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="ProductId" Type="Int32" />
-          <Property Name="StockItemId" Type="Int32" />
-          <Property Name="SourceOrderItemId" Type="Int32" />
-          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="UpdatedAt" Type="DateTime" Precision="7" />
-          <Property Name="DeletedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="DeletedAt" Type="DateTime" Precision="7" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Invoices" Relationship="PotplantsModel.FK_InvoiceItems_Invoices" FromRole="InvoiceItems" ToRole="Invoices" />
-        </EntityType>
-        <EntityType Name="InvoiceParties">
-          <Key>
-            <PropertyRef Name="InvoicePartyId" />
-          </Key>
-          <Property Name="InvoicePartyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="InvoiceId" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="TaxId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Street" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="PostalCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="CountryCode" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="UpdatedAt" Type="DateTime" Precision="7" />
-          <Property Name="DeletedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="DeletedAt" Type="DateTime" Precision="7" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Invoices" Relationship="PotplantsModel.FK_InvoiceParties_Invoices" FromRole="InvoiceParties" ToRole="Invoices" />
-        </EntityType>
-        <Association Name="FK_InvoiceItems_Invoices">
-          <End Type="PotplantsModel.Invoices" Role="Invoices" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="PotplantsModel.InvoiceItems" Role="InvoiceItems" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Invoices">
-              <PropertyRef Name="InvoiceId" />
-            </Principal>
-            <Dependent Role="InvoiceItems">
-              <PropertyRef Name="InvoiceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_InvoiceParties_Invoices">
-          <End Type="PotplantsModel.Invoices" Role="Invoices" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="PotplantsModel.InvoiceParties" Role="InvoiceParties" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Invoices">
-              <PropertyRef Name="InvoiceId" />
-            </Principal>
-            <Dependent Role="InvoiceParties">
-              <PropertyRef Name="InvoiceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="Carriers">
-          <Key>
-            <PropertyRef Name="CarrierId" />
-          </Key>
-          <Property Name="CarrierId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="OrderId" Type="Int32" Nullable="false" />
-          <Property Name="CarrierTypeId" Type="Int32" Nullable="false" />
-          <Property Name="AmountOfShelfs" Type="Int32" Nullable="false" />
-          <Property Name="AmountOfExtensions" Type="Int32" Nullable="false" />
-          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="UpdatedAt" Type="DateTime" Precision="7" />
-          <Property Name="DeletedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="DeletedAt" Type="DateTime" Precision="7" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="CarrierTypes" Relationship="PotplantsModel.FK_Carriers_CarrierTypes" FromRole="Carriers" ToRole="CarrierTypes" />
-          <NavigationProperty Name="Orders" Relationship="PotplantsModel.FK_Carriers_Orders" FromRole="Carriers" ToRole="Orders" />
-        </EntityType>
-        <Association Name="FK_Carriers_CarrierTypes">
-          <End Type="PotplantsModel.CarrierTypes" Role="CarrierTypes" Multiplicity="1" />
-          <End Type="PotplantsModel.Carriers" Role="Carriers" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CarrierTypes">
-              <PropertyRef Name="CarrierTypeId" />
-            </Principal>
-            <Dependent Role="Carriers">
-              <PropertyRef Name="CarrierTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Carriers_Orders">
-          <End Type="PotplantsModel.Orders" Role="Orders" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="PotplantsModel.Carriers" Role="Carriers" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Orders">
-              <PropertyRef Name="OrderId" />
-            </Principal>
-            <Dependent Role="Carriers">
-              <PropertyRef Name="OrderId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1742,16 +1758,31 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Carriers">
+            <EntityTypeMapping TypeName="PotplantsModel.Carriers">
+              <MappingFragment StoreEntitySet="Carriers">
+                <ScalarProperty Name="CarrierId" ColumnName="CarrierId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="CarrierTypeId" ColumnName="CarrierTypeId" />
+                <ScalarProperty Name="AmountOfShelfs" ColumnName="AmountOfShelfs" />
+                <ScalarProperty Name="AmountOfExtensions" ColumnName="AmountOfExtensions" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="CarrierTypes">
             <EntityTypeMapping TypeName="PotplantsModel.CarrierTypes">
               <MappingFragment StoreEntitySet="CarrierTypes">
-                <ScalarProperty Name="ShelfWeight" ColumnName="ShelfWeight" />
-                <ScalarProperty Name="Weight" ColumnName="Weight" />
                 <ScalarProperty Name="CarrierTypeId" ColumnName="CarrierTypeId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Width" ColumnName="Width" />
                 <ScalarProperty Name="Length" ColumnName="Length" />
-                <ScalarProperty Name="Area" ColumnName="Area" />
                 <ScalarProperty Name="MaxHeight" ColumnName="MaxHeight" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
@@ -1761,6 +1792,9 @@
                 <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
                 <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
                 <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+                <ScalarProperty Name="ShelfWeight" ColumnName="ShelfWeight" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1842,11 +1876,11 @@
           <EntitySetMapping Name="Cultivations">
             <EntityTypeMapping TypeName="PotplantsModel.Cultivations">
               <MappingFragment StoreEntitySet="Cultivations">
-                <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
                 <ScalarProperty Name="CultivationId" ColumnName="CultivationId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1872,13 +1906,62 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="InvoiceItems">
+            <EntityTypeMapping TypeName="PotplantsModel.InvoiceItems">
+              <MappingFragment StoreEntitySet="InvoiceItems">
+                <ScalarProperty Name="InvoiceItemId" ColumnName="InvoiceItemId" />
+                <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
+                <ScalarProperty Name="ItemNo" ColumnName="ItemNo" />
+                <ScalarProperty Name="NameSnapshot" ColumnName="NameSnapshot" />
+                <ScalarProperty Name="PotSizeSnapshot" ColumnName="PotSizeSnapshot" />
+                <ScalarProperty Name="HeightSnapshot" ColumnName="HeightSnapshot" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="UnitPriceSnapshot" ColumnName="UnitPriceSnapshot" />
+                <ScalarProperty Name="TaxRateSnapshot" ColumnName="TaxRateSnapshot" />
+                <ScalarProperty Name="NetAmount" ColumnName="NetAmount" />
+                <ScalarProperty Name="TaxAmount" ColumnName="TaxAmount" />
+                <ScalarProperty Name="GrossAmount" ColumnName="GrossAmount" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="StockItemId" ColumnName="StockItemId" />
+                <ScalarProperty Name="SourceOrderItemId" ColumnName="SourceOrderItemId" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InvoiceParties">
+            <EntityTypeMapping TypeName="PotplantsModel.InvoiceParties">
+              <MappingFragment StoreEntitySet="InvoiceParties">
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="InvoicePartyId" ColumnName="InvoicePartyId" />
+                <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="TaxId" ColumnName="TaxId" />
+                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Invoices">
             <EntityTypeMapping TypeName="PotplantsModel.Invoices">
               <MappingFragment StoreEntitySet="Invoices">
-                <ScalarProperty Name="TotalTax" ColumnName="TotalTax" />
-                <ScalarProperty Name="TotalGross" ColumnName="TotalGross" />
+                <ScalarProperty Name="TotalNet" ColumnName="TotalNet" />
                 <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
-                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
                 <ScalarProperty Name="InvoiceNo" ColumnName="InvoiceNo" />
                 <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
                 <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
@@ -1896,15 +1979,14 @@
                 <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
                 <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
                 <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="TotalGross" ColumnName="TotalGross" />
+                <ScalarProperty Name="TotalTax" ColumnName="TotalTax" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="OrderItems">
             <EntityTypeMapping TypeName="PotplantsModel.OrderItems">
               <MappingFragment StoreEntitySet="OrderItems">
-                <ScalarProperty Name="InternalNo" ColumnName="InternalNo" />
-                <ScalarProperty Name="IsScanned" ColumnName="IsScanned" />
-                <ScalarProperty Name="StockItemId" ColumnName="StockItemId" />
                 <ScalarProperty Name="OrderItemId" ColumnName="OrderItemId" />
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
@@ -1912,7 +1994,6 @@
                 <ScalarProperty Name="StorageCost" ColumnName="StorageCost" />
                 <ScalarProperty Name="TransportCost" ColumnName="TransportCost" />
                 <ScalarProperty Name="Discount" ColumnName="Discount" />
-                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -1921,8 +2002,12 @@
                 <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
                 <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
                 <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="InternalNo" ColumnName="InternalNo" />
                 <ScalarProperty Name="OrderedDate" ColumnName="OrderedDate" />
                 <ScalarProperty Name="DeliveredDate" ColumnName="DeliveredDate" />
+                <ScalarProperty Name="StockItemId" ColumnName="StockItemId" />
+                <ScalarProperty Name="IsScanned" ColumnName="IsScanned" />
+                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1970,9 +2055,6 @@
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="PotplantsModel.Products">
               <MappingFragment StoreEntitySet="Products">
-                <ScalarProperty Name="Image" ColumnName="Image" />
-                <ScalarProperty Name="Weight" ColumnName="Weight" />
-                <ScalarProperty Name="IsCites" ColumnName="IsCites" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ColorId" ColumnName="ColorId" />
@@ -1987,6 +2069,9 @@
                 <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
                 <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
                 <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="IsCites" ColumnName="IsCites" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2007,6 +2092,56 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="StockItems">
+            <EntityTypeMapping TypeName="PotplantsModel.StockItems">
+              <MappingFragment StoreEntitySet="StockItems">
+                <ScalarProperty Name="StockItemId" ColumnName="StockItemId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="GrowerId" ColumnName="GrowerId" />
+                <ScalarProperty Name="TrayTypeId" ColumnName="TrayTypeId" />
+                <ScalarProperty Name="QualityId" ColumnName="QualityId" />
+                <ScalarProperty Name="CostPrice" ColumnName="CostPrice" />
+                <ScalarProperty Name="InternalNo" ColumnName="InternalNo" />
+                <ScalarProperty Name="IsBlocked" ColumnName="IsBlocked" />
+                <ScalarProperty Name="IsInside" ColumnName="IsInside" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
+                <ScalarProperty Name="ReceivedAt" ColumnName="ReceivedAt" />
+                <ScalarProperty Name="QuantityLeft" ColumnName="QuantityLeft" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StockMovements">
+            <EntityTypeMapping TypeName="PotplantsModel.StockMovements">
+              <MappingFragment StoreEntitySet="StockMovements">
+                <ScalarProperty Name="StockMovementId" ColumnName="StockMovementId" />
+                <ScalarProperty Name="StockItemId" ColumnName="StockItemId" />
+                <ScalarProperty Name="OrderItemId" ColumnName="OrderItemId" />
+                <ScalarProperty Name="MovementType" ColumnName="MovementType" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="StockBefore" ColumnName="StockBefore" />
+                <ScalarProperty Name="StockAfter" ColumnName="StockAfter" />
+                <ScalarProperty Name="MovementDate" ColumnName="MovementDate" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TrayTypes">
             <EntityTypeMapping TypeName="PotplantsModel.TrayTypes">
               <MappingFragment StoreEntitySet="TrayTypes">
@@ -2014,7 +2149,6 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Width" ColumnName="Width" />
                 <ScalarProperty Name="Length" ColumnName="Length" />
-                <ScalarProperty Name="Area" ColumnName="Area" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -2025,6 +2159,7 @@
                 <ScalarProperty Name="Remarks" ColumnName="Remarks" />
                 <ScalarProperty Name="FittingPotSize" ColumnName="FittingPotSize" />
                 <ScalarProperty Name="QtyPerTray" ColumnName="QtyPerTray" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2036,123 +2171,14 @@
               <ScalarProperty Name="GrowerId" ColumnName="GrowerId" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="StockItems">
-            <EntityTypeMapping TypeName="PotplantsModel.StockItems">
-              <MappingFragment StoreEntitySet="StockItems">
-                <ScalarProperty Name="QuantityLeft" ColumnName="QuantityLeft" />
-                <ScalarProperty Name="ReceivedAt" ColumnName="ReceivedAt" />
-                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
-                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
-                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="IsInside" ColumnName="IsInside" />
-                <ScalarProperty Name="IsBlocked" ColumnName="IsBlocked" />
-                <ScalarProperty Name="InternalNo" ColumnName="InternalNo" />
-                <ScalarProperty Name="CostPrice" ColumnName="CostPrice" />
-                <ScalarProperty Name="QualityId" ColumnName="QualityId" />
-                <ScalarProperty Name="TrayTypeId" ColumnName="TrayTypeId" />
-                <ScalarProperty Name="GrowerId" ColumnName="GrowerId" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="StockItemId" ColumnName="StockItemId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="StockMovements">
-            <EntityTypeMapping TypeName="PotplantsModel.StockMovements">
-              <MappingFragment StoreEntitySet="StockMovements">
-                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
-                <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
-                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="Reference" ColumnName="Reference" />
-                <ScalarProperty Name="MovementDate" ColumnName="MovementDate" />
-                <ScalarProperty Name="StockAfter" ColumnName="StockAfter" />
-                <ScalarProperty Name="StockBefore" ColumnName="StockBefore" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="MovementType" ColumnName="MovementType" />
-                <ScalarProperty Name="OrderItemId" ColumnName="OrderItemId" />
-                <ScalarProperty Name="StockItemId" ColumnName="StockItemId" />
-                <ScalarProperty Name="StockMovementId" ColumnName="StockMovementId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="InvoiceItems">
-            <EntityTypeMapping TypeName="PotplantsModel.InvoiceItems">
-              <MappingFragment StoreEntitySet="InvoiceItems">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
-                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
-                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="SourceOrderItemId" ColumnName="SourceOrderItemId" />
-                <ScalarProperty Name="StockItemId" ColumnName="StockItemId" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="GrossAmount" ColumnName="GrossAmount" />
-                <ScalarProperty Name="TaxAmount" ColumnName="TaxAmount" />
-                <ScalarProperty Name="NetAmount" ColumnName="NetAmount" />
-                <ScalarProperty Name="TaxRateSnapshot" ColumnName="TaxRateSnapshot" />
-                <ScalarProperty Name="UnitPriceSnapshot" ColumnName="UnitPriceSnapshot" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="HeightSnapshot" ColumnName="HeightSnapshot" />
-                <ScalarProperty Name="PotSizeSnapshot" ColumnName="PotSizeSnapshot" />
-                <ScalarProperty Name="NameSnapshot" ColumnName="NameSnapshot" />
-                <ScalarProperty Name="ItemNo" ColumnName="ItemNo" />
-                <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
-                <ScalarProperty Name="InvoiceItemId" ColumnName="InvoiceItemId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="InvoiceParties">
-            <EntityTypeMapping TypeName="PotplantsModel.InvoiceParties">
-              <MappingFragment StoreEntitySet="InvoiceParties">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
-                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
-                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
-                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Street" ColumnName="Street" />
-                <ScalarProperty Name="TaxId" ColumnName="TaxId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
-                <ScalarProperty Name="InvoicePartyId" ColumnName="InvoicePartyId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Carriers">
-            <EntityTypeMapping TypeName="PotplantsModel.Carriers">
-              <MappingFragment StoreEntitySet="Carriers">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
-                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
-                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="AmountOfExtensions" ColumnName="AmountOfExtensions" />
-                <ScalarProperty Name="AmountOfShelfs" ColumnName="AmountOfShelfs" />
-                <ScalarProperty Name="CarrierTypeId" ColumnName="CarrierTypeId" />
-                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
-                <ScalarProperty Name="CarrierId" ColumnName="CarrierId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+          <AssociationSetMapping Name="OrderItemCarriers" TypeName="PotplantsModel.OrderItemCarriers" StoreEntitySet="OrderItemCarriers">
+            <EndProperty Name="Carriers">
+              <ScalarProperty Name="CarrierId" ColumnName="CarrierId" />
+            </EndProperty>
+            <EndProperty Name="OrderItems">
+              <ScalarProperty Name="OrderItemId" ColumnName="OrderItemId" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

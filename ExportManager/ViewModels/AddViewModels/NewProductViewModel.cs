@@ -51,7 +51,7 @@ namespace ExportManager.ViewModels.AddViewModels
             get
             {
                 if (_Categories == null)
-                    _Categories = new CategoriesForProducts(potplantsEntities).GetCategoriesListItems();
+                    _Categories = new CategoriesQuery(potplantsEntities).GetCategoriesListItems();
                 return _Categories;
             }
             set
@@ -68,7 +68,7 @@ namespace ExportManager.ViewModels.AddViewModels
             get
             {
                 if (_Colors == null)
-                    _Colors = new ColorsForProducts(potplantsEntities).GetColorsListItems();
+                    _Colors = new ColorsQuery(potplantsEntities).GetColorsListItems();
                 return _Colors;
             }
             set
@@ -256,11 +256,11 @@ namespace ExportManager.ViewModels.AddViewModels
         }
         private void RefreshCategories()
         {
-            Categories = new CategoriesForProducts(potplantsEntities).GetCategoriesListItems();
+            Categories = new CategoriesQuery(potplantsEntities).GetCategoriesListItems();
         }
         private void RefreshColors()
         {
-            Colors = new ColorsForProducts(potplantsEntities).GetColorsListItems();
+            Colors = new ColorsQuery(potplantsEntities).GetColorsListItems();
         }
         private void SelectImageDialog()
         {

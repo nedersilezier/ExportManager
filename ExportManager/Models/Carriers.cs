@@ -14,6 +14,12 @@ namespace ExportManager.Models
     
     public partial class Carriers
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Carriers()
+        {
+            this.OrderItems = new HashSet<OrderItems>();
+        }
+    
         public int CarrierId { get; set; }
         public int OrderId { get; set; }
         public int CarrierTypeId { get; set; }
@@ -29,5 +35,7 @@ namespace ExportManager.Models
     
         public virtual CarrierTypes CarrierTypes { get; set; }
         public virtual Orders Orders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrderItems> OrderItems { get; set; }
     }
 }

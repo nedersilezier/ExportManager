@@ -72,6 +72,9 @@
     <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=10.0.0.5, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.10.0.5\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.142\lib\net462\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -104,6 +107,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Behaviors\ClosingBehavior.cs" />
     <Compile Include="Behaviors\DiscountValidationRule.cs" />
     <Compile Include="Behaviors\MoneyValidationRule.cs" />
     <Compile Include="Behaviors\NumericTextBoxBehavior.cs" />
@@ -111,28 +115,29 @@
     <Compile Include="Models\Addresses.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\AddressesForEntities.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\CarrierTypesForReports.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\CategoriesForProducts.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\ClientDetailsQuery.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\ClientsForReports.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\ColorsForProducts.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\CountriesForEntities.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\AddressesQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Commands\CarriersCommand.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\CarrierTypesQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\CategoriesQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\ClientsQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\ColorsQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\CountriesQuery.cs" />
     <Compile Include="Models\BusinessLogic\DatabaseClass.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\CultivationsForGrowers.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\GrowerDetailsQuery.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\GrowersForStockItems.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\CultivationsQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\GrowersQuery.cs" />
     <Compile Include="Models\BusinessLogic\InvoiceCalculator.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\InvoicesForReports.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\OrderDetailsQuery.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\OrderItemDetailsQuery.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\OrdersForReports.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\StockItemCommand.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\StockItemDetailsQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\InvoicesQuery.cs" />
+    <Compile Include="Models\DTO\InvoicePartyListView.cs" />
+    <Compile Include="Models\DTO\InvoicesListView.cs" />
+    <Compile Include="Models\DTO\OrderItemCarriersListView.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\OrdersQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\OrderItemsQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Commands\StockItemsCommand.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\StockItemsQuery.cs" />
     <Compile Include="Models\BusinessLogic\OrderWeightCalculator.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\ProductsForStockItems.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\QualitiesForStockItems.cs" />
-    <Compile Include="Models\BusinessLogic\ListViewsForUI\TrayTypesForStockItems.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\ProductsQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\QualitiesQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\TrayTypesQuery.cs" />
     <Compile Include="Models\BusinessLogic\VolumeCalculator.cs" />
     <Compile Include="Models\Carriers.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
@@ -157,18 +162,19 @@
     <Compile Include="Models\Cultivations.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\EntitiesForView\AddressesListView.cs" />
-    <Compile Include="Models\EntitiesForView\ClientsListView.cs" />
-    <Compile Include="Models\EntitiesForView\CountriesListView.cs" />
-    <Compile Include="Models\EntitiesForView\GrowersListView.cs" />
-    <Compile Include="Models\EntitiesForView\InvoiceReportItemsListView.cs" />
-    <Compile Include="Models\EntitiesForView\KeyAndValue.cs" />
-    <Compile Include="Models\EntitiesForView\OrderItemsListView.cs" />
-    <Compile Include="Models\EntitiesForView\OrdersListView.cs" />
-    <Compile Include="Models\EntitiesForView\ProductsListView.cs" />
-    <Compile Include="Models\EntitiesForView\StockItemsListView.cs" />
-    <Compile Include="Models\EntitiesForView\WeightReportListView.cs" />
+    <Compile Include="Models\DTO\AddressesListView.cs" />
+    <Compile Include="Models\DTO\ClientsListView.cs" />
+    <Compile Include="Models\DTO\CountriesListView.cs" />
+    <Compile Include="Models\DTO\GrowersListView.cs" />
+    <Compile Include="Models\DTO\InvoiceReportItemsListView.cs" />
+    <Compile Include="Models\DTO\KeyAndValue.cs" />
+    <Compile Include="Models\DTO\OrderItemsListView.cs" />
+    <Compile Include="Models\DTO\OrdersListView.cs" />
+    <Compile Include="Models\DTO\ProductsListView.cs" />
+    <Compile Include="Models\DTO\StockItemsListView.cs" />
+    <Compile Include="Models\DTO\WeightReportListView.cs" />
     <Compile Include="Models\Extensions\HasIsActive..cs" />
+    <Compile Include="Models\Extensions\InvoicePartyRoles.cs" />
     <Compile Include="Models\Extensions\OrderStatuses.cs" />
     <Compile Include="Models\Extensions\StringExtensions.cs" />
     <Compile Include="Models\Growers.cs">
@@ -189,7 +195,10 @@
     <Compile Include="Models\Orders.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Parameters\CarrierTypeParameter.cs" />
     <Compile Include="Models\Parameters\ImageWindowParameter.cs" />
+    <Compile Include="Models\Parameters\NewOrderItemCarrierWindowParameter.cs" />
+    <Compile Include="Models\Parameters\OrderItemCarrierParameter.cs" />
     <Compile Include="Models\PaymentMethods.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
@@ -212,12 +221,6 @@
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Qualities.cs">
-      <DependentUpon>PotplantsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>PotplantsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sp_helpdiagrams_Result.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\StockItems.cs">
@@ -248,6 +251,7 @@
     <Compile Include="ViewModels\ShowAllViewModels\AllCultivationsViewModel.cs" />
     <Compile Include="ViewModels\ShowAllViewModels\AllGrowersViewModel.cs" />
     <Compile Include="ViewModels\ShowAllViewModels\AllInvoicesViewModel.cs" />
+    <Compile Include="ViewModels\ShowAllViewModels\AllOrderItemCarriersViewModel.cs" />
     <Compile Include="ViewModels\ShowAllViewModels\AllOrdersViewModel.cs" />
     <Compile Include="ViewModels\ShowAllViewModels\AllPaymentMethodsViewModel.cs" />
     <Compile Include="ViewModels\ShowAllViewModels\AllQualitiesViewModel.cs" />
@@ -276,10 +280,13 @@
     <Compile Include="ViewModels\ReportViewModels\OrderWeightReportViewModel.cs" />
     <Compile Include="ViewModels\ShowAllViewModels\IAllViewable.cs" />
     <Compile Include="ViewModels\Events\SelectedItemEventArgs.cs" />
+    <Compile Include="ViewModels\Windows\EditCarrierAddonsViewModel.cs" />
+    <Compile Include="ViewModels\Windows\EditCarrierTypeViewModel.cs" />
     <Compile Include="ViewModels\Windows\ImageWindowViewModel.cs" />
     <Compile Include="ViewModels\Abstract\IParameterReceiver.cs" />
     <Compile Include="Services\IWindowService.cs" />
     <Compile Include="Services\WindowService.cs" />
+    <Compile Include="ViewModels\Windows\NewOrderItemCarrierViewModel.cs" />
     <Compile Include="ViewModels\WorkspaceViewModel.cs" />
     <Compile Include="Views\AddViews\NewOrderItemView.xaml.cs">
       <DependentUpon>NewOrderItemView.xaml</DependentUpon>
@@ -319,6 +326,9 @@
     </Compile>
     <Compile Include="Views\ShowAllViews\AllInvoicesView.xaml.cs">
       <DependentUpon>AllInvoicesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ShowAllViews\AllOrderItemCarriersView.xaml.cs">
+      <DependentUpon>AllOrderItemCarriersView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShowAllViews\AllOrdersView.xaml.cs">
       <DependentUpon>AllOrdersView.xaml</DependentUpon>
@@ -391,8 +401,17 @@
     <Compile Include="Views\ReportViews\VolumeReportView.xaml.cs">
       <DependentUpon>VolumeReportView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Windows\EditCarrierAddonsView.xaml.cs">
+      <DependentUpon>EditCarrierAddonsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\EditCarrierTypeView.xaml.cs">
+      <DependentUpon>EditCarrierTypeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Windows\ImageWindowView.xaml.cs">
       <DependentUpon>ImageWindowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\NewOrderItemCarrierView.xaml.cs">
+      <DependentUpon>NewOrderItemCarrierView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -414,12 +433,12 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="ExportManager_1_TemporaryKey.pfx" />
+    <None Include="ExportManager_TemporaryKey.pfx" />
     <EntityDeploy Include="Models\PotplantsModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>PotplantsModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="ExportManager_1_TemporaryKey.pfx" />
-    <None Include="ExportManager_TemporaryKey.pfx" />
     <None Include="Models\PotplantsModel.edmx.diagram">
       <DependentUpon>PotplantsModel.edmx</DependentUpon>
     </None>
@@ -484,6 +503,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ShowAllViews\AllInvoicesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ShowAllViews\AllOrderItemCarriersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -583,16 +606,24 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Windows\EditCarrierAddonsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Windows\EditCarrierTypeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Windows\ImageWindowView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Windows\NewOrderItemCarrierView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Resource Include="Icons\left-arrow.png" />
-    <Resource Include="Icons\right-arrow.png" />
-    <Resource Include="Icons\camera.png" />
     <Content Include="Models\PotplantsModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>PotplantsModel.edmx</DependentUpon>
@@ -603,6 +634,13 @@
       <DependentUpon>PotplantsModel.edmx</DependentUpon>
       <LastGenOutput>PotplantsModel.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\left-arrow.png" />
+    <Resource Include="Icons\right-arrow.png" />
+    <Resource Include="Icons\camera.png" />
+    <Resource Include="Icons\down-arrow.png" />
+    <Resource Include="Icons\top-arrow.png" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
