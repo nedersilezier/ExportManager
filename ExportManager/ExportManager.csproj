@@ -238,6 +238,9 @@
     <Compile Include="Models\Extensions\IHasIsActive.cs" />
     <Compile Include="ViewModels\Abstract\NewItemViewModelBase.cs" />
     <Compile Include="ViewModels\Abstract\NewItemViewModel.cs" />
+    <Compile Include="ViewModels\AddViewModels\NewInvoicePerOrderViewModel.cs" />
+    <Compile Include="ViewModels\AddViewModels\NewInvoicePerPeriodViewModel.cs" />
+    <Compile Include="ViewModels\AddViewModels\NewInvoiceViewModel.cs" />
     <Compile Include="ViewModels\AddViewModels\NewOrderItemViewModel.cs" />
     <Compile Include="ViewModels\AddViewModels\NewOrderViewModel.cs" />
     <Compile Include="ViewModels\Events\WindowRequestEventArgs.cs" />
@@ -288,6 +291,15 @@
     <Compile Include="Services\WindowService.cs" />
     <Compile Include="ViewModels\Windows\NewOrderItemCarrierViewModel.cs" />
     <Compile Include="ViewModels\WorkspaceViewModel.cs" />
+    <Compile Include="Views\AddViews\NewInvoicePerOrderView.xaml.cs">
+      <DependentUpon>NewInvoicePerOrderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddViews\NewInvoicePerPeriodView.xaml.cs">
+      <DependentUpon>NewInvoicePerPeriodView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddViews\NewInvoiceView.xaml.cs">
+      <DependentUpon>NewInvoiceView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AddViews\NewOrderItemView.xaml.cs">
       <DependentUpon>NewOrderItemView.xaml</DependentUpon>
     </Compile>
@@ -453,6 +465,18 @@
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AddViews\NewInvoicePerOrderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddViews\NewInvoicePerPeriodView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddViews\NewInvoiceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AddViews\NewOrderItemView.xaml">
       <SubType>Designer</SubType>

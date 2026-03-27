@@ -11,6 +11,7 @@ using ExportManager.ViewModels;
 using ExportManager.ViewModels.Abstract;
 using ExportManager.Models.DTO;
 using ExportManager.Models.Extensions;
+using ExportManager.ViewModels.AddViewModels;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
@@ -72,7 +73,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Functions
         public override void OnAdd()
         {
-            return;
+            OpenNewTab(() => new NewInvoiceViewModel());
         }
         public override void OnEdit()
         {

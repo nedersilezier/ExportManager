@@ -145,6 +145,15 @@
     <DataTemplate DataType="{x:Type vmAdd:NewOrderItemViewModel}">
         <vwAdd:NewOrderItemView/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type vmAdd:NewInvoiceViewModel}">
+        <vwAdd:NewInvoiceView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vmAdd:NewInvoicePerOrderViewModel}">
+        <vwAdd:NewInvoicePerOrderView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vmAdd:NewInvoicePerPeriodViewModel}">
+        <vwAdd:NewInvoicePerPeriodView/>
+    </DataTemplate>
     
     
     <!--Report views-->
