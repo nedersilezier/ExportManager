@@ -196,13 +196,12 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="border" Property="BorderBrush" Value="Black"/>
-                            <!--<Setter TargetName="border" Property="BorderThickness" Value="2"/>-->
+
                             <Setter TargetName="border" Property="CornerRadius" Value="4"/>
                             <Setter Property="FontWeight" Value="DemiBold"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="#a9d6e5"/>
-                            <!--<Setter Property="Background" Value="LightBlue"/>-->
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

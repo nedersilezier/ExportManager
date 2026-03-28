@@ -1,12 +1,17 @@
-﻿using ExportManager.Models;
+﻿using ExportManager.Helper;
+using ExportManager.Models;
+using ExportManager.Models.Parameters;
 using ExportManager.ViewModels.Abstract;
 using ExportManager.ViewModels.AddViewModels;
+using ExportManager.ViewModels.ShowAllViewModels;
+using ExportManager.Views.ShowAllViews;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.ModelConfiguration.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace ExportManager.ViewModels.AddViewModels
 {
@@ -15,7 +20,8 @@ namespace ExportManager.ViewModels.AddViewModels
         #region Fields
         private bool _IsPerOrder;
         private bool _IsPerPeriod;
-        private NewInvoiceViewModel _CurrentViewModel;
+        private NewInvoicePerOrderViewModel _perOrderVM;
+        private NewInvoicePerPeriodViewModel _perPeriodVM;
         #endregion
         #region Properties
         public bool IsPerOrder
@@ -23,7 +29,7 @@ namespace ExportManager.ViewModels.AddViewModels
             get { return _IsPerOrder; }
             set
             {
-                if(_IsPerOrder != value )
+                if (_IsPerOrder != value)
                 {
                     _IsPerOrder = value;
                     IsPerPeriod = !value;
@@ -48,11 +54,24 @@ namespace ExportManager.ViewModels.AddViewModels
         }
         public NewInvoicePerOrderViewModel PerOrderVM
         {
-            get { return new NewInvoicePerOrderViewModel(); }
+            get
+            {
+                if (_perOrderVM == null)
+                {
+                    _perOrderVM = new NewInvoicePerOrderViewModel();
+                    _perOrderVM.Owner = this;
+                }
+                return _perOrderVM;
+            }
         }
         public NewInvoicePerPeriodViewModel PerPeriodVM
         {
-            get { return new NewInvoicePerPeriodViewModel(); }
+            get
+            {
+                if (_perPeriodVM == null)
+                    _perPeriodVM = new NewInvoicePerPeriodViewModel();
+                return _perPeriodVM;
+            }
         }
         public NewInvoiceViewModel CurrentViewModel
         {
@@ -75,6 +94,12 @@ namespace ExportManager.ViewModels.AddViewModels
         #endregion
         #region Functions
 
+        #endregion
+        #region ItemPicker
+        public void openSelectOrderTab(Action<OrderSelectionResult> itemSetter)
+        {
+            OpenNewTab(() => new AllOrdersViewModel(itemSetter));
+        }
         #endregion
     }
 }

@@ -199,6 +199,7 @@
     <Compile Include="Models\Parameters\ImageWindowParameter.cs" />
     <Compile Include="Models\Parameters\NewOrderItemCarrierWindowParameter.cs" />
     <Compile Include="Models\Parameters\OrderItemCarrierParameter.cs" />
+    <Compile Include="Models\Parameters\OrderSelectionResult.cs" />
     <Compile Include="Models\PaymentMethods.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>

@@ -166,12 +166,23 @@ namespace ExportManager.ViewModels.Abstract
             potplantsEntities = new PotplantsEntities();
             IsCRUDMode = true;
         }
+
+        //TO DO
+        //get rid of this constructor and use the one with Func<T, SelectedItemEventArgs> instead, because it is more flexible and can be used for both typed and non-typed item selected events
+       
         public AllViewModel(Action<SelectedItemEventArgs> itemSetter, Func<T, SelectedItemEventArgs> generateArgsFromSelection)
         {
             potplantsEntities = new PotplantsEntities();
             IsSelectMode = true;
             _GenerateArgsFromSelection = generateArgsFromSelection;
             _ItemSelected = itemSetter;
+        }
+        public AllViewModel(Delegate itemSetter, Func<T, object> generateArgsFromSelection)
+        {
+            potplantsEntities = new PotplantsEntities();
+            IsSelectMode = true;
+            _TypedItemSelected = itemSetter;
+            _GenerateTypedArgsFromSelection = generateArgsFromSelection;
         }
         //public AllViewModel(Action<SelectedItemEventArgs<T>> itemSetter)
         //{
@@ -187,6 +198,8 @@ namespace ExportManager.ViewModels.Abstract
         protected Func<T, SelectedItemEventArgs> _GenerateArgsFromSelection;
         //protected event Action<SelectedItemEventArgs<T>> _ItemSelected;
         //protected event Action<T> _ItemSelected;
+        protected Delegate _TypedItemSelected;
+        protected Func<T, object> _GenerateTypedArgsFromSelection;
         public bool IsCRUDMode
         {
             get { return _isCRUDMode; }
@@ -238,11 +251,13 @@ namespace ExportManager.ViewModels.Abstract
             }
             if (_GenerateArgsFromSelection == null)
             {
-                throw new InvalidOperationException("GenerateArgsFromSelection function is not set.");
+                if (_GenerateTypedArgsFromSelection == null)
+                    throw new InvalidOperationException("GenerateArgsFromSelection function is not set.");
             }
             try
             {
                 _ItemSelected?.Invoke(_GenerateArgsFromSelection(SelectedItem));
+                _TypedItemSelected?.DynamicInvoke(_GenerateTypedArgsFromSelection(SelectedItem));
                 OnRequestClose();
             }
             catch (Exception ex)

@@ -18,6 +18,18 @@ namespace ExportManager.Models.BusinessLogic.ListViewsForUI
         }
         #endregion
         #region Functions
+        public IQueryable<Invoices> GetInvoices()
+        {
+            return potplantsEntities.Invoices.Where(i => i.IsActive);
+        }
+        public IQueryable<Invoices> GetInvoicesPerClient(int clientId)
+        {
+            return GetInvoices().Where(i => i.InvoiceItems.Any(ii => ii.OrderItems.Orders.Clients.ClientId == clientId));
+        }
+        public int CountInvoicesPerClientPerYear(int clientId, int year)
+        {
+            return GetInvoicesPerClient(clientId).Count(i => i.InvoiceDate.Year == year);
+        }
         public ObservableCollection<KeyAndValue> GetInvoicesListItemsPerDate(DateTime date)
         {
             DateTime dateStart = date.Date;

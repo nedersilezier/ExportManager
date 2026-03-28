@@ -3,6 +3,7 @@ using ExportManager.Models;
 using ExportManager.Models.BusinessLogic.ListViewsForUI;
 using ExportManager.Models.EntitiesForView;
 using ExportManager.Models.Extensions;
+using ExportManager.Models.Parameters;
 using ExportManager.ViewModels.Abstract;
 using ExportManager.ViewModels.AddViewModels;
 using System;
@@ -19,14 +20,15 @@ namespace ExportManager.ViewModels.ShowAllViewModels
     public class AllOrdersViewModel : AllViewModel<OrdersListView>
     {
         #region List
-        public override void Load()
+        private Func<IQueryable<OrdersListView>, IQueryable<OrdersListView>> _ordersFilter = null;
+
+        private IQueryable<OrdersListView> GetOrders()
         {
-            List = new ObservableCollection<OrdersListView>(
-                from order in potplantsEntities.Orders
-                where order.IsActive == true
-                select new OrdersListView
+            var query = potplantsEntities.Orders.Where(o => o.IsActive == true)
+                .Select(order => new OrdersListView
                 {
                     OrderId = order.OrderId,
+                    ClientId = order.Clients.ClientId,
                     ClientCode = order.Clients.ClientCode,
                     ClientName = order.Clients.Name,
                     OrderDate = order.OrderDate,
@@ -38,6 +40,33 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                     Status = order.Status,
                     Remarks = order.Remarks
                 });
+
+            if (_ordersFilter != null)
+                query = _ordersFilter(query);
+
+            return query;
+        }
+        public override void Load()
+        {
+            //List = new ObservableCollection<OrdersListView>(
+            //    from order in potplantsEntities.Orders
+            //    where order.IsActive == true
+            //    select new OrdersListView
+            //    {
+            //        OrderId = order.OrderId,
+            //        ClientId = order.Clients.ClientId,
+            //        ClientCode = order.Clients.ClientCode,
+            //        ClientName = order.Clients.Name,
+            //        OrderDate = order.OrderDate,
+            //        PreparationDate = order.PreparationDate,
+            //        ShipmentDate = order.ShipmentDate,
+            //        DeliveryDate = order.DeliveryDate,
+            //        Country = order.Clients.Addresses.Countries.Name,
+            //        SalesPerson = order.SalesPerson,
+            //        Status = order.Status,
+            //        Remarks = order.Remarks
+            //    });
+            List = new ObservableCollection<OrdersListView>(GetOrders().ToList());
         }
         #endregion
         #region Constructor
@@ -45,6 +74,20 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             : base()
         {
             base.DisplayName = "Orders";
+        }
+        public AllOrdersViewModel(Action<OrderSelectionResult> itemSetter)
+            : base(itemSetter,
+                 generateArgsFromSelection:
+                 selectedItem => (object)new OrderSelectionResult(
+                     selectedItem.OrderId,
+                     selectedItem.ClientId,
+                     selectedItem.ClientCode,
+                     selectedItem.ClientName,
+                     selectedItem.OrderDate,
+                     selectedItem.DeliveryDate))
+        {
+            _ordersFilter = q => q.Where(o => o.Status == OrderStatuses.Closed);
+            base.DisplayName = "Select the order";
         }
         #endregion
         #region Commands
@@ -91,6 +134,8 @@ namespace ExportManager.ViewModels.ShowAllViewModels
 
         public override IList<CommandViewModel> CreateExtraCommands()
         {
+            if (IsSelectMode)
+                return base.CreateExtraCommands();
             return new List<CommandViewModel>
             {
                 new CommandViewModel("Order items", ShowDetailsCommand),
