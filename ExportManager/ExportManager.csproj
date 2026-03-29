@@ -115,6 +115,7 @@
     <Compile Include="Models\Addresses.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\BusinessLogic\Queries\InvoicePartiesQuery.cs" />
     <Compile Include="Models\BusinessLogic\Queries\AddressesQuery.cs" />
     <Compile Include="Models\BusinessLogic\Commands\CarriersCommand.cs" />
     <Compile Include="Models\BusinessLogic\Queries\CarrierTypesQuery.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Models\BusinessLogic\Queries\GrowersQuery.cs" />
     <Compile Include="Models\BusinessLogic\InvoiceCalculator.cs" />
     <Compile Include="Models\BusinessLogic\Queries\InvoicesQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\PaymentMethodsQuery.cs" />
     <Compile Include="Models\DTO\InvoicePartyListView.cs" />
     <Compile Include="Models\DTO\InvoicesListView.cs" />
     <Compile Include="Models\DTO\OrderItemCarriersListView.cs" />
@@ -175,6 +177,7 @@
     <Compile Include="Models\DTO\WeightReportListView.cs" />
     <Compile Include="Models\Extensions\HasIsActive..cs" />
     <Compile Include="Models\Extensions\InvoicePartyRoles.cs" />
+    <Compile Include="Models\Extensions\InvoiceStatuses.cs" />
     <Compile Include="Models\Extensions\OrderStatuses.cs" />
     <Compile Include="Models\Extensions\StringExtensions.cs" />
     <Compile Include="Models\Growers.cs">

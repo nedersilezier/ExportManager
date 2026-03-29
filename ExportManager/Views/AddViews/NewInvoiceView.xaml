@@ -9,7 +9,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0, 2, 0, 2">
             <RadioButton Content="Per order"
@@ -17,6 +17,8 @@
             <RadioButton Content="Per period"
                          IsChecked="{Binding IsPerPerPeriod}"/>
         </StackPanel>
-        <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}" Margin="2, 0, 2, 0"/>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+            <ContentControl  Content="{Binding CurrentViewModel}" Margin="2, 0, 2, 0"/>
+        </ScrollViewer>
     </Grid>
 </local:NewItemViewBase>

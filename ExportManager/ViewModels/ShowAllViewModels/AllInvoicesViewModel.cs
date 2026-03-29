@@ -37,10 +37,12 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 PaymentMethod = i.PaymentMethods.Name,
                 Buyer = i.InvoiceParties.Where(ip => ip.IsActive == true && ip.Role == InvoicePartyRoles.Buyer).Select(ip => new InvoicePartyListView
                 {
+                    InvoicePartyId = ip.InvoicePartyId,
                     Name = ip.Name,
                     TaxId = ip.TaxId,
                     City = ip.City,
                     Street = ip.Street,
+                    FullHouseNumber = ip.FullHouseNo,
                     PostalCode = ip.PostalCode,
                     Country = ip.Country,
                     CountryCode = ip.CountryCode,
@@ -48,10 +50,12 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 }).FirstOrDefault(),
                 Seller = i.InvoiceParties.Where(ip => ip.IsActive == true && ip.Role == InvoicePartyRoles.Seller).Select(ip => new InvoicePartyListView
                 {
+                    InvoicePartyId = ip.InvoicePartyId,
                     Name = ip.Name,
                     TaxId = ip.TaxId,
                     City = ip.City,
                     Street = ip.Street,
+                    FullHouseNumber = ip.FullHouseNo,
                     PostalCode = ip.PostalCode,
                     Country = ip.Country,
                     CountryCode = ip.CountryCode,

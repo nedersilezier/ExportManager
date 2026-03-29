@@ -1,11 +1,19 @@
 ﻿using ExportManager.Helper;
+using ExportManager.Models;
+using ExportManager.Models.BusinessLogic.Commands;
 using ExportManager.Models.BusinessLogic.ListViewsForUI;
+using ExportManager.Models.BusinessLogic.Queries;
+using ExportManager.Models.DTO;
+using ExportManager.Models.EntitiesForView;
+using ExportManager.Models.Extensions;
 using ExportManager.Models.Parameters;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ExportManager.ViewModels.AddViewModels
@@ -19,10 +27,19 @@ namespace ExportManager.ViewModels.AddViewModels
         private string _ClientName;
         private DateTime? _OrderDate;
         private DateTime? _DeliveryDate;
+        private DateTime? _InvoiceDate;
+        private DateTime? _PaymentDate;
+        private ObservableCollection<KeyAndValue> _PaymentMethods;
+        private KeyAndValue _SelectedPaymentMethod;
+        private string _Status;
+        private string _Remarks;
+        private InvoicePartyListView _Client;
         #endregion
         #region Constructor
         public NewInvoicePerOrderViewModel()
         {
+            InvoiceDate = DateTime.Now.Date;
+            Status = InvoiceStatuses.Draft;
         }
         #endregion
         #region Properties
@@ -113,8 +130,104 @@ namespace ExportManager.ViewModels.AddViewModels
                 return parts.Count > 0 ? string.Join(" ", parts) : "Select order";
             }
         }
+        public InvoicePartyListView Client
+        {
+            get { return _Client; }
+            set
+            {
+                if (_Client != value)
+                {
+                    _Client = value;
+                    OnPropertyChanged(() => Client);
+                }
+            }
+        }
         //invoice related
         public string InvoiceNo { get; private set; }
+        public DateTime? InvoiceDate
+        {
+            get { return _InvoiceDate; }
+            set
+            {
+                if (_InvoiceDate != value)
+                {
+                    _InvoiceDate = value;
+                    OnPropertyChanged(() => InvoiceDate);
+                }
+            }
+        }
+        public DateTime? PaymentDate
+        {
+            get { return _PaymentDate; }
+            set
+            {
+                if (_PaymentDate != value)
+                {
+                    if(value < InvoiceDate)
+                    {
+                        MessageBox.Show("Payment date cannot be before the invoice date.", "Invalid Payment Date", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+                    _PaymentDate = value;
+                    OnPropertyChanged(() => PaymentDate);
+                }
+            }
+        }
+        public ObservableCollection<KeyAndValue> PaymentMethods
+        {
+            get
+            {
+                if(_PaymentMethods == null)
+                {
+                    _PaymentMethods = new ObservableCollection<KeyAndValue>(new PaymentMethodsQuery(potplantsEntities).GetPaymentMethodsForCombobox());
+                }
+                return _PaymentMethods;
+            }
+            set
+            {
+                if (_PaymentMethods != value)
+                {
+                    _PaymentMethods = value;
+                    OnPropertyChanged(() => PaymentMethods);
+                }
+            }
+        }
+        public KeyAndValue SelectedPaymentMethod
+        {
+            get { return _SelectedPaymentMethod; }
+            set
+            {
+                if (_SelectedPaymentMethod != value)
+                {
+                    _SelectedPaymentMethod = value;
+                    OnPropertyChanged(() => SelectedPaymentMethod);
+                }
+            }
+        }
+        public string Status
+        {
+            get { return _Status; }
+            set
+            {
+                if (_Status != value)
+                {
+                    _Status = value;
+                    OnPropertyChanged(() => Status);
+                }
+            }
+        }
+        public string Remarks
+        {
+            get { return _Remarks; }
+            set
+            {
+                if (_Remarks != value)
+                {
+                    _Remarks = value;
+                    OnPropertyChanged(() => Remarks);
+                }
+            }
+        }
         #endregion
         #region Functions
         public void setSelectedOrder(OrderSelectionResult orderSelection)
@@ -127,6 +240,7 @@ namespace ExportManager.ViewModels.AddViewModels
             OrderDate = orderSelection.OrderDate;
             DeliveryDate = orderSelection.DeliveryDate;
             InvoiceNo = GenerateInvoiceNo();
+            Client = new InvoicePartiesQuery(potplantsEntities).GetFromClient(orderSelection.ClientId); 
         }
         private string GenerateInvoiceNo()
         {

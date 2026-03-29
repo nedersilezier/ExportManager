@@ -221,6 +221,7 @@
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="Country" Type="nvarchar" MaxLength="100" />
           <Property Name="Role" Type="nvarchar" MaxLength="50" />
+          <Property Name="FullHouseNo" Type="nvarchar" MaxLength="40" Nullable="false" />
         </EntityType>
         <EntityType Name="Invoices">
           <Key>
@@ -1108,6 +1109,7 @@
           <NavigationProperty Name="Invoices" Relationship="Self.FK_InvoiceParties_Invoices" FromRole="InvoiceParties" ToRole="Invoices" />
           <Property Name="Country" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FullHouseNo" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Invoices">
           <Key>
@@ -1937,6 +1939,7 @@
           <EntitySetMapping Name="InvoiceParties">
             <EntityTypeMapping TypeName="PotplantsModel.InvoiceParties">
               <MappingFragment StoreEntitySet="InvoiceParties">
+                <ScalarProperty Name="FullHouseNo" ColumnName="FullHouseNo" />
                 <ScalarProperty Name="Role" ColumnName="Role" />
                 <ScalarProperty Name="Country" ColumnName="Country" />
                 <ScalarProperty Name="InvoicePartyId" ColumnName="InvoicePartyId" />
