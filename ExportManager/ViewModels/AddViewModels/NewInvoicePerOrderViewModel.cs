@@ -1,5 +1,6 @@
 ﻿using ExportManager.Helper;
 using ExportManager.Models;
+using ExportManager.Models.BusinessLogic;
 using ExportManager.Models.BusinessLogic.Commands;
 using ExportManager.Models.BusinessLogic.ListViewsForUI;
 using ExportManager.Models.BusinessLogic.Queries;
@@ -18,9 +19,10 @@ using System.Windows.Input;
 
 namespace ExportManager.ViewModels.AddViewModels
 {
-    public class NewInvoicePerOrderViewModel: NewInvoiceViewModel
+    public class NewInvoicePerOrderViewModel : NewInvoiceViewModel
     {
         #region Fields
+        private int _SelectedTabIndex;
         private int _OrderId;
         private int _ClientId;
         private string _ClientCode;
@@ -34,6 +36,13 @@ namespace ExportManager.ViewModels.AddViewModels
         private string _Status;
         private string _Remarks;
         private InvoicePartyListView _Client;
+        private ObservableCollection<InvoiceItemsListView> _OrderItemsList;
+        private decimal _Margin;
+        private decimal _TransportCost;
+        private decimal _StorageCost;
+        private decimal _NetAmount;
+        private decimal _TaxAmount;
+        private decimal _GrossAmount;
         #endregion
         #region Constructor
         public NewInvoicePerOrderViewModel()
@@ -43,6 +52,18 @@ namespace ExportManager.ViewModels.AddViewModels
         }
         #endregion
         #region Properties
+        public int SelectedTabIndex
+        {
+            get { return _SelectedTabIndex; }
+            set
+            {
+                if (_SelectedTabIndex != value)
+                {
+                    _SelectedTabIndex = value;
+                    OnPropertyChanged(() => SelectedTabIndex);
+                }
+            }
+        }
         public NewInvoiceViewModel Owner { get; set; }
         //order related
         public int OrderId
@@ -119,7 +140,7 @@ namespace ExportManager.ViewModels.AddViewModels
         }
         public string ClientDisplayName
         {
-            get 
+            get
             {
                 var parts = new List<string>();
                 if (!string.IsNullOrEmpty(ClientName))
@@ -163,7 +184,7 @@ namespace ExportManager.ViewModels.AddViewModels
             {
                 if (_PaymentDate != value)
                 {
-                    if(value < InvoiceDate)
+                    if (value < InvoiceDate)
                     {
                         MessageBox.Show("Payment date cannot be before the invoice date.", "Invalid Payment Date", MessageBoxButton.OK, MessageBoxImage.Warning);
                         return;
@@ -177,7 +198,7 @@ namespace ExportManager.ViewModels.AddViewModels
         {
             get
             {
-                if(_PaymentMethods == null)
+                if (_PaymentMethods == null)
                 {
                     _PaymentMethods = new ObservableCollection<KeyAndValue>(new PaymentMethodsQuery(potplantsEntities).GetPaymentMethodsForCombobox());
                 }
@@ -228,6 +249,101 @@ namespace ExportManager.ViewModels.AddViewModels
                 }
             }
         }
+        //invoice items related
+        public ObservableCollection<InvoiceItemsListView> OrderItemsList
+        {
+            get { return _OrderItemsList; }
+            set
+            {
+                if (_OrderItemsList != value)
+                {
+                    _OrderItemsList = value;
+                    OnPropertyChanged(() => OrderItemsList);
+                }
+            }
+        }
+        public decimal Margin
+        {
+            get { return _Margin; }
+            set
+            {
+                if (_Margin != value)
+                {
+                    _Margin = value;
+                    //refresh invoice items preview when margin changes
+                    if (OrderId > 0)
+                    {
+                        GrossAmount = _NetAmount * (1 + value / 100);
+                        TaxAmount = _NetAmount * value / 100;
+                        UpdateInvoiceItemsPreview();
+                        OnPropertyChanged(() => GrossAmount);
+                        OnPropertyChanged(() => TaxAmount);
+                        OnPropertyChanged(() => OrderItemsList);
+                    }
+                    OnPropertyChanged(() => Margin);
+                }
+            }
+        }
+        public decimal TransportCost
+        {
+            get { return _TransportCost; }
+            set
+            {
+                if (_TransportCost != value)
+                {
+                    _TransportCost = value;
+                    OnPropertyChanged(() => TransportCost);
+                }
+            }
+        }
+        public decimal StorageCost
+        {
+            get { return _StorageCost; }
+            set
+            {
+                if (_StorageCost != value)
+                {
+                    _StorageCost = value;
+                    OnPropertyChanged(() => StorageCost);
+                }
+            }
+        }
+        public decimal NetAmount
+        {
+            get { return _NetAmount; }
+            set
+            {
+                if (_NetAmount != value)
+                {
+                    _NetAmount = value;
+                    OnPropertyChanged(() => NetAmount);
+                }
+            }
+        }
+        public decimal TaxAmount
+        {
+            get { return _TaxAmount; }
+            set
+            {
+                if (_TaxAmount != value)
+                {
+                    _TaxAmount = value;
+                    OnPropertyChanged(() => TaxAmount);
+                }
+            }
+        }
+        public decimal GrossAmount
+        {
+            get { return _GrossAmount; }
+            set
+            {
+                if (_GrossAmount != value)
+                {
+                    _GrossAmount = value;
+                    OnPropertyChanged(() => GrossAmount);
+                }
+            }
+        }
         #endregion
         #region Functions
         public void setSelectedOrder(OrderSelectionResult orderSelection)
@@ -240,7 +356,13 @@ namespace ExportManager.ViewModels.AddViewModels
             OrderDate = orderSelection.OrderDate;
             DeliveryDate = orderSelection.DeliveryDate;
             InvoiceNo = GenerateInvoiceNo();
-            Client = new InvoicePartiesQuery(potplantsEntities).GetFromClient(orderSelection.ClientId); 
+            Client = new InvoicePartiesQuery(potplantsEntities).GetFromClient(orderSelection.ClientId);
+            OrderItemsList = new ObservableCollection<InvoiceItemsListView>(
+                new OrderItemsQuery(potplantsEntities).GetInvoiceItemsPreview(orderSelection.OrderId, Margin));
+            TransportCost = OrderItemsList.FirstOrDefault(i => i.Name == "Transport")?.NetAmount ?? 0;
+            StorageCost = OrderItemsList.FirstOrDefault(i => i.Name == "Storage")?.NetAmount ?? 0;
+            NetAmount = OrderItemsList.Where(oi => oi.Name != "Transport" && oi.Name != "Storage").Sum(oi => oi.NetAmount) ?? 0;
+            GrossAmount = NetAmount * (1 + Margin / 100);
         }
         private string GenerateInvoiceNo()
         {
@@ -248,6 +370,19 @@ namespace ExportManager.ViewModels.AddViewModels
             int invoiceCountForYear = new InvoicesQuery(potplantsEntities).CountInvoicesPerClientPerYear(ClientId, year);
             int nextInvoiceNumber = invoiceCountForYear + 1;
             return $"{ClientCode}-{year}-{nextInvoiceNumber:D4}";
+        }
+        private void UpdateInvoiceItemsPreview()
+        {
+            foreach (var item in OrderItemsList)
+            {
+                if (item.Name == "Transport" || item.Name == "Storage")
+                    continue;
+                var temporaryNetAmount = item.NetAmount;
+                item.GrossAmount = temporaryNetAmount * (1 + Margin/100);
+                var temporaryGrossAmount = item.GrossAmount;
+                item.TaxAmount = temporaryGrossAmount - temporaryNetAmount;
+                OrderItemsList = new ObservableCollection<InvoiceItemsListView>(OrderItemsList);
+            }
         }
         #endregion
         #region Commands

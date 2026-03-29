@@ -168,7 +168,7 @@
     <Compile Include="Models\DTO\ClientsListView.cs" />
     <Compile Include="Models\DTO\CountriesListView.cs" />
     <Compile Include="Models\DTO\GrowersListView.cs" />
-    <Compile Include="Models\DTO\InvoiceReportItemsListView.cs" />
+    <Compile Include="Models\DTO\InvoiceItemsListView.cs" />
     <Compile Include="Models\DTO\KeyAndValue.cs" />
     <Compile Include="Models\DTO\OrderItemsListView.cs" />
     <Compile Include="Models\DTO\OrdersListView.cs" />

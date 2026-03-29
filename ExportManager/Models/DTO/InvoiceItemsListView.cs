@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExportManager.Models.EntitiesForView
 {
-    public class InvoiceReportItemsListView
+    public class InvoiceItemsListView
     {
         public int ItemNo {  get; set; }
         public string Name {  get; set; }

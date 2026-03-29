@@ -26,11 +26,11 @@ namespace ExportManager.Models.BusinessLogic
                 && t.InvoiceDate >= startDate
                 && t.InvoiceDate <= endDate);
         }
-        public IQueryable<InvoiceReportItemsListView> InvoiceItemsQuery(int invoiceId, DateTime date)
+        public IQueryable<InvoiceItemsListView> InvoiceItemsQuery(int invoiceId, DateTime date)
         {
             return InvoicesQuery(invoiceId, date).SelectMany(invoice => invoice.InvoiceItems)
                 .Where(invoiceitem => invoiceitem.IsActive)
-                .Select(t => new InvoiceReportItemsListView
+                .Select(t => new InvoiceItemsListView
                 {
                     ItemNo = t.ItemNo,
                     Name = t.NameSnapshot,

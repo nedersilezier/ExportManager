@@ -23,7 +23,7 @@ namespace ExportManager.ViewModels.ReportViewModels
         private ObservableCollection<KeyAndValue> _InvoiceComboBoxItems;
         private KeyAndValue _SelectedInvoice;
         private BaseCommand _CalculateInvoice;
-        private ObservableCollection<InvoiceReportItemsListView> _InvoiceItemsList;
+        private ObservableCollection<InvoiceItemsListView> _InvoiceItemsList;
         #endregion
         #region Database
         public PotplantsEntities potplantsEntities;
@@ -37,7 +37,7 @@ namespace ExportManager.ViewModels.ReportViewModels
         }
         #endregion
         #region Properties
-        public ObservableCollection<InvoiceReportItemsListView> InvoiceItemsList
+        public ObservableCollection<InvoiceItemsListView> InvoiceItemsList
         {
             get
             {
@@ -147,7 +147,7 @@ namespace ExportManager.ViewModels.ReportViewModels
                 return;
             try
             {
-                InvoiceItemsList = new ObservableCollection<InvoiceReportItemsListView>(
+                InvoiceItemsList = new ObservableCollection<InvoiceItemsListView>(
                 new InvoiceCalculator(potplantsEntities).InvoiceItemsQuery(SelectedInvoice.Key, Date).ToList());
             }
             catch (Exception ex)
