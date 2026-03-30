@@ -93,7 +93,10 @@ namespace ExportManager.ViewModels.AddViewModels
         }
         #endregion
         #region Functions
-
+        public override void Save()
+        {
+            CurrentViewModel.Save();
+        }
         #endregion
         #region ItemPicker
         public void openSelectOrderTab(Action<OrderSelectionResult> itemSetter)

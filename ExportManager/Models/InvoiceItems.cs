@@ -26,8 +26,6 @@ namespace ExportManager.Models
         public Nullable<decimal> NetAmount { get; set; }
         public Nullable<decimal> TaxAmount { get; set; }
         public Nullable<decimal> GrossAmount { get; set; }
-        public Nullable<int> ProductId { get; set; }
-        public Nullable<int> StockItemId { get; set; }
         public Nullable<int> SourceOrderItemId { get; set; }
         public string CreatedBy { get; set; }
         public System.DateTime CreatedAt { get; set; }

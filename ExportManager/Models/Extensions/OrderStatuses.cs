@@ -12,5 +12,6 @@ namespace ExportManager.Models.Extensions
         public const string Closed = "Closed";
         public const string Canceled = "Canceled";
         public const string Pending = "Pending";
+        public const string Invoiced = "Invoiced";
     }
 }

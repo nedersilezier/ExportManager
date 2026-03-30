@@ -11,6 +11,7 @@ using ExportManager.Models.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,7 +38,7 @@ namespace ExportManager.ViewModels.AddViewModels
         private string _Remarks;
         private InvoicePartyListView _Client;
         private ObservableCollection<InvoiceItemsListView> _OrderItemsList;
-        private decimal _Margin;
+        private decimal _TaxRate;
         private decimal _TransportCost;
         private decimal _StorageCost;
         private decimal _NetAmount;
@@ -47,7 +48,7 @@ namespace ExportManager.ViewModels.AddViewModels
         #region Constructor
         public NewInvoicePerOrderViewModel()
         {
-            InvoiceDate = DateTime.Now.Date;
+            InvoiceDate = DateTime.Now;
             Status = InvoiceStatuses.Draft;
         }
         #endregion
@@ -262,14 +263,14 @@ namespace ExportManager.ViewModels.AddViewModels
                 }
             }
         }
-        public decimal Margin
+        public decimal TaxRate
         {
-            get { return _Margin; }
+            get { return _TaxRate; }
             set
             {
-                if (_Margin != value)
+                if (_TaxRate != value)
                 {
-                    _Margin = value;
+                    _TaxRate = value;
                     //refresh invoice items preview when margin changes
                     if (OrderId > 0)
                     {
@@ -280,7 +281,7 @@ namespace ExportManager.ViewModels.AddViewModels
                         OnPropertyChanged(() => TaxAmount);
                         OnPropertyChanged(() => OrderItemsList);
                     }
-                    OnPropertyChanged(() => Margin);
+                    OnPropertyChanged(() => TaxRate);
                 }
             }
         }
@@ -358,11 +359,11 @@ namespace ExportManager.ViewModels.AddViewModels
             InvoiceNo = GenerateInvoiceNo();
             Client = new InvoicePartiesQuery(potplantsEntities).GetFromClient(orderSelection.ClientId);
             OrderItemsList = new ObservableCollection<InvoiceItemsListView>(
-                new OrderItemsQuery(potplantsEntities).GetInvoiceItemsPreview(orderSelection.OrderId, Margin));
+                new OrderItemsQuery(potplantsEntities).GetInvoiceItemsPreview(orderSelection.OrderId, TaxRate));
             TransportCost = OrderItemsList.FirstOrDefault(i => i.Name == "Transport")?.NetAmount ?? 0;
             StorageCost = OrderItemsList.FirstOrDefault(i => i.Name == "Storage")?.NetAmount ?? 0;
             NetAmount = OrderItemsList.Where(oi => oi.Name != "Transport" && oi.Name != "Storage").Sum(oi => oi.NetAmount) ?? 0;
-            GrossAmount = NetAmount * (1 + Margin / 100);
+            GrossAmount = NetAmount * (1 + TaxRate / 100);
         }
         private string GenerateInvoiceNo()
         {
@@ -378,11 +379,123 @@ namespace ExportManager.ViewModels.AddViewModels
                 if (item.Name == "Transport" || item.Name == "Storage")
                     continue;
                 var temporaryNetAmount = item.NetAmount;
-                item.GrossAmount = temporaryNetAmount * (1 + Margin/100);
+                item.GrossAmount = temporaryNetAmount * (1 + TaxRate / 100);
                 var temporaryGrossAmount = item.GrossAmount;
                 item.TaxAmount = temporaryGrossAmount - temporaryNetAmount;
                 OrderItemsList = new ObservableCollection<InvoiceItemsListView>(OrderItemsList);
             }
+        }
+        public override void Save()
+        {
+            if (OrderId <= 0)
+            {
+                throw new Exception("Please select an order before saving the invoice.");
+            }
+            if (PaymentDate == null)
+            {
+                throw new Exception("Please select a payment date before saving the invoice.");
+            }
+            if (SelectedPaymentMethod == null || SelectedPaymentMethod.Key <= 0)
+            {
+                throw new Exception("Please select a payment method before saving the invoice.");
+            }
+            using (var transaction = potplantsEntities.Database.BeginTransaction())
+            {
+                try
+                {
+                    CreateInvoice();
+                    potplantsEntities.Invoices.Add(item);
+                    new OrdersCommand(potplantsEntities).UpdateOrderStatus(OrderId, OrderStatuses.Invoiced);
+                    potplantsEntities.SaveChanges();
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    MessageBox.Show($"An error occurred while saving the invoice: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void CreateInvoice()
+        {
+            var now = DateTime.Now;
+            var user = Environment.UserName;
+
+            item.InvoiceNo = InvoiceNo;
+            item.InvoiceDate = InvoiceDate ?? DateTime.Now.Date;
+            item.PaymentDate = PaymentDate;
+            item.PaymentMethodId = SelectedPaymentMethod.Key;
+            item.Status = Status;
+            item.Remarks = Remarks;
+            item.TotalNet = NetAmount;
+            item.TotalTax = TaxAmount;
+            item.TotalGross = GrossAmount;
+            item.TotalTransportCost = TransportCost;
+            item.TotalStorageCost = StorageCost;
+            item.IsApproved = false;
+            item.IsActive = true;
+            item.CreatedAt = now;
+            item.CreatedBy = user;
+            item.UpdatedAt = now;
+            item.UpdatedBy = user;
+            foreach (var orderItem in OrderItemsList)
+            {
+                var invoiceItem = new InvoiceItems
+                {
+                    SourceOrderItemId = orderItem.SourceOrderItemId,
+                    ItemNo = orderItem.ItemNo,
+                    NameSnapshot = orderItem.Name,
+                    PotSizeSnapshot = orderItem.Potsize,
+                    HeightSnapshot = orderItem.Height,
+                    Quantity = orderItem.Quantity,
+                    UnitPriceSnapshot = orderItem.UnitPrice,
+                    TaxRateSnapshot = TaxRate,
+                    NetAmount = orderItem.NetAmount,
+                    TaxAmount = orderItem.TaxAmount,
+                    GrossAmount = orderItem.GrossAmount,
+                    IsActive = true,
+                    CreatedAt = now,
+                    CreatedBy = user,
+                    UpdatedAt = now,
+                    UpdatedBy = user,
+                };
+                item.InvoiceItems.Add(invoiceItem);
+            }
+            item.InvoiceParties.Add(new InvoiceParties
+            {
+                Name = Client.Name,
+                TaxId = Client.TaxId,
+                Street = Client.Street,
+                FullHouseNo = Client.FullHouseNumber,
+                City = Client.City,
+                PostalCode = Client.PostalCode,
+                CountryCode = Client.CountryCode,
+                Country = Client.Country,
+                Role = InvoicePartyRoles.Buyer,
+                IsActive = true,
+                CreatedAt = now,
+                CreatedBy = user,
+                UpdatedAt = now,
+                UpdatedBy = user,
+            });
+            item.InvoiceParties.Add(new InvoiceParties
+            {
+                Name = "Your company name",
+                TaxId = "123456789",
+                Street = "YourStreet",
+                FullHouseNo = "1/1",
+                City = "YourCity",
+                PostalCode = "1234QW",
+                CountryCode = "YC",
+                Country = "YourCountry",
+                Role = InvoicePartyRoles.Seller,
+                IsActive = true,
+                CreatedAt = now,
+                CreatedBy = user,
+                UpdatedAt = now,
+                UpdatedBy = user,
+            });
         }
         #endregion
         #region Commands

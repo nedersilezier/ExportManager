@@ -5,8 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ExportManager.Views"
              xmlns:behaviors="clr-namespace:ExportManager.Behaviors"
+             xmlns:converters="clr-namespace:ExportManager.Models.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:PercentConverter x:Key="IntToPercent"/>
+    </UserControl.Resources>
     <TabControl SelectedIndex="{Binding SelectedTabIndex}">
         <TabItem Header="General">
             <Grid Margin="20, 15, 20, 15">
@@ -140,20 +144,14 @@
                 <Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="5" Margin="0, 0, 10, 4" BorderBrush="LightGray" Height="1" BorderThickness="1" VerticalAlignment="Center"/>
                 <Label Grid.Row="1" Grid.Column="1" Margin="0, 4, 0, 4">Net total:</Label>
                 <TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="1" Margin="0, 4, 0, 4" Text="{Binding NetAmount, StringFormat=N2, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="true"/>
-                <Label Grid.Row="2" Grid.Column="1" Margin="0, 4, 0, 4" Content="Margin:"/>
-                <TextBox x:Name="MarginBox" Grid.Row="2" Grid.Column="2" Margin="0, 4, 0, 4">
-                    <TextBox.Text>
-                        <Binding Path="Margin"
-                                UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <behaviors:DiscountValidationRule ValidationStep="RawProposedValue"/>
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
+                <Label Grid.Row="2" Grid.Column="1" Margin="0, 4, 0, 4" Content="Tax rate:"/>
+                <TextBox x:Name="TaxRateBox" Grid.Row="2" Grid.Column="2" Margin="0, 4, 0, 4" 
+                         Text="{Binding TaxRate, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource IntToPercent}}" 
+                         behaviors:PercentageTextBoxBehavior.IsPercentage="True"
+                         MaxLength="4"/>
                 <TextBlock Grid.Row="2" Grid.Column="3" Margin="0, 4, 0, 4" VerticalAlignment="Center" Foreground="Red">
                     <TextBlock.Text>
-                        <Binding ElementName="MarginBox" Path="(Validation.Errors)[0].ErrorContent"/>
+                        <Binding ElementName="TaxRateBox" Path="(Validation.Errors)[0].ErrorContent"/>
                     </TextBlock.Text>
                 </TextBlock>
                 <Label Grid.Row="3" Grid.Column="1" Margin="0, 4, 0, 4" Content="Tax total:"/>
@@ -173,9 +171,11 @@
                     <DataGridTextColumn Header="Item No" Binding="{Binding ItemNo}" Width="80"/>
                     <DataGridTextColumn Header="Name" Binding="{Binding FullName}" Width="*"/>
                     <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="100"/>
-                    <DataGridTextColumn Header="Net amount" Binding="{Binding NetAmount}" Width="100"/>
-                    <DataGridTextColumn Header="Tax amount" Binding="{Binding TaxAmount}" Width="100"/>
-                    <DataGridTextColumn Header="Gross amount" Binding="{Binding GrossAmount}" Width="100"/>
+                    <DataGridTextColumn Header="Unit price" Binding="{Binding UnitPrice, StringFormat=N2}" Width="100"/>
+                    <DataGridTextColumn Header="Discount" Binding="{Binding Discount, StringFormat=N2, Converter={StaticResource IntToPercent}}" Width="100"/>
+                    <DataGridTextColumn Header="Net amount" Binding="{Binding NetAmount, StringFormat=N2}" Width="100"/>
+                    <DataGridTextColumn Header="Tax amount" Binding="{Binding TaxAmount, StringFormat=N2}" Width="100"/>
+                    <DataGridTextColumn Header="Gross amount" Binding="{Binding GrossAmount, StringFormat=N2}" Width="100"/>
                 </DataGrid.Columns>
             </DataGrid>
         </TabItem>

@@ -77,7 +77,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         #region Functions
         public override void OnAdd()
         {
-            OpenNewTab(() => new NewInvoiceViewModel());
+            OpenNewTab(() => new NewInvoiceViewModel(), Load);
         }
         public override void OnEdit()
         {

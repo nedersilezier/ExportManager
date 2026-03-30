@@ -15,7 +15,7 @@
             <RadioButton Content="Per order"
                          IsChecked="{Binding IsPerOrder}" Margin="2, 0, 2, 0"/>
             <RadioButton Content="Per period"
-                         IsChecked="{Binding IsPerPerPeriod}"/>
+                         IsChecked="{Binding IsPerPeriod}"/>
         </StackPanel>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
             <ContentControl  Content="{Binding CurrentViewModel}" Margin="2, 0, 2, 0"/>

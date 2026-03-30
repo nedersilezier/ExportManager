@@ -189,8 +189,6 @@
           <Property Name="NetAmount" Type="decimal" Precision="29" Scale="2" StoreGeneratedPattern="Computed" />
           <Property Name="TaxAmount" Type="decimal" Precision="38" Scale="7" StoreGeneratedPattern="Computed" />
           <Property Name="GrossAmount" Type="decimal" Precision="38" Scale="6" StoreGeneratedPattern="Computed" />
-          <Property Name="ProductId" Type="int" />
-          <Property Name="StockItemId" Type="int" />
           <Property Name="SourceOrderItemId" Type="int" />
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="CreatedAt" Type="datetime2" Precision="7" Nullable="false" />
@@ -1074,8 +1072,6 @@
           <Property Name="NetAmount" Type="Decimal" Precision="29" Scale="2" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="TaxAmount" Type="Decimal" Precision="38" Scale="7" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="GrossAmount" Type="Decimal" Precision="38" Scale="6" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="ProductId" Type="Int32" />
-          <Property Name="StockItemId" Type="Int32" />
           <Property Name="SourceOrderItemId" Type="Int32" />
           <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="7" />
@@ -1923,8 +1919,6 @@
                 <ScalarProperty Name="NetAmount" ColumnName="NetAmount" />
                 <ScalarProperty Name="TaxAmount" ColumnName="TaxAmount" />
                 <ScalarProperty Name="GrossAmount" ColumnName="GrossAmount" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="StockItemId" ColumnName="StockItemId" />
                 <ScalarProperty Name="SourceOrderItemId" ColumnName="SourceOrderItemId" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
