@@ -41,6 +41,7 @@ namespace ExportManager
             services.AddTransient<NewOrderItemCarrierViewModel>();
             services.AddTransient<EditCarrierAddonsViewModel>();
             services.AddTransient<EditCarrierTypeViewModel>();
+            services.AddTransient<EditInvoiceViewModel>();
 
             ServiceProvider = services.BuildServiceProvider();
 

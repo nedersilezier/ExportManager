@@ -12,6 +12,8 @@ using ExportManager.ViewModels.Abstract;
 using ExportManager.Models.DTO;
 using ExportManager.Models.Extensions;
 using ExportManager.ViewModels.AddViewModels;
+using ExportManager.ViewModels.Windows;
+using ExportManager.Models.Parameters;
 
 namespace ExportManager.ViewModels.ShowAllViewModels
 {
@@ -81,7 +83,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         public override void OnEdit()
         {
-            return;
+            OnRequestWindow<EditInvoiceViewModel>(new InvoiceParameter(SelectedItem.InvoiceId, Load));
         }
         public override void OnRemove()
         {

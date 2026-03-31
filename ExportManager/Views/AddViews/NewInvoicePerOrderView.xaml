@@ -93,7 +93,7 @@
                         <TextBox Grid.Row="7" Grid.Column="2" Margin="0, 4, 0, 4" Text="{Binding Client.Country, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="true"/>
                     </Grid>
                 </Expander>
-                
+
                 <Label Grid.Row="7" Grid.Column="0" Margin="0, 0, 0, 4" HorizontalAlignment="Center">Invoice information</Label>
                 <Border Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="5" Margin="0, 0, 10, 4" BorderBrush="LightGray" Height="1" BorderThickness="1" VerticalAlignment="Center"/>
                 <Label Grid.Row="8" Grid.Column="1" Margin="0, 4, 0, 4" Content="Invoice number:"/>
@@ -160,12 +160,13 @@
                 <Label Grid.Row="5" Grid.Column="1" Margin="0, 4, 0, 4" Content="Gross total:"/>
                 <TextBox Grid.Row="5" Grid.Column="2" Margin="0, 4, 0, 4" Text="{Binding GrossAmount, StringFormat=N2, Mode=OneWay}" IsReadOnly="True"/>
                 <Label Grid.Row="6" Grid.Column="1" Margin="0, 4, 0, 4" Content="Storage cost:"/>
-                <TextBox Grid.Row="6" Grid.Column="2" Margin="0, 4, 0, 4" Text="{Binding StorageCost, Mode=OneWay}" IsReadOnly="True"/>
+                <TextBox Grid.Row="6" Grid.Column="2" Margin="0, 4, 0, 4" Text="{Binding StorageCost, StringFormat=N2, Mode=TwoWay}"/>
                 <Label Grid.Row="7" Grid.Column="1" Margin="0, 4, 0, 4" Content="Transport cost:"/>
-                <TextBox Grid.Row="7" Grid.Column="2" Margin="0, 4, 0, 4" Text="{Binding TransportCost, Mode=OneWay}" IsReadOnly="True"/>
+                <TextBox Grid.Row="7" Grid.Column="2" Margin="0, 4, 0, 4" Text="{Binding TransportCost, StringFormat=N2, Mode=TwoWay}"/>
             </Grid>
         </TabItem>
         <TabItem Header="Invoice items">
+            <Grid>
             <DataGrid AutoGenerateColumns="False" Margin="20, 15, 20, 15" ItemsSource="{Binding OrderItemsList, Mode=TwoWay}" IsReadOnly="True">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Item No" Binding="{Binding ItemNo}" Width="80"/>
@@ -178,7 +179,7 @@
                     <DataGridTextColumn Header="Gross amount" Binding="{Binding GrossAmount, StringFormat=N2}" Width="100"/>
                 </DataGrid.Columns>
             </DataGrid>
+            </Grid>
         </TabItem>
     </TabControl>
-
 </UserControl>

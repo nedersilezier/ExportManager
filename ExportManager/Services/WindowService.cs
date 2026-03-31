@@ -103,6 +103,8 @@ namespace ExportManager.ViewModels.Windows
                     return typeof(EditCarrierAddonsView);
                 case Type t when t == typeof(EditCarrierTypeViewModel):
                     return typeof(EditCarrierTypeView);
+                case Type t when t == typeof(EditInvoiceViewModel):
+                    return typeof(EditInvoiceView);
             }
 
             throw new Exception($"No window mapped for {viewModelType.Name}");
