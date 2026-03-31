@@ -185,7 +185,7 @@ namespace ExportManager.ViewModels.AddViewModels
             {
                 if (_PaymentDate != value)
                 {
-                    if (value < InvoiceDate)
+                    if (value?.Date < InvoiceDate?.Date)
                     {
                         MessageBox.Show("Payment date cannot be before the invoice date.", "Invalid Payment Date", MessageBoxButton.OK, MessageBoxImage.Warning);
                         return;
@@ -294,6 +294,7 @@ namespace ExportManager.ViewModels.AddViewModels
                 {
                     _TransportCost = value;
                     OnPropertyChanged(() => TransportCost);
+                    UpdateInvoiceItemsPreview();
                 }
             }
         }
@@ -306,6 +307,7 @@ namespace ExportManager.ViewModels.AddViewModels
                 {
                     _StorageCost = value;
                     OnPropertyChanged(() => StorageCost);
+                    UpdateInvoiceItemsPreview();
                 }
             }
         }
@@ -360,8 +362,11 @@ namespace ExportManager.ViewModels.AddViewModels
             Client = new InvoicePartiesQuery(potplantsEntities).GetFromClient(orderSelection.ClientId);
             OrderItemsList = new ObservableCollection<InvoiceItemsListView>(
                 new OrderItemsQuery(potplantsEntities).GetInvoiceItemsPreview(orderSelection.OrderId, TaxRate));
-            TransportCost = OrderItemsList.FirstOrDefault(i => i.Name == "Transport")?.NetAmount ?? 0;
-            StorageCost = OrderItemsList.FirstOrDefault(i => i.Name == "Storage")?.NetAmount ?? 0;
+            _TransportCost = OrderItemsList.FirstOrDefault(i => i.Name == "Transport")?.NetAmount ?? 0;
+            _StorageCost = OrderItemsList.FirstOrDefault(i => i.Name == "Storage")?.NetAmount ?? 0;
+            OnPropertyChanged(() => TransportCost);
+            OnPropertyChanged(() => StorageCost);
+            UpdateInvoiceItemsPreview();
             NetAmount = OrderItemsList.Where(oi => oi.Name != "Transport" && oi.Name != "Storage").Sum(oi => oi.NetAmount) ?? 0;
             GrossAmount = NetAmount * (1 + TaxRate / 100);
         }
@@ -376,8 +381,18 @@ namespace ExportManager.ViewModels.AddViewModels
         {
             foreach (var item in OrderItemsList)
             {
-                if (item.Name == "Transport" || item.Name == "Storage")
+                if (item.Name == "Transport")
+                {
+                    item.UnitPrice = TransportCost;
+                    item.NetAmount = TransportCost;
                     continue;
+                }
+                if (item.Name == "Storage")
+                {
+                    item.UnitPrice = StorageCost;
+                    item.NetAmount = StorageCost;
+                    continue;
+                }
                 var temporaryNetAmount = item.NetAmount;
                 item.GrossAmount = temporaryNetAmount * (1 + TaxRate / 100);
                 var temporaryGrossAmount = item.GrossAmount;
@@ -433,13 +448,44 @@ namespace ExportManager.ViewModels.AddViewModels
             item.TotalGross = GrossAmount;
             item.TotalTransportCost = TransportCost;
             item.TotalStorageCost = StorageCost;
+            item.TotalAmount = GrossAmount + TransportCost + StorageCost;
             item.IsApproved = false;
             item.IsActive = true;
             item.CreatedAt = now;
             item.CreatedBy = user;
             item.UpdatedAt = now;
             item.UpdatedBy = user;
-            foreach (var orderItem in OrderItemsList)
+            var transportItem = OrderItemsList.FirstOrDefault(i => i.Name == "Transport");
+            var storageItem = OrderItemsList.FirstOrDefault(i => i.Name == "Storage");
+            var transportInvoiceItem = new InvoiceItems
+            {
+                ItemNo = transportItem.ItemNo,
+                NameSnapshot = transportItem?.Name,
+                UnitPriceSnapshot = transportItem?.UnitPrice ?? 0,
+                Quantity = transportItem?.Quantity ?? 0,
+                NetAmount = transportItem?.NetAmount ?? 0,
+                IsActive = true,
+                CreatedAt = now,
+                CreatedBy = user,
+                UpdatedAt = now,
+                UpdatedBy = user,
+            };
+            potplantsEntities.InvoiceItems.Add(transportInvoiceItem);
+            var storageInvoiceItem = new InvoiceItems
+            {
+                ItemNo = storageItem.ItemNo,
+                NameSnapshot = storageItem?.Name,
+                UnitPriceSnapshot = storageItem?.UnitPrice ?? 0,
+                Quantity = storageItem?.Quantity ?? 0,
+                NetAmount = storageItem?.NetAmount ?? 0,
+                IsActive = true,
+                CreatedAt = now,
+                CreatedBy = user,
+                UpdatedAt = now,
+                UpdatedBy = user,
+            };
+            potplantsEntities.InvoiceItems.Add(storageInvoiceItem);
+            foreach (var orderItem in OrderItemsList.Skip(2))
             {
                 var invoiceItem = new InvoiceItems
                 {
