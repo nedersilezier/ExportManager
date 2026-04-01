@@ -24,12 +24,14 @@ namespace ExportManager.Models.BusinessLogic.Queries
         {
             return GetInvoiceItems(invoiceId).Select(ii => new InvoiceItemsListView
             {
+                InvoiceItemId = ii.InvoiceItemId,
                 ItemNo = ii.ItemNo,
                 Name = ii.NameSnapshot,
                 Potsize = ii.PotSizeSnapshot,
                 Height = ii.HeightSnapshot,
                 Quantity = ii.Quantity,
                 UnitPrice = ii.UnitPriceSnapshot,
+                TaxRate = ii.TaxRateSnapshot,
                 NetAmount = ii.NetAmount,
                 TaxAmount = ii.TaxAmount,
                 GrossAmount = ii.GrossAmount,

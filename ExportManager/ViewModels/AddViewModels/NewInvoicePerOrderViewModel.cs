@@ -464,6 +464,7 @@ namespace ExportManager.ViewModels.AddViewModels
                 UnitPriceSnapshot = transportItem?.UnitPrice ?? 0,
                 Quantity = transportItem?.Quantity ?? 0,
                 NetAmount = transportItem?.NetAmount ?? 0,
+                TaxRateSnapshot = 0, //assuming transport cost is not taxed
                 IsActive = true,
                 CreatedAt = now,
                 CreatedBy = user,
@@ -478,6 +479,7 @@ namespace ExportManager.ViewModels.AddViewModels
                 UnitPriceSnapshot = storageItem?.UnitPrice ?? 0,
                 Quantity = storageItem?.Quantity ?? 0,
                 NetAmount = storageItem?.NetAmount ?? 0,
+                TaxRateSnapshot = 0, //assuming storage cost is not taxed
                 IsActive = true,
                 CreatedAt = now,
                 CreatedBy = user,

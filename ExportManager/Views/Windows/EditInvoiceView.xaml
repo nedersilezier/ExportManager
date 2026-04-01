@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ExportManager.Views.Windows"
         xmlns:converters="clr-namespace:ExportManager.Models.Converters"
+        xmlns:msbehaviors="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="{Binding DisplayName}" 
         Height="400"
@@ -12,11 +13,22 @@
     <Window.Resources>
         <converters:PercentConverter x:Key="IntToPercent"/>
     </Window.Resources>
+    <msbehaviors:Interaction.Triggers>
+        <msbehaviors:DataTrigger Binding="{Binding IsClosing}" Value="True">
+            <msbehaviors:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}" MethodName="Close" />
+        </msbehaviors:DataTrigger>
+    </msbehaviors:Interaction.Triggers>
     <Grid Margin="10">
-        <TabControl SelectedIndex="{Binding SelectedIndexTab}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <TabControl Grid.Row="0" SelectedIndex="{Binding SelectedIndexTab}" Margin="0, 0, 0, 10">
             <TabItem Header="Invoice Information">
                 <Grid Margin="20, 20, 20, 20">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -37,7 +49,7 @@
                     <DatePicker Grid.Row="1" Grid.Column="1" SelectedDate="{Binding Invoice.InvoiceDate}" IsEnabled="False" Margin="0, 4, 0, 4"/>
 
                     <Label Grid.Row="2" Grid.Column="0" Content="Payment Date:" VerticalAlignment="Center" Margin="0, 4, 0, 4"/>
-                    <DatePicker Grid.Row="2" Grid.Column="1" SelectedDate="{Binding Invoice.PaymentDate}" Margin="0, 4, 0, 4" VerticalContentAlignment="Center"/>
+                    <DatePicker Grid.Row="2" Grid.Column="1" SelectedDate="{Binding PaymentDate}" Margin="0, 4, 0, 4" VerticalContentAlignment="Center"/>
 
                     <Label Grid.Row="3" Grid.Column="0" Content="Payment Method:" VerticalAlignment="Center" Margin="0, 4, 0, 4"/>
                     <ComboBox Grid.Row="3" Grid.Column="1" ItemsSource="{Binding PaymentMethods}" SelectedItem="{Binding SelectedPaymentMethod}" VerticalContentAlignment="Center" Margin="0, 4, 0, 4">
@@ -53,16 +65,20 @@
                         <TextBlock Text="{Binding Invoice.TotalNet, StringFormat='Total Net: {0:N2}'}" Margin="0, 4, 0, 4"/>
                         <TextBlock Text="{Binding Invoice.TotalTax, StringFormat='Total Tax: {0:N2}'}" Margin="0, 4, 0, 4"/>
                         <TextBlock Text="{Binding Invoice.TotalGross, StringFormat='Total Gross: {0:N2}'}" Margin="0, 4, 0, 4"/>
-                        <TextBlock Text="{Binding Invoice.TotalTransportCost, StringFormat='Transport Cost: {0:N2}'}" Margin="0, 4, 0, 4"/>
-                        <TextBlock Text="{Binding Invoice.TotalStorageCost, StringFormat='Storage Cost: {0:N2}'}" Margin="0, 4, 0, 4"/>
-                        <TextBlock Text="{Binding Invoice.TotalAmount, StringFormat='Total Amount: {0:N2}'}" Margin="0, 4, 0, 4"/>
+                        <TextBlock Text="{Binding TransportCost, StringFormat='Transport Cost: {0:N2}'}" Margin="0, 4, 0, 4"/>
+                        <TextBlock Text="{Binding StorageCost, StringFormat='Storage Cost: {0:N2}'}" Margin="0, 4, 0, 4"/>
+                        <TextBlock Text="{Binding TotalAmount, StringFormat='Total Amount: {0:N2}'}" Margin="0, 4, 0, 4"/>
                         <TextBlock Text="{Binding Invoice.Status, StringFormat='Status: {0}'}" Margin="0, 4, 0, 4"/>
                     </StackPanel>
+                    <Label Grid.Row="4" Grid.Column="0" Content="Transport cost:" VerticalAlignment="Center" Margin="0, 4, 0, 4"/>
+                    <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding TransportCost}" Margin="0, 4, 0, 4"/>
+                    <Label Grid.Row="5" Grid.Column="0" Content="Storage cost:" VerticalAlignment="Center" Margin="0, 4, 0, 4"/>
+                    <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding StorageCost}" Margin="0, 4, 0, 4"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Client Details">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <Grid Margin="20, 20, 20, 20">
+                    <Grid Margin="20, 20, 20, 10">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
@@ -88,20 +104,26 @@
 
                         <Label Grid.Row="3" Grid.Column="0" Content="House No:" VerticalAlignment="Center" Margin="0, 4, 0, 4"/>
                         <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Buyer.FullHouseNumber, Mode=TwoWay}" Margin="0, 4, 0, 4"/>
+                        <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0, 4, 0, 4">
+                            <Label Content="City:" VerticalAlignment="Center" Margin="0, 4, 117, 4"/>
+                            <TextBox Text="{Binding Buyer.City, Mode=TwoWay}" Width="240" Margin="0, 4, 0, 4"/>
 
-                        <Label Grid.Row="4" Grid.Column="0" Content="City:" VerticalAlignment="Center" Margin="0, 4, 0, 4"/>
-                        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Buyer.City, Mode=TwoWay}" Margin="0, 4, 0, 4"/>
-
-                        <Label Grid.Row="5" Grid.Column="0" Content="Postal Code:" VerticalAlignment="Center" Margin="0, 4, 0, 4"/>
-                        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Buyer.PostalCode, Mode=TwoWay}" Margin="0, 4, 0, 4"/>
-
-                        <Label Grid.Row="6" Grid.Column="0" Content="Country:" VerticalAlignment="Center" Margin="0, 4, 0, 4"/>
-                        <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Buyer.Country, Mode=TwoWay}" Margin="0, 4, 0, 4"/>
+                            <Label Content="Postal Code:" VerticalAlignment="Center" Margin="0, 4, 0, 4"/>
+                            <TextBox Text="{Binding Buyer.PostalCode, Mode=TwoWay}" Margin="0, 4, 0, 4" Width="85"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0, 4, 0, 4">
+                            <Label Content="Country:" VerticalAlignment="Center" Margin="0, 4, 95, 4"/>
+                            <TextBox Text="{Binding Buyer.Country, Mode=TwoWay}" Width="240" Margin="0, 4, 0, 4"/>
+                            <Label Content="Country code:" VerticalAlignment="Center" Margin="0, 4, 0, 4"/>
+                            <TextBox Text="{Binding Buyer.CountryCode, Mode=TwoWay}" Width="76" Margin="0, 4, 0, 4" MaxLength="2"/>
+                        </StackPanel>
+                        
                     </Grid>
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="Invoice Items">
-                <DataGrid ItemsSource="{Binding InvoiceItems}" 
+                <DataGrid ItemsSource="{Binding InvoiceItems}"
+                          SelectedItem="{Binding SelectedInvoiceItem}"
                   AutoGenerateColumns="False" 
                   IsReadOnly="False" 
                   Margin="20, 20, 20, 20"
@@ -110,8 +132,8 @@
                         <DataGridTextColumn Header="Item No" Binding="{Binding ItemNo}" Width="60"/>
                         <DataGridTextColumn Header="Name" Binding="{Binding FullName}" MinWidth="250" Width="*"/>
                         <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity, Mode=TwoWay}" Width="80"/>
-                        <DataGridTextColumn Header="Unit price" Binding="{Binding UnitPriceSnapshot, Mode=TwoWay, StringFormat=N2}" Width="80"/>
-                        <DataGridTextColumn Header="Tax rate" Binding="{Binding TaxRateSnapshot, Mode=TwoWay, StringFormat=N2, Converter={StaticResource IntToPercent}}" Width="80"/>
+                        <DataGridTextColumn Header="Unit price" Binding="{Binding UnitPrice, Mode=TwoWay, StringFormat=N2}" Width="80"/>
+                        <DataGridTextColumn Header="Tax rate" Binding="{Binding TaxRate, Mode=TwoWay, StringFormat=N2, Converter={StaticResource IntToPercent}}" Width="80"/>
                         <DataGridTextColumn Header="Net amount" Binding="{Binding NetAmount, StringFormat=N2}" IsReadOnly="True" Width="100"/>
                         <DataGridTextColumn Header="Tax amount" Binding="{Binding TaxAmount, StringFormat=N2}" IsReadOnly="True" Width="100"/>
                         <DataGridTextColumn Header="Gross amount" Binding="{Binding GrossAmount, StringFormat=N2}" IsReadOnly="True" Width="100"/>
@@ -119,5 +141,10 @@
                 </DataGrid>
             </TabItem>
         </TabControl>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 0, 20, 0">
+            <Button Content="Delete" Width="100" Margin="0, 0, 15, 0" Command="{Binding DeleteInvoiceItemCommand}" Visibility="{Binding IsDeleteEnabled, Converter={StaticResource BoolToVisibility}}"/>
+            <Button Content="Cancel" Width="100" Margin="0, 0, 10, 0" IsCancel="true"/>
+            <Button Content="Save and close" Width="100" Margin="0, 0, 0, 0" Command="{Binding SaveCommand}"/>
+        </StackPanel>
     </Grid>
 </Window>

@@ -8,6 +8,7 @@ namespace ExportManager.Models.EntitiesForView
 {
     public class InvoiceItemsListView
     {
+        public int InvoiceItemId { get; set; }
         public int ItemNo {  get; set; }
         public string Name {  get; set; }
         public decimal? Potsize { get; set; }
@@ -15,6 +16,7 @@ namespace ExportManager.Models.EntitiesForView
         public int Quantity {  get; set; }
         public decimal UnitPrice { get; set; }
         public decimal Discount { get; set; }
+        public decimal TaxRate { get; set; }
         public decimal? NetAmount { get; set; }
         public decimal? TaxAmount { get; set; }
         public decimal? GrossAmount { get; set; }
