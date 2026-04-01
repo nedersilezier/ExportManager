@@ -83,7 +83,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         public override void OnEdit()
         {
-            OnRequestWindow<EditInvoiceViewModel>(new InvoiceParameter(SelectedItem.InvoiceId, Load));
+            OnRequestWindow<EditInvoiceViewModel>(new InvoiceParameter(SelectedItem, Load));
         }
         public override void OnRemove()
         {

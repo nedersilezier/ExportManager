@@ -87,7 +87,7 @@
                         <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Buyer.Street, Mode=TwoWay}" Margin="0, 4, 0, 4"/>
 
                         <Label Grid.Row="3" Grid.Column="0" Content="House No:" VerticalAlignment="Center" Margin="0, 4, 0, 4"/>
-                        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Buyer.FullHouseNo, Mode=TwoWay}" Margin="0, 4, 0, 4"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Buyer.FullHouseNumber, Mode=TwoWay}" Margin="0, 4, 0, 4"/>
 
                         <Label Grid.Row="4" Grid.Column="0" Content="City:" VerticalAlignment="Center" Margin="0, 4, 0, 4"/>
                         <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Buyer.City, Mode=TwoWay}" Margin="0, 4, 0, 4"/>

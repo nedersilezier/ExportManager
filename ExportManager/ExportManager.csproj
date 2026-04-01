@@ -117,6 +117,7 @@
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\BusinessLogic\Commands\OrdersCommand.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\InvoiceItemsQuery.cs" />
     <Compile Include="Models\BusinessLogic\Queries\InvoicePartiesQuery.cs" />
     <Compile Include="Models\BusinessLogic\Queries\AddressesQuery.cs" />
     <Compile Include="Models\BusinessLogic\Commands\CarriersCommand.cs" />

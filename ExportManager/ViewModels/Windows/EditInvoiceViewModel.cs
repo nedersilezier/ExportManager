@@ -1,5 +1,6 @@
 ﻿using ExportManager.Models;
 using ExportManager.Models.BusinessLogic.Queries;
+using ExportManager.Models.DTO;
 using ExportManager.Models.EntitiesForView;
 using ExportManager.Models.Extensions;
 using ExportManager.Models.Parameters;
@@ -15,17 +16,13 @@ namespace ExportManager.ViewModels.Windows
     public class EditInvoiceViewModel : BaseViewModel, IParameterReceiver<InvoiceParameter>
     {
         #region Fields
-        private int _InvoiceId;
         private int _SelectedIndexTab;
         private PotplantsEntities potplantsEntities;
-        private Invoices _Invoice;
-        private string _InvoiceNo;
-        private DateTime _InvoiceDate;
-        private DateTime? _PaymentDate;
+        private InvoicesListView _Invoice;
         private ObservableCollection<KeyAndValue> _PaymentMethods;
-        private InvoiceParties _Buyer;
-        private InvoiceParties _Seller;
-        private ObservableCollection<InvoiceItems> _InvoiceItems;
+        private InvoicePartyListView _Buyer;
+        private InvoicePartyListView _Seller;
+        private ObservableCollection<InvoiceItemsListView> _InvoiceItems;
         private KeyAndValue _SelectedPaymentMethod;
         private Action InvoiceEdited;
         #endregion
@@ -79,7 +76,7 @@ namespace ExportManager.ViewModels.Windows
                 }
             }
         }
-        public Invoices Invoice
+        public InvoicesListView Invoice
         {
             get { return _Invoice; }
             set
@@ -103,7 +100,7 @@ namespace ExportManager.ViewModels.Windows
                 }
             }
         }
-        public InvoiceParties Buyer
+        public InvoicePartyListView Buyer
         {
             get { return _Buyer; }
             set
@@ -115,7 +112,7 @@ namespace ExportManager.ViewModels.Windows
                 }
             }
         }
-        public InvoiceParties Seller
+        public InvoicePartyListView Seller
         {
             get { return _Seller; }
             set
@@ -127,7 +124,7 @@ namespace ExportManager.ViewModels.Windows
                 }
             }
         }
-        public ObservableCollection<InvoiceItems> InvoiceItems
+        public ObservableCollection<InvoiceItemsListView> InvoiceItems
         {
             get { return _InvoiceItems; }
             set
@@ -148,12 +145,11 @@ namespace ExportManager.ViewModels.Windows
                 return;
             }
             DisplayName = parameter.Title;
-            InvoiceId = parameter.InvoiceId;
-            Invoice = potplantsEntities.Invoices.FirstOrDefault(i => i.InvoiceId == InvoiceId);
-            Buyer = Invoice.InvoiceParties.FirstOrDefault(ip => ip.IsActive == true && ip.Role == InvoicePartyRoles.Buyer);
-            Seller = Invoice.InvoiceParties.FirstOrDefault(ip => ip.IsActive == true && ip.Role == InvoicePartyRoles.Seller);
-            SelectedPaymentMethod = PaymentMethods.FirstOrDefault(pm => pm.Key == Invoice.PaymentMethodId);
-            InvoiceItems = new ObservableCollection<InvoiceItems>(Invoice.InvoiceItems.Where(ii => ii.IsActive == true).ToList());
+            Invoice = parameter.Invoice;
+            Buyer = Invoice.Buyer;
+            Seller = Invoice.Seller;
+            SelectedPaymentMethod = PaymentMethods.FirstOrDefault(pm => pm.Value == Invoice.PaymentMethod);
+            InvoiceItems = new ObservableCollection<InvoiceItemsListView>(new InvoiceItemsQuery(potplantsEntities).GetInvoiceItemsDTO(Invoice.InvoiceId).ToList());
             InvoiceEdited += parameter.RefreshEvent;
             OnPropertyChanged(() => DisplayName);
         }
