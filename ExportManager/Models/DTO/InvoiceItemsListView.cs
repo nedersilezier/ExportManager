@@ -8,7 +8,7 @@ namespace ExportManager.Models.EntitiesForView
 {
     public class InvoiceItemsListView
     {
-        public int InvoiceItemId { get; set; }
+        public int InvoiceItemId { get; set; }  
         public int ItemNo {  get; set; }
         public string Name {  get; set; }
         public decimal? Potsize { get; set; }

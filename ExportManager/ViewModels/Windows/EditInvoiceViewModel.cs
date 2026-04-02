@@ -332,7 +332,18 @@ namespace ExportManager.ViewModels.Windows
                 return _DeleteInvoiceItemCommand;
             }
         }
-
+        private BaseCommand _CloseCommand;
+        public ICommand CloseCommand
+        {
+            get
+            {
+                if (_CloseCommand == null)
+                {
+                    _CloseCommand = new BaseCommand(() => IsClosing = true);
+                }
+                return _CloseCommand;
+            }
+        }
         private void DeleteInvoiceItem()
         {
             if (SelectedInvoiceItem == null)

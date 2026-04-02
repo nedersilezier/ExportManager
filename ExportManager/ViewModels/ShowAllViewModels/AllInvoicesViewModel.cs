@@ -1,6 +1,7 @@
 ﻿using ExportManager.Helper;
 using ExportManager.Models;
 using ExportManager.Models.DTO;
+using ExportManager.Models.EntitiesForView;
 using ExportManager.Models.Extensions;
 using ExportManager.Models.Parameters;
 using ExportManager.ViewModels;
@@ -92,11 +93,37 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 return _ApproveInvoiceCommand;
             }
         }
+        private BaseCommand _InvoicePreviewCommand;
+        public ICommand InvoicePreviewCommand
+        {
+            get
+            {
+                if (_InvoicePreviewCommand == null)
+                {
+                    _InvoicePreviewCommand = new BaseCommand(() => OnRequestInvoicePreview());
+                }
+                return _InvoicePreviewCommand;
+            }
+        }
         #endregion
         #region Functions
         public override void OnAdd()
         {
             OpenNewTab(() => new NewInvoiceViewModel(), Load);
+        }
+        public override void Edit()
+        {
+            if (SelectedItem == null)
+            {
+                MessageBox.Show("Please select an invoice to edit.");
+                return;
+            }
+            if (SelectedItem.IsApproved)
+            {
+                MessageBox.Show("Approved invoices cannot be edited.");
+                return;
+            }
+            OnEdit();
         }
         public override void OnEdit()
         {
@@ -188,7 +215,8 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         {
             return new List<CommandViewModel>
             {
-                new CommandViewModel("Approve", ApproveInvoiceCommand)
+                new CommandViewModel("Approve", ApproveInvoiceCommand),
+                new CommandViewModel("Show preview", InvoicePreviewCommand)
             };
         }
         private void OnApproveInvoice()
@@ -198,8 +226,48 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 MessageBox.Show("Please select an invoice to approve.");
                 return;
             }
-            //TODO: Implement invoice approval logic here, such as updating the invoice status and saving changes to the database.
-            return;
+            if(SelectedItem.Status != InvoiceStatuses.Draft)
+            {
+                MessageBox.Show("Only draft invoices can be approved.");
+                return;
+            }
+            var now = DateTime.Now;
+            var user = Environment.UserName;
+            var invoice = potplantsEntities.Invoices.Find(SelectedItem.InvoiceId);
+            invoice.Status = InvoiceStatuses.Issued;
+            invoice.IsApproved = true;
+            invoice.UpdatedAt = now;
+            invoice.UpdatedBy = user;
+            potplantsEntities.SaveChanges();
+            Load();
+        }
+        private void OnRequestInvoicePreview()
+        {
+            if(SelectedItem == null)
+            {
+                MessageBox.Show("Please select an invoice to preview.");
+                return;
+            }
+            if(!SelectedItem.IsApproved)
+            {
+                MessageBox.Show("Only issued invoices can be previewed.");
+                return;
+            }
+            var invoiceItems = potplantsEntities.InvoiceItems.Where(ii => ii.IsActive == true && ii.InvoiceId == SelectedItem.InvoiceId).Select(ii => new InvoiceItemsListView
+            {
+                InvoiceItemId = ii.InvoiceItemId,
+                ItemNo = ii.ItemNo,
+                Name = ii.NameSnapshot,
+                Potsize = ii.PotSizeSnapshot,
+                Height = ii.HeightSnapshot,
+                Quantity = ii.Quantity,
+                UnitPrice = ii.UnitPriceSnapshot,
+                TaxRate = ii.TaxRateSnapshot,
+                TaxAmount = ii.TaxAmount,
+                NetAmount = ii.NetAmount,
+                GrossAmount = ii.GrossAmount
+            }).ToList();
+            OnRequestWindow<InvoicePreviewViewModel>(new InvoiceParameter(SelectedItem, () => { }, invoiceItems));
         }
         #endregion
         #region Sorting and searching

@@ -299,6 +299,7 @@
     <Compile Include="ViewModels\Abstract\IParameterReceiver.cs" />
     <Compile Include="Services\IWindowService.cs" />
     <Compile Include="Services\WindowService.cs" />
+    <Compile Include="ViewModels\Windows\InvoicePreviewViewModel.cs" />
     <Compile Include="ViewModels\Windows\NewOrderItemCarrierViewModel.cs" />
     <Compile Include="ViewModels\WorkspaceViewModel.cs" />
     <Compile Include="Views\AddViews\NewInvoicePerOrderView.xaml.cs">
@@ -434,6 +435,9 @@
     </Compile>
     <Compile Include="Views\Windows\ImageWindowView.xaml.cs">
       <DependentUpon>ImageWindowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\InvoicePreviewView.xaml.cs">
+      <DependentUpon>InvoicePreviewView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Windows\NewOrderItemCarrierView.xaml.cs">
       <DependentUpon>NewOrderItemCarrierView.xaml</DependentUpon>
@@ -656,6 +660,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Windows\ImageWindowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Windows\InvoicePreviewView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

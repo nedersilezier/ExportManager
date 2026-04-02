@@ -143,7 +143,7 @@
         </TabControl>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 0, 20, 0">
             <Button Content="Delete" Width="100" Margin="0, 0, 15, 0" Command="{Binding DeleteInvoiceItemCommand}" Visibility="{Binding IsDeleteEnabled, Converter={StaticResource BoolToVisibility}}"/>
-            <Button Content="Cancel" Width="100" Margin="0, 0, 10, 0" IsCancel="true"/>
+            <Button Content="Cancel" Width="100" Margin="0, 0, 10, 0" Command="{Binding CloseCommand}"/>
             <Button Content="Save and close" Width="100" Margin="0, 0, 0, 0" Command="{Binding SaveCommand}"/>
         </StackPanel>
     </Grid>
