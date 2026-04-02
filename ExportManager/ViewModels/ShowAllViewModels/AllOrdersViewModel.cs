@@ -48,24 +48,6 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         public override void Load()
         {
-            //List = new ObservableCollection<OrdersListView>(
-            //    from order in potplantsEntities.Orders
-            //    where order.IsActive == true
-            //    select new OrdersListView
-            //    {
-            //        OrderId = order.OrderId,
-            //        ClientId = order.Clients.ClientId,
-            //        ClientCode = order.Clients.ClientCode,
-            //        ClientName = order.Clients.Name,
-            //        OrderDate = order.OrderDate,
-            //        PreparationDate = order.PreparationDate,
-            //        ShipmentDate = order.ShipmentDate,
-            //        DeliveryDate = order.DeliveryDate,
-            //        Country = order.Clients.Addresses.Countries.Name,
-            //        SalesPerson = order.SalesPerson,
-            //        Status = order.Status,
-            //        Remarks = order.Remarks
-            //    });
             List = new ObservableCollection<OrdersListView>(GetOrders().ToList());
         }
         #endregion
@@ -131,7 +113,16 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 return _CancelOrderCommand;
             }
         }
-
+        private BaseCommand _ReopenOrderCommand;
+        public ICommand ReopenOrderCommand
+            {
+            get
+            {
+                if (_ReopenOrderCommand == null)
+                    _ReopenOrderCommand = new BaseCommand(OnReopenOrder);
+                return _ReopenOrderCommand;
+            }
+        }
         public override IList<CommandViewModel> CreateExtraCommands()
         {
             if (IsSelectMode)
@@ -142,6 +133,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 new CommandViewModel("Carriers", ShowCarriersCommand),
                 new CommandViewModel("Close order", CloseOrderCommand),
                 new CommandViewModel("Cancel order", CancelOrderCommand),
+                new CommandViewModel("Reopen order", ReopenOrderCommand),
             };
         }
         #endregion
@@ -315,6 +307,47 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                     catch (Exception ex)
                     {
                         MessageBox.Show("Error while closing the order.");
+                    }
+                }
+            }
+        }
+        private void OnReopenOrder()
+        {
+            if (SelectedItem == null)
+            {
+                MessageBox.Show("No order selected.");
+                return;
+            }
+            if (SelectedItem.Status != OrderStatuses.Closed)
+            {
+                ShowMessageBox("Not available.");
+                return;
+            }
+            var result = MessageBox.Show(
+                        "Reopen this order?",
+                        $"{SelectedItem.ClientName}",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                using (var shortLivedPotplantsEntities = new PotplantsEntities())
+                {
+                    var order = shortLivedPotplantsEntities.Orders.Where(o => o.OrderId == SelectedItem.OrderId).FirstOrDefault();
+                    if (order == null)
+                    {
+                        MessageBox.Show("Order not found.");
+                        return;
+                    }
+                    try
+                    {
+                        order.Status = OrderStatuses.Open;
+                        shortLivedPotplantsEntities.SaveChanges();
+                        SelectedItem.Status = OrderStatuses.Open;
+                        OnPropertyChanged(() => List);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error while reopening the order.");
                     }
                 }
             }
