@@ -20,6 +20,10 @@ namespace ExportManager.Models.BusinessLogic.ListViewsForUI
         #region Functions
         public IQueryable<Invoices> GetInvoices()
         {
+            return potplantsEntities.Invoices;
+        }
+        public IQueryable<Invoices> GetActiveInvoices()
+        {
             return potplantsEntities.Invoices.Where(i => i.IsActive);
         }
         public IQueryable<Invoices> GetInvoicesPerClient(int clientId)

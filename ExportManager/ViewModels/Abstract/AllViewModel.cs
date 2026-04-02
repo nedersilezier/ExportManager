@@ -87,20 +87,6 @@ namespace ExportManager.ViewModels.Abstract
 
         #endregion
         #region Functions
-        //protected void AddNew<T2>() where T2: NewItemViewModelBase, new()
-        //{
-        //    var viewModel = new T2();
-        //    if(viewModel is NewItemViewModelBase newitemViewModelBase)
-        //    {
-        //        void handler()
-        //        {
-        //            Load();
-        //            newitemViewModelBase.Added -= handler;
-        //        }
-        //        newitemViewModelBase.Added += handler;
-        //    }
-        //    OnRequestOpen(viewModel);
-        //}
         public abstract void Load();
         public abstract void OnAdd();
         public abstract void OnEdit();
@@ -119,13 +105,14 @@ namespace ExportManager.ViewModels.Abstract
                 OnRemove();
             }
         }
-        protected void SoftDelete<T>(int itemId) where T : class, IHasIsActive
+        protected virtual void SoftDelete<T>(int itemId) where T : class, IHasIsActive
         {
             var item = potplantsEntities.Set<T>().Find(itemId);
             if (item == null)
                 return;
             item.IsActive = false;
             item.DeletedAt = DateTime.Now;
+            item.DeletedBy = Environment.UserName;
             potplantsEntities.SaveChanges();
             Load();
         }

@@ -143,6 +143,7 @@
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="DeletedAt" Type="datetime2" Precision="0" />
+          <Property Name="DeletedBy" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="GrowerCultivations">
           <Key>
@@ -1031,6 +1032,7 @@
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="DeletedAt" Type="DateTime" Precision="0" />
           <NavigationProperty Name="Growers" Relationship="Self.GrowerCultivations" FromRole="Cultivations" ToRole="Growers" />
+          <Property Name="DeletedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Growers">
           <Key>
@@ -1874,6 +1876,7 @@
           <EntitySetMapping Name="Cultivations">
             <EntityTypeMapping TypeName="PotplantsModel.Cultivations">
               <MappingFragment StoreEntitySet="Cultivations">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
                 <ScalarProperty Name="CultivationId" ColumnName="CultivationId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
