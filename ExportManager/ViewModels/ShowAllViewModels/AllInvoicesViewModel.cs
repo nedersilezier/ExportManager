@@ -252,7 +252,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             {
                 MessageBox.Show("Only issued invoices can be previewed.");
                 return;
-            }
+            }   
             var invoiceItems = potplantsEntities.InvoiceItems.Where(ii => ii.IsActive == true && ii.InvoiceId == SelectedItem.InvoiceId).Select(ii => new InvoiceItemsListView
             {
                 InvoiceItemId = ii.InvoiceItemId,
