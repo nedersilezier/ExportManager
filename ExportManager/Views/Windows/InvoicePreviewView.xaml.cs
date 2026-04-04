@@ -19,9 +19,39 @@ namespace ExportManager.Views.Windows
     /// </summary>
     public partial class InvoicePreviewView : Window
     {
+        private const double MinZoom = 10.0;
+        private const double MaxZoom = 500.0;
+        private const double ZoomIncrement = 2.5;
         public InvoicePreviewView()
         {
             InitializeComponent();
+        }
+        private void DocViewer_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Fit to height
+            if (sender is DocumentViewer viewer)
+            {
+                viewer.FitToMaxPagesAcross(1);
+                viewer.GoToPage(1);
+            }
+        }
+        // Zoom commands
+        private void IncreaseZoom_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (docViewer.Zoom + ZoomIncrement <= MaxZoom)
+            {
+                docViewer.Zoom += ZoomIncrement;
+            }
+            e.Handled = true;
+        }
+
+        private void DecreaseZoom_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (docViewer.Zoom - ZoomIncrement >= MinZoom)
+            {
+                docViewer.Zoom -= ZoomIncrement;
+            }
+            e.Handled = true;
         }
     }
 }

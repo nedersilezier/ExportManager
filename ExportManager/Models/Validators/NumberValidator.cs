@@ -64,7 +64,7 @@ namespace ExportManager.Models.Validators
             {
                 var decimalValue = Convert.ToDecimal(number);
                 if (decimalValue <= condition)
-                    return $"Value cannot be lower than{condition}.";
+                    return $"Value cannot be lower than {condition}.";
                 return null;
             }
             catch

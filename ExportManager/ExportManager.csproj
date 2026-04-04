@@ -132,6 +132,7 @@
     <Compile Include="Models\BusinessLogic\InvoiceCalculator.cs" />
     <Compile Include="Models\BusinessLogic\Queries\InvoicesQuery.cs" />
     <Compile Include="Models\BusinessLogic\Queries\PaymentMethodsQuery.cs" />
+    <Compile Include="Models\Converters\HighlightDateConverter.cs" />
     <Compile Include="Models\Converters\PercentConverter.cs" />
     <Compile Include="Models\DTO\InvoicePartyListView.cs" />
     <Compile Include="Models\DTO\InvoicesListView.cs" />

@@ -16,7 +16,12 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Border Grid.Row="0" Background="#DDD">
-            <DocumentViewer Document="{Binding FixedInvoiceDocument}" Zoom="75"/>
+            <DocumentViewer x:Name="docViewer" Document="{Binding FixedInvoiceDocument}" Loaded="DocViewer_Loaded">
+                <DocumentViewer.CommandBindings>
+                    <CommandBinding Command="NavigationCommands.IncreaseZoom" Executed="IncreaseZoom_Executed"/>
+                    <CommandBinding Command="NavigationCommands.DecreaseZoom" Executed="DecreaseZoom_Executed"/>
+                </DocumentViewer.CommandBindings>
+            </DocumentViewer>
         </Border>
     </Grid>
 </Window>

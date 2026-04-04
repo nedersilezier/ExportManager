@@ -14,13 +14,13 @@ namespace ExportManager.ViewModels.AddViewModels
     {
         #region Constructor
         public NewCarrierTypeViewModel()
-        : base(new[] { "MaxHeight" })
+        : base(new[] { "MaxHeight", "Width", "Length", "Weight", "ShelfWeight" })
         {
             base.DisplayName = "New carrier type";
             item = new CarrierTypes();
         }
         public NewCarrierTypeViewModel(int carrierTypeId)
-        : base(new[] { "MaxHeight" })
+        : base(new[] { "MaxHeight", "Width", "Length", "Weight", "ShelfWeight" })
         {
             base.DisplayName = "Edit carrier type";
             _IsEditMode = true;
@@ -120,6 +120,18 @@ namespace ExportManager.ViewModels.AddViewModels
                     case "MaxHeight":
                         message = NumberValidator.IsGreaterThan(this.MaxHeight, 20);
                         break;
+                    case "Width":
+                        message = NumberValidator.IsPositive(this.Width);
+                        break;
+                    case "Length":
+                        message = NumberValidator.IsPositive(this.Length);
+                        break;
+                    case "Weight":
+                        message = NumberValidator.IsPositive(this.Weight);
+                        break;
+                    case "ShelfWeight":
+                        message = NumberValidator.IsPositive(this.ShelfWeight);
+                        break;
                 }
 
                 return message;
@@ -127,7 +139,7 @@ namespace ExportManager.ViewModels.AddViewModels
         }
         public override bool IsValid()
         {
-            if (this["MaxHeight"] == null)
+            if (string.IsNullOrEmpty(this["MaxHeight"]) && string.IsNullOrEmpty(this["Width"]) && string.IsNullOrEmpty(this["Length"]) && string.IsNullOrEmpty(this["Weight"]) && string.IsNullOrEmpty(this["ShelfWeight"]))
                 return true;
             return false;
         }
