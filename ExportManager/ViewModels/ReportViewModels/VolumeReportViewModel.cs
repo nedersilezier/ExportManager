@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ExportManager.ViewModels.ReportViewModels
@@ -23,6 +24,7 @@ namespace ExportManager.ViewModels.ReportViewModels
         private KeyAndValue _SelectedClient;
         private KeyAndValue _SelectedCarrierType;
         private BaseCommand _CalculateVolume;
+        private HashSet<DateTime> _AvailableDates = new HashSet<DateTime>();
         #endregion
         #region Database
         public PotplantsEntities potplantsEntities;
@@ -32,8 +34,11 @@ namespace ExportManager.ViewModels.ReportViewModels
         {
             base.DisplayName = "Volume report";
             potplantsEntities = new PotplantsEntities();
-            FromDate = DateTime.Now;
-            ToDate = DateTime.Now;
+            _FromDate = DateTime.Now.Date;
+            _ToDate = DateTime.Now.Date;
+            OnPropertyChanged(() => FromDate);
+            OnPropertyChanged(() => ToDate);
+            Console.WriteLine($"From: {FromDate}; To{ToDate}");
         }
         #endregion
         #region Properties
@@ -44,6 +49,11 @@ namespace ExportManager.ViewModels.ReportViewModels
             {
                 if (_FromDate != value)
                 {
+                    if(value.Date > _ToDate)
+                    {
+                        MessageBox.Show("'From' date cannot be later than 'To' date.", "Invalid date range", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
                     _FromDate = value;
                     OnPropertyChanged(() => FromDate);
                 }
@@ -56,9 +66,26 @@ namespace ExportManager.ViewModels.ReportViewModels
             {
                 if (_ToDate != value)
                 {
+                    if (value.Date < _FromDate)
+                    {
+                        MessageBox.Show("'To' date cannot be earlier than 'From' date.", "Invalid date range", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
                     _ToDate = value;
                     OnPropertyChanged(() => ToDate);
                 }
+            }
+        }
+        public HashSet<DateTime> AvailableDates
+        {
+            get { return _AvailableDates; }
+                set
+                {
+                    if (_AvailableDates != value)
+                    {
+                        _AvailableDates = value;
+                        OnPropertyChanged(() => AvailableDates);
+                    }
             }
         }
         public decimal? Volume
@@ -101,6 +128,7 @@ namespace ExportManager.ViewModels.ReportViewModels
                 if (_SelectedClient != value)
                 {
                     _SelectedClient = value;
+                    AvailableDates = new OrdersQuery(potplantsEntities).GetOrderDatesPerClient(SelectedClient.Key);
                     OnPropertyChanged(() => SelectedClient);
                 }
             }

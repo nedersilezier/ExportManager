@@ -13,7 +13,7 @@ using ExportManager.Models.BusinessLogic.ListViewsForUI;
 
 namespace ExportManager.ViewModels.ReportViewModels
 {
-    public class OrderWeightReportViewModel: WorkspaceViewModel
+    public class OrderWeightReportViewModel : WorkspaceViewModel
     {
         #region Fields
         public DateTime _Date;
@@ -23,6 +23,7 @@ namespace ExportManager.ViewModels.ReportViewModels
         private BaseCommand _CalculateWeight;
         private ObservableCollection<WeightReportProductListView> _ProductList;
         private ObservableCollection<WeightReportCarrierListView> _CarrierList;
+        private HashSet<DateTime> _AvailableDates;
         #endregion
         #region Database
         public PotplantsEntities potplantsEntities;
@@ -79,7 +80,7 @@ namespace ExportManager.ViewModels.ReportViewModels
             get { return _OrderItems; }
             set
             {
-                if(_OrderItems != value)
+                if (_OrderItems != value)
                 {
                     _OrderItems = value;
                     OnPropertyChanged(() => OrderItems);
@@ -98,6 +99,23 @@ namespace ExportManager.ViewModels.ReportViewModels
                     _OrderItems = new OrdersQuery(potplantsEntities).GetOrdersListItemsPerDate(Date);
                     OnPropertyChanged(() => Date);
                     OnPropertyChanged(() => OrderItems);
+                }
+            }
+        }
+        public HashSet<DateTime> AvailableDates
+        {
+            get
+            {
+                if (_AvailableDates == null)
+                    _AvailableDates = new OrdersQuery(potplantsEntities).GetOrderDates();
+                return _AvailableDates;
+            }
+            set
+            {
+                if (_AvailableDates != value)
+                {
+                    _AvailableDates = value;
+                    OnPropertyChanged(() => AvailableDates);
                 }
             }
         }
@@ -145,14 +163,14 @@ namespace ExportManager.ViewModels.ReportViewModels
                 ProductList = new ObservableCollection<WeightReportProductListView>(
                 new OrderWeightCalculator(potplantsEntities).ProductsQuery(SelectedOrder.Key, Date).ToList());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ShowMessageBox(ex.Message);
             }
         }
         public void LoadCarriers()
         {
-            if(SelectedOrder == null)
+            if (SelectedOrder == null)
                 return;
             CarrierList = new ObservableCollection<WeightReportCarrierListView>(
                 new OrderWeightCalculator(potplantsEntities).CarriersQuery(SelectedOrder.Key, Date).ToList());

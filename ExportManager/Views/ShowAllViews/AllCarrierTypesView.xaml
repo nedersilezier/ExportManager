@@ -16,7 +16,8 @@
                 <DataGridTextColumn Header="Maximum height" Binding="{Binding MaxHeight}" Width="Auto"/>
                 <DataGridTextColumn Header="Area" Binding="{Binding Area}" Width="100"/>
                 <DataGridTextColumn Header="Weight" Binding="{Binding Weight}" Width="75"/>
-                <DataGridTextColumn Header="Description" Binding="{Binding Remarks}" Width="550"/>
+                <DataGridTextColumn Header="Shelf weight" Binding="{Binding ShelfWeight}" Width="100"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding Remarks}" Width="500"/>
                 <DataGridTextColumn Header="Last updated" Binding="{Binding UpdatedAt}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>

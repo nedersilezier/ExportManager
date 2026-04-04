@@ -8,6 +8,10 @@ namespace ExportManager.Models.BusinessLogic
 {
     public class VolumeCalculator: DatabaseClass
     {
+        #region Fields
+        private const decimal CarrierHeightClearance = 20m;
+        private const decimal ShelfClearance = 5m;
+        #endregion
         #region Constructor
         public VolumeCalculator(PotplantsEntities potplantsEntities)
             : base(potplantsEntities)
@@ -58,40 +62,13 @@ namespace ExportManager.Models.BusinessLogic
                 return null;
             if (carrier.Area == null || carrier.MaxHeight == null)
                 return null;
-            decimal? carrierVolume = carrier.Area * carrier.MaxHeight;
+            decimal? carrierVolume = carrier.Area * (carrier.MaxHeight - CarrierHeightClearance);
             var products = GetProductsQuery(clientId, dateFrom, dateTo).ToList();
-            //var productsOld = (
-            //    from order in potplantsEntities.Orders
-            //    where order.IsActive == true
-            //          && order.ClientId == clientId
-            //          && order.OrderDate >= dateFromIncluded
-            //          && order.OrderDate < dateToIncluded
-            //    join orderitem in potplantsEntities.OrderItems on order.OrderId equals orderitem.OrderId
-            //    join stockitem in potplantsEntities.StockItems on orderitem.StockItemId equals stockitem.StockItemId
-            //    join traytype in potplantsEntities.TrayTypes on stockitem.TrayTypeId equals traytype.TrayTypeId
-            //    join product in potplantsEntities.Products on stockitem.ProductId equals product.ProductId
-            //    group orderitem by new
-            //    {
-            //        traytype.Width,
-            //        traytype.Length,
-            //        product.Height,
-            //        traytype.QtyPerTray
-            //    }
-            //    into grouped
-            //    select new
-            //    {
-            //        grouped.Key.Width,
-            //        grouped.Key.Length,
-            //        grouped.Key.Height,
-            //        grouped.Key.QtyPerTray,
-            //        TotalQty = grouped.Sum(t => t.Quantity)
-            //    }
-            //    ).ToList();
             decimal? productsVolume = 0m;
             foreach(var product in products)
             {
                 var traysNeeded = Math.Ceiling(product.TotalQty / (decimal)product.QtyPerTray);
-                var trayVolume = product.Length * product.Width * product.Height;
+                var trayVolume = product.Length * product.Width * (product.Height + ShelfClearance);
                 productsVolume += trayVolume * traysNeeded;
             }
             decimal result = (decimal)(productsVolume / carrierVolume);

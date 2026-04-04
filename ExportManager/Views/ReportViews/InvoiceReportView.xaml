@@ -40,7 +40,7 @@
                     <RowDefinition Height="40"/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Grid.Column="0" Content="Select date" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
-                <DatePicker Grid.Row="0"  Grid.Column="1" SelectedDate="{Binding Date}" Margin="2, 2, 2, 2" VerticalAlignment="Center" Height="30"/>
+                <DatePicker Grid.Row="0"  Grid.Column="1" SelectedDate="{Binding Date}" Margin="2, 2, 2, 2" VerticalAlignment="Center" Height="30" CalendarStyle="{StaticResource HighlightedCalendarStyle}"/>
                 <Label Grid.Row="1" Grid.Column="0" Content="Select invoice" HorizontalAlignment="Center" Margin="0, 2, 0, 2"/>
                 <ComboBox Grid.Row="1" Grid.Column="1" Margin="2, 2, 2, 2"
                             ItemsSource="{Binding InvoiceComboBoxItems}"

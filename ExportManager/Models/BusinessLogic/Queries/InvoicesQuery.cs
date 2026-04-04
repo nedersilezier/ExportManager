@@ -43,7 +43,7 @@ namespace ExportManager.Models.BusinessLogic.ListViewsForUI
                         .Select(i => new
                         {
                             i.InvoiceId,
-                            Client = i.InvoiceItems.Select(ii => ii.OrderItems.Orders.Clients).FirstOrDefault()
+                            Client = i.InvoiceItems.Where(ii => ii.SourceOrderItemId.HasValue).Select(ii => ii.OrderItems.Orders.Clients).FirstOrDefault()
                         }).Where(x => x.Client != null).Select(x => new KeyAndValue
                         {
                             Key = x.InvoiceId,
@@ -51,6 +51,10 @@ namespace ExportManager.Models.BusinessLogic.ListViewsForUI
                         });
 
             return new ObservableCollection<KeyAndValue>(query);
+        }
+        public HashSet<DateTime> GetInvoiceDates()
+        {
+            return GetActiveInvoices().Select(i =>  i.InvoiceDate).ToList().Select(d => d.Date).Distinct().ToHashSet();
         }
         #endregion
     }

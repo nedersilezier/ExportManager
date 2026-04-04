@@ -1,10 +1,12 @@
 ﻿using ExportManager.Models;
+using ExportManager.Models.Validators;
 using ExportManager.ViewModels.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ExportManager.ViewModels.AddViewModels
 {
@@ -12,13 +14,13 @@ namespace ExportManager.ViewModels.AddViewModels
     {
         #region Constructor
         public NewCarrierTypeViewModel()
-        : base(new[] { "" })
+        : base(new[] { "MaxHeight" })
         {
             base.DisplayName = "New carrier type";
             item = new CarrierTypes();
         }
         public NewCarrierTypeViewModel(int carrierTypeId)
-        : base(new[] { "" })
+        : base(new[] { "MaxHeight" })
         {
             base.DisplayName = "Edit carrier type";
             _IsEditMode = true;
@@ -61,7 +63,7 @@ namespace ExportManager.ViewModels.AddViewModels
             get { return item.MaxHeight; }
             set
             {
-                if(item.MaxHeight != value)
+                if (item.MaxHeight != value)
                     item.MaxHeight = value;
                 OnPropertyChanged(() => MaxHeight);
             }
@@ -78,12 +80,12 @@ namespace ExportManager.ViewModels.AddViewModels
         }
         public decimal ShelfWeight
         {
-            get { return item.Weight; }
+            get { return item.ShelfWeight; }
             set
             {
-                if (item.Weight != value)
-                    item.Weight = value;
-                OnPropertyChanged(() => Weight);
+                if (item.ShelfWeight != value)
+                    item.ShelfWeight = value;
+                OnPropertyChanged(() => ShelfWeight);
             }
         }
         public string Remarks
@@ -105,6 +107,30 @@ namespace ExportManager.ViewModels.AddViewModels
         //    potplantsEntities.SaveChanges();
         //    RaiseAdded();
         //}
+        #endregion
+        #region  Validation 
+        public override string this[string name]
+        {
+            get
+            {
+                string message = null;
+                switch (name)
+                {
+                    //accounting for the assumption that carriers surface is at 20cm above the floor
+                    case "MaxHeight":
+                        message = NumberValidator.IsGreaterThan(this.MaxHeight, 20);
+                        break;
+                }
+
+                return message;
+            }
+        }
+        public override bool IsValid()
+        {
+            if (this["MaxHeight"] == null)
+                return true;
+            return false;
+        }
         #endregion
     }
 }

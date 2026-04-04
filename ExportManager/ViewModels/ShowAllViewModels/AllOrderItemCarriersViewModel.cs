@@ -415,6 +415,8 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 MessageBox.Show("No carrier selected.");
                 return;
             }
+            if (_IsOrderItemsChanged)
+                UpdateDatabase();
             OnRequestWindow<EditCarrierAddonsViewModel>(new OrderItemCarrierParameter(
                 SelectedCarrier.CarrierId,
                 SelectedCarrier.CarrierType,

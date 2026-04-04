@@ -115,7 +115,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
         }
         private BaseCommand _ReopenOrderCommand;
         public ICommand ReopenOrderCommand
-            {
+        {
             get
             {
                 if (_ReopenOrderCommand == null)
@@ -270,33 +270,34 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 ShowMessageBox("Not available.");
                 return;
             }
-            var result = MessageBox.Show(
-                        "Close this order?",
-                        $"{SelectedItem.ClientName}",
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Question);
-            if (result == MessageBoxResult.Yes)
+
+            using (var shortLivedPotplantsEntities = new PotplantsEntities())
             {
-                using (var shortLivedPotplantsEntities = new PotplantsEntities())
+                var order = shortLivedPotplantsEntities.Orders.Where(o => o.OrderId == SelectedItem.OrderId).FirstOrDefault();
+                if (order == null)
                 {
-                    var order = shortLivedPotplantsEntities.Orders.Where(o => o.OrderId == SelectedItem.OrderId).FirstOrDefault();
-                    if (order == null)
-                    {
-                        MessageBox.Show("Order not found.");
-                        return;
-                    }
-                    var orderitems = order.OrderItems.Where(oi => oi.IsActive == true).ToList();
-                    if (!orderitems.Any())
-                    {
-                        MessageBox.Show("There are no items in this order.");
-                        return;
-                    }
-                    var isAllScanned = orderitems.All(oi => oi.IsScanned == true);
-                    if (!isAllScanned)
-                    {
-                        MessageBox.Show("Not all order items are scanned.");
-                        return;
-                    }
+                    MessageBox.Show("Order not found.");
+                    return;
+                }
+                var orderitems = order.OrderItems.Where(oi => oi.IsActive == true).ToList();
+                if (!orderitems.Any())
+                {
+                    MessageBox.Show("There are no items in this order.");
+                    return;
+                }
+                var isAllScanned = orderitems.All(oi => oi.IsScanned == true);
+                if (!isAllScanned)
+                {
+                    MessageBox.Show("Not all order items are scanned.");
+                    return;
+                }
+                var result = MessageBox.Show(
+                    "Close this order?",
+                    $"{SelectedItem.ClientName}",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
                     try
                     {
                         order.Status = OrderStatuses.Closed;
@@ -310,6 +311,7 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                     }
                 }
             }
+
         }
         private void OnReopenOrder()
         {
@@ -367,10 +369,11 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             {
                 stockItem.QuantityLeft += stockItemIdsDict[stockItem.StockItemId];
             }
-            orderItems.ForEach(oi => {
+            orderItems.ForEach(oi =>
+            {
                 oi.IsActive = false;
                 oi.DeletedAt = DateTime.Now;
-                });
+            });
         }
         #endregion
         #region Sorting and searching

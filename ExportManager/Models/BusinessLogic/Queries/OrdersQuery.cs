@@ -18,6 +18,10 @@ namespace ExportManager.Models.BusinessLogic.ListViewsForUI
         }
         #endregion
         #region Functions
+        public IQueryable<Orders> GetActiveOrders()
+        {
+            return potplantsEntities.Orders.Where(o => o.IsActive == true);
+        }
         public IQueryable<Orders> GetOrderById(int orderId)
         {
                        return potplantsEntities.Orders.Where(o => o.IsActive && o.OrderId == orderId);
@@ -77,6 +81,14 @@ namespace ExportManager.Models.BusinessLogic.ListViewsForUI
                     Key = t.OrderId,
                     Value = t.Clients.ClientCode + " | " + t.Clients.Name
                 }));
+        }
+        public HashSet<DateTime> GetOrderDates()
+        {
+            return GetActiveOrders().Select(o => o.OrderDate).Distinct().ToHashSet();
+        }
+        public HashSet<DateTime> GetOrderDatesPerClient(int clientId)
+        {
+            return GetActiveOrders().Where(o => o.ClientId == clientId).Select(o => o.OrderDate).ToList().Select(d => d.Date).Distinct().ToHashSet();
         }
         #endregion
     }

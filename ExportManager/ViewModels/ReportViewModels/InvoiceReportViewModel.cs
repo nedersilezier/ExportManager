@@ -13,7 +13,7 @@ using ExportManager.Models.BusinessLogic.ListViewsForUI;
 
 namespace ExportManager.ViewModels.ReportViewModels
 {
-    public class InvoiceReportViewModel: WorkspaceViewModel
+    public class InvoiceReportViewModel : WorkspaceViewModel
     {
         #region Fields
         public DateTime _Date;
@@ -24,6 +24,7 @@ namespace ExportManager.ViewModels.ReportViewModels
         private KeyAndValue _SelectedInvoice;
         private BaseCommand _CalculateInvoice;
         private ObservableCollection<InvoiceItemsListView> _InvoiceItemsList;
+        private HashSet<DateTime> _AvailableDates;
         #endregion
         #region Database
         public PotplantsEntities potplantsEntities;
@@ -130,6 +131,23 @@ namespace ExportManager.ViewModels.ReportViewModels
                 }
             }
         }
+        public HashSet<DateTime> AvailableDates
+        {
+            get
+            {
+                if (_AvailableDates == null)
+                    _AvailableDates = new InvoicesQuery(potplantsEntities).GetInvoiceDates();
+                return _AvailableDates;
+            }
+            set
+            {
+                if (_AvailableDates != value)
+                {
+                    _AvailableDates = value;
+                    OnPropertyChanged(() => AvailableDates);
+                }
+            }
+        }
         public ICommand CalculateInvoice
         {
             get
@@ -165,7 +183,7 @@ namespace ExportManager.ViewModels.ReportViewModels
                 InvoiceItemsList = null;
                 return;
             }
-                
+
             NetTotal = new InvoiceCalculator(potplantsEntities).CalculateNetTotal(SelectedInvoice.Key, Date);
             TaxTotal = new InvoiceCalculator(potplantsEntities).CalculateTaxTotal(SelectedInvoice.Key, Date);
             GrossTotal = new InvoiceCalculator(potplantsEntities).CalculateGrossTotal(SelectedInvoice.Key, Date);

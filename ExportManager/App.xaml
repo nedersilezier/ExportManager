@@ -12,6 +12,7 @@
             <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
             <converters:ProfitToFontColorConverter x:Key="ProfitToFontColor"/>
             <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibility"/>
+            <converters:HighlightDateConverter x:Key="HighlightDateConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

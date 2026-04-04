@@ -9,6 +9,20 @@
                     xmlns:vwShow="clr-namespace:ExportManager.Views.ShowAllViews"
                     xmlns:vwAdd="clr-namespace:ExportManager.Views.AddViews"
                     xmlns:vwReport="clr-namespace:ExportManager.Views.ReportViews">
+    <!--Calendar style-->
+    <Style x:Key="HighlightedCalendarDayButton" TargetType="CalendarDayButton">
+        <Setter Property="Background">
+            <Setter.Value>
+                <MultiBinding Converter="{StaticResource HighlightDateConverter}">
+                    <Binding Path="Date"/>
+                    <Binding Path="DataContext.AvailableDates" RelativeSource="{RelativeSource AncestorType=DatePicker}"/>
+                </MultiBinding>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="HighlightedCalendarStyle" TargetType="Calendar">
+        <Setter Property="CalendarDayButtonStyle" Value="{StaticResource HighlightedCalendarDayButton}"/>
+    </Style>
     <!--Converters-->
     <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
     <!--Templates for menu items with children-->
