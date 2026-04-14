@@ -10,5 +10,6 @@ namespace ExportManager.Models
     {
         bool IsActive{ get; set;}
         DateTime? DeletedAt { get; set; }
+        string DeletedBy { get; set; }
     }
 }

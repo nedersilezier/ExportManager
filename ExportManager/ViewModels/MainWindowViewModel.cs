@@ -117,20 +117,6 @@ namespace ExportManager.ViewModels
                 return _AddressCommand;
             }
         }
-        public CommandViewModel ProductsCommand
-        {
-            get
-            {
-                if (_ProductsCommand == null)
-                {
-                    _ProductsCommand = new CommandViewModel(
-                        "Manage Products",
-                        new BaseCommand(() => this.ShowAll<AllProductsViewModel>())
-                    );
-                }
-                return _AddressCommand;
-            }
-        }
         //Main StackPanel commands
         private List<CommandViewModel> CreateGlobalCommands()
         {

@@ -1,0 +1,27 @@
+﻿<Window x:Class="ExportManager.Views.Windows.InvoicePreviewView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:local="clr-namespace:ExportManager.Views.Windows"
+            mc:Ignorable="d"
+            Title="{Binding DisplayName}"
+            BorderBrush="DarkGray"
+            BorderThickness="1"
+            Background="WhiteSmoke"
+            WindowState="Maximized"
+            WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Background="#DDD">
+            <DocumentViewer x:Name="docViewer" Document="{Binding FixedInvoiceDocument}" Loaded="DocViewer_Loaded">
+                <DocumentViewer.CommandBindings>
+                    <CommandBinding Command="NavigationCommands.IncreaseZoom" Executed="IncreaseZoom_Executed"/>
+                    <CommandBinding Command="NavigationCommands.DecreaseZoom" Executed="DecreaseZoom_Executed"/>
+                </DocumentViewer.CommandBindings>
+            </DocumentViewer>
+        </Border>
+    </Grid>
+</Window>

@@ -80,7 +80,7 @@
         <Grid Grid.Row="2">
             <Border>
                 <HeaderedContentControl Grid.Row="2" 
-                                        Header="Workspace"
+                                        Header="Work Area"
                                         Content="{Binding Workspaces}"
                                         ContentTemplate="{StaticResource WorkspacesTemplate}"
                                         Style="{StaticResource MainHCCStyle}"/>

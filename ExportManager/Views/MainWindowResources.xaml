@@ -9,6 +9,20 @@
                     xmlns:vwShow="clr-namespace:ExportManager.Views.ShowAllViews"
                     xmlns:vwAdd="clr-namespace:ExportManager.Views.AddViews"
                     xmlns:vwReport="clr-namespace:ExportManager.Views.ReportViews">
+    <!--Calendar style-->
+    <Style x:Key="HighlightedCalendarDayButton" TargetType="CalendarDayButton">
+        <Setter Property="Background">
+            <Setter.Value>
+                <MultiBinding Converter="{StaticResource HighlightDateConverter}">
+                    <Binding Path="Date"/>
+                    <Binding Path="DataContext.AvailableDates" RelativeSource="{RelativeSource AncestorType=DatePicker}"/>
+                </MultiBinding>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="HighlightedCalendarStyle" TargetType="Calendar">
+        <Setter Property="CalendarDayButtonStyle" Value="{StaticResource HighlightedCalendarDayButton}"/>
+    </Style>
     <!--Converters-->
     <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
     <!--Templates for menu items with children-->
@@ -145,6 +159,15 @@
     <DataTemplate DataType="{x:Type vmAdd:NewOrderItemViewModel}">
         <vwAdd:NewOrderItemView/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type vmAdd:NewInvoiceViewModel}">
+        <vwAdd:NewInvoiceView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vmAdd:NewInvoicePerOrderViewModel}">
+        <vwAdd:NewInvoicePerOrderView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vmAdd:NewInvoicePerPeriodViewModel}">
+        <vwAdd:NewInvoicePerPeriodView/>
+    </DataTemplate>
     
     
     <!--Report views-->
@@ -187,13 +210,12 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="border" Property="BorderBrush" Value="Black"/>
-                            <!--<Setter TargetName="border" Property="BorderThickness" Value="2"/>-->
+
                             <Setter TargetName="border" Property="CornerRadius" Value="4"/>
                             <Setter Property="FontWeight" Value="DemiBold"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="#a9d6e5"/>
-                            <!--<Setter Property="Background" Value="LightBlue"/>-->
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

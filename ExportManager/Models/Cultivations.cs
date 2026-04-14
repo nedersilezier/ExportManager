@@ -25,6 +25,7 @@ namespace ExportManager.Models
         public string Description { get; set; }
         public bool IsActive { get; set; }
         public Nullable<System.DateTime> DeletedAt { get; set; }
+        public string DeletedBy { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Growers> Growers { get; set; }

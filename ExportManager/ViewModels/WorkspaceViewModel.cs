@@ -75,7 +75,8 @@ namespace ExportManager.ViewModels
         protected void OpenNewTab(Func<WorkspaceViewModel> constructor, Action refreshEvent = null)
         {
             var viewModel = constructor();
-            if (viewModel is NewItemViewModelBase newItemViewModel)
+            //if (viewModel is NewItemViewModelBase newItemViewModel)
+            if (viewModel is NewItemViewModelBase newItemViewModel && refreshEvent != null)
             {
                 void handler()
                 {

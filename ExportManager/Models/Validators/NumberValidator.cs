@@ -56,5 +56,21 @@ namespace ExportManager.Models.Validators
                 return "Ivalid number format.";
             }
         }
+        public static string IsGreaterThan(object number, decimal condition)
+        {
+            if (number == null)
+                return "Invalid value.";
+            try
+            {
+                var decimalValue = Convert.ToDecimal(number);
+                if (decimalValue <= condition)
+                    return $"Value cannot be lower than {condition}.";
+                return null;
+            }
+            catch
+            {
+                return "Ivalid number format.";
+            }
+        }
     }
 }

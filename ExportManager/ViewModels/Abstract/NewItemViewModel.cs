@@ -45,19 +45,18 @@ namespace ExportManager.ViewModels.Abstract
         }
         #endregion
         #region Commands
+        //save method for viewmodels that use pure EF entities
         public override void Save()
         {
             if (IsValid() == true)
             {
                 if (!_IsEditMode)
                 {
-                    Console.WriteLine("Can you see me?????");
                     item.IsActive = true;
                     potplantsEntities.Set<T>().Add(item);
                 }
                 try
                 {
-                    Console.WriteLine("Item name: " + item);
                     potplantsEntities.SaveChanges();
                 }
                 catch (Exception ex)

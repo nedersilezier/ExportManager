@@ -9,6 +9,7 @@ namespace ExportManager.Models.EntitiesForView
     public class OrdersListView
     {
         public int OrderId { get; set; }
+        public int ClientId { get; set; }
         public string ClientCode { get; set; }
         public string ClientName { get; set; }
         public DateTime OrderDate { get; set; }

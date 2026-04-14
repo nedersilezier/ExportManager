@@ -3,6 +3,7 @@ using ExportManager.Models;
 using ExportManager.Models.BusinessLogic.ListViewsForUI;
 using ExportManager.Models.EntitiesForView;
 using ExportManager.Models.Extensions;
+using ExportManager.Models.Parameters;
 using ExportManager.ViewModels.Abstract;
 using ExportManager.ViewModels.AddViewModels;
 using System;
@@ -19,14 +20,15 @@ namespace ExportManager.ViewModels.ShowAllViewModels
     public class AllOrdersViewModel : AllViewModel<OrdersListView>
     {
         #region List
-        public override void Load()
+        private Func<IQueryable<OrdersListView>, IQueryable<OrdersListView>> _ordersFilter = null;
+
+        private IQueryable<OrdersListView> GetOrders()
         {
-            List = new ObservableCollection<OrdersListView>(
-                from order in potplantsEntities.Orders
-                where order.IsActive == true
-                select new OrdersListView
+            var query = potplantsEntities.Orders.Where(o => o.IsActive == true)
+                .Select(order => new OrdersListView
                 {
                     OrderId = order.OrderId,
+                    ClientId = order.Clients.ClientId,
                     ClientCode = order.Clients.ClientCode,
                     ClientName = order.Clients.Name,
                     OrderDate = order.OrderDate,
@@ -38,6 +40,15 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                     Status = order.Status,
                     Remarks = order.Remarks
                 });
+
+            if (_ordersFilter != null)
+                query = _ordersFilter(query);
+
+            return query;
+        }
+        public override void Load()
+        {
+            List = new ObservableCollection<OrdersListView>(GetOrders().ToList());
         }
         #endregion
         #region Constructor
@@ -45,6 +56,20 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             : base()
         {
             base.DisplayName = "Orders";
+        }
+        public AllOrdersViewModel(Action<OrderSelectionResult> itemSetter)
+            : base(itemSetter,
+                 generateArgsFromSelection:
+                 selectedItem => (object)new OrderSelectionResult(
+                     selectedItem.OrderId,
+                     selectedItem.ClientId,
+                     selectedItem.ClientCode,
+                     selectedItem.ClientName,
+                     selectedItem.OrderDate,
+                     selectedItem.DeliveryDate))
+        {
+            _ordersFilter = q => q.Where(o => o.Status == OrderStatuses.Closed);
+            base.DisplayName = "Select the order";
         }
         #endregion
         #region Commands
@@ -88,15 +113,27 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 return _CancelOrderCommand;
             }
         }
-
+        private BaseCommand _ReopenOrderCommand;
+        public ICommand ReopenOrderCommand
+        {
+            get
+            {
+                if (_ReopenOrderCommand == null)
+                    _ReopenOrderCommand = new BaseCommand(OnReopenOrder);
+                return _ReopenOrderCommand;
+            }
+        }
         public override IList<CommandViewModel> CreateExtraCommands()
         {
+            if (IsSelectMode)
+                return base.CreateExtraCommands();
             return new List<CommandViewModel>
             {
                 new CommandViewModel("Order items", ShowDetailsCommand),
                 new CommandViewModel("Carriers", ShowCarriersCommand),
                 new CommandViewModel("Close order", CloseOrderCommand),
                 new CommandViewModel("Cancel order", CancelOrderCommand),
+                new CommandViewModel("Reopen order", ReopenOrderCommand),
             };
         }
         #endregion
@@ -233,8 +270,63 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                 ShowMessageBox("Not available.");
                 return;
             }
+
+            using (var shortLivedPotplantsEntities = new PotplantsEntities())
+            {
+                var order = shortLivedPotplantsEntities.Orders.Where(o => o.OrderId == SelectedItem.OrderId).FirstOrDefault();
+                if (order == null)
+                {
+                    MessageBox.Show("Order not found.");
+                    return;
+                }
+                var orderitems = order.OrderItems.Where(oi => oi.IsActive == true).ToList();
+                if (!orderitems.Any())
+                {
+                    MessageBox.Show("There are no items in this order.");
+                    return;
+                }
+                var isAllScanned = orderitems.All(oi => oi.IsScanned == true);
+                if (!isAllScanned)
+                {
+                    MessageBox.Show("Not all order items are scanned.");
+                    return;
+                }
+                var result = MessageBox.Show(
+                    "Close this order?",
+                    $"{SelectedItem.ClientName}",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        order.Status = OrderStatuses.Closed;
+                        shortLivedPotplantsEntities.SaveChanges();
+                        SelectedItem.Status = OrderStatuses.Closed;
+                        OnPropertyChanged(() => List);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error while closing the order.");
+                    }
+                }
+            }
+
+        }
+        private void OnReopenOrder()
+        {
+            if (SelectedItem == null)
+            {
+                MessageBox.Show("No order selected.");
+                return;
+            }
+            if (SelectedItem.Status != OrderStatuses.Closed)
+            {
+                ShowMessageBox("Not available.");
+                return;
+            }
             var result = MessageBox.Show(
-                        "Close this order?",
+                        "Reopen this order?",
                         $"{SelectedItem.ClientName}",
                         MessageBoxButton.YesNo,
                         MessageBoxImage.Question);
@@ -248,28 +340,16 @@ namespace ExportManager.ViewModels.ShowAllViewModels
                         MessageBox.Show("Order not found.");
                         return;
                     }
-                    var orderitems = order.OrderItems.Where(oi => oi.IsActive == true).ToList();
-                    if (!orderitems.Any())
-                    {
-                        MessageBox.Show("There are no items in this order.");
-                        return;
-                    }
-                    var isAllScanned = orderitems.All(oi => oi.IsScanned == true);
-                    if (!isAllScanned)
-                    {
-                        MessageBox.Show("Not all order items are scanned.");
-                        return;
-                    }
                     try
                     {
-                        order.Status = OrderStatuses.Closed;
+                        order.Status = OrderStatuses.Open;
                         shortLivedPotplantsEntities.SaveChanges();
-                        SelectedItem.Status = OrderStatuses.Closed;
+                        SelectedItem.Status = OrderStatuses.Open;
                         OnPropertyChanged(() => List);
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Error while closing the order.");
+                        MessageBox.Show("Error while reopening the order.");
                     }
                 }
             }
@@ -289,10 +369,11 @@ namespace ExportManager.ViewModels.ShowAllViewModels
             {
                 stockItem.QuantityLeft += stockItemIdsDict[stockItem.StockItemId];
             }
-            orderItems.ForEach(oi => {
+            orderItems.ForEach(oi =>
+            {
                 oi.IsActive = false;
                 oi.DeletedAt = DateTime.Now;
-                });
+            });
         }
         #endregion
         #region Sorting and searching

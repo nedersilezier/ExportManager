@@ -31,6 +31,7 @@ namespace ExportManager.Models
         public bool IsActive { get; set; }
         public string Country { get; set; }
         public string Role { get; set; }
+        public string FullHouseNo { get; set; }
     
         public virtual Invoices Invoices { get; set; }
     }

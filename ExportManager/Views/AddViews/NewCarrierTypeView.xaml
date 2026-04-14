@@ -23,15 +23,15 @@
         <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center">Name</Label>
         <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"/>
         <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">Width</Label>
-        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=Width, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=Width, UpdateSourceTrigger=LostFocus, TargetNullValue=''}"/>
         <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center">Length</Label>
-        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=Length, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=Length, UpdateSourceTrigger=LostFocus, TargetNullValue=''}"/>
         <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center">Maximum height</Label>
-        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Path=MaxHeight, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Path=MaxHeight, UpdateSourceTrigger=LostFocus, TargetNullValue=''}"/>
         <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center">Weight</Label>
-        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=Weight, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"/>
+        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=Weight, UpdateSourceTrigger=LostFocus, TargetNullValue=''}"/>
         <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center">Shelf weight</Label>
-        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Path=ShelfWeight, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"/>
+        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Path=ShelfWeight, UpdateSourceTrigger=LostFocus, TargetNullValue=''}"/>
         <Label Grid.Row="6" Grid.Column="0" HorizontalAlignment="Center">Remarks</Label>
         <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Path=Remarks, UpdateSourceTrigger=PropertyChanged}"
                  TextWrapping="Wrap"

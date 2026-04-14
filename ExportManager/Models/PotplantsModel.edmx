@@ -143,6 +143,7 @@
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="DeletedAt" Type="datetime2" Precision="0" />
+          <Property Name="DeletedBy" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="GrowerCultivations">
           <Key>
@@ -189,8 +190,6 @@
           <Property Name="NetAmount" Type="decimal" Precision="29" Scale="2" StoreGeneratedPattern="Computed" />
           <Property Name="TaxAmount" Type="decimal" Precision="38" Scale="7" StoreGeneratedPattern="Computed" />
           <Property Name="GrossAmount" Type="decimal" Precision="38" Scale="6" StoreGeneratedPattern="Computed" />
-          <Property Name="ProductId" Type="int" />
-          <Property Name="StockItemId" Type="int" />
           <Property Name="SourceOrderItemId" Type="int" />
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="CreatedAt" Type="datetime2" Precision="7" Nullable="false" />
@@ -221,6 +220,7 @@
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="Country" Type="nvarchar" MaxLength="100" />
           <Property Name="Role" Type="nvarchar" MaxLength="50" />
+          <Property Name="FullHouseNo" Type="nvarchar" MaxLength="40" Nullable="false" />
         </EntityType>
         <EntityType Name="Invoices">
           <Key>
@@ -1032,6 +1032,7 @@
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="DeletedAt" Type="DateTime" Precision="0" />
           <NavigationProperty Name="Growers" Relationship="Self.GrowerCultivations" FromRole="Cultivations" ToRole="Growers" />
+          <Property Name="DeletedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Growers">
           <Key>
@@ -1073,8 +1074,6 @@
           <Property Name="NetAmount" Type="Decimal" Precision="29" Scale="2" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="TaxAmount" Type="Decimal" Precision="38" Scale="7" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="GrossAmount" Type="Decimal" Precision="38" Scale="6" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="ProductId" Type="Int32" />
-          <Property Name="StockItemId" Type="Int32" />
           <Property Name="SourceOrderItemId" Type="Int32" />
           <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="7" />
@@ -1108,6 +1107,7 @@
           <NavigationProperty Name="Invoices" Relationship="Self.FK_InvoiceParties_Invoices" FromRole="InvoiceParties" ToRole="Invoices" />
           <Property Name="Country" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FullHouseNo" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Invoices">
           <Key>
@@ -1876,6 +1876,7 @@
           <EntitySetMapping Name="Cultivations">
             <EntityTypeMapping TypeName="PotplantsModel.Cultivations">
               <MappingFragment StoreEntitySet="Cultivations">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
                 <ScalarProperty Name="CultivationId" ColumnName="CultivationId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -1921,8 +1922,6 @@
                 <ScalarProperty Name="NetAmount" ColumnName="NetAmount" />
                 <ScalarProperty Name="TaxAmount" ColumnName="TaxAmount" />
                 <ScalarProperty Name="GrossAmount" ColumnName="GrossAmount" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="StockItemId" ColumnName="StockItemId" />
                 <ScalarProperty Name="SourceOrderItemId" ColumnName="SourceOrderItemId" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
@@ -1937,6 +1936,7 @@
           <EntitySetMapping Name="InvoiceParties">
             <EntityTypeMapping TypeName="PotplantsModel.InvoiceParties">
               <MappingFragment StoreEntitySet="InvoiceParties">
+                <ScalarProperty Name="FullHouseNo" ColumnName="FullHouseNo" />
                 <ScalarProperty Name="Role" ColumnName="Role" />
                 <ScalarProperty Name="Country" ColumnName="Country" />
                 <ScalarProperty Name="InvoicePartyId" ColumnName="InvoicePartyId" />

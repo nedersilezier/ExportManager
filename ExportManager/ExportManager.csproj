@@ -111,10 +111,14 @@
     <Compile Include="Behaviors\DiscountValidationRule.cs" />
     <Compile Include="Behaviors\MoneyValidationRule.cs" />
     <Compile Include="Behaviors\NumericTextBoxBehavior.cs" />
+    <Compile Include="Behaviors\PercentageTextBoxBehavior.cs" />
     <Compile Include="Helper\BaseCommand.cs" />
     <Compile Include="Models\Addresses.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\BusinessLogic\Commands\OrdersCommand.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\InvoiceItemsQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\InvoicePartiesQuery.cs" />
     <Compile Include="Models\BusinessLogic\Queries\AddressesQuery.cs" />
     <Compile Include="Models\BusinessLogic\Commands\CarriersCommand.cs" />
     <Compile Include="Models\BusinessLogic\Queries\CarrierTypesQuery.cs" />
@@ -127,6 +131,9 @@
     <Compile Include="Models\BusinessLogic\Queries\GrowersQuery.cs" />
     <Compile Include="Models\BusinessLogic\InvoiceCalculator.cs" />
     <Compile Include="Models\BusinessLogic\Queries\InvoicesQuery.cs" />
+    <Compile Include="Models\BusinessLogic\Queries\PaymentMethodsQuery.cs" />
+    <Compile Include="Models\Converters\HighlightDateConverter.cs" />
+    <Compile Include="Models\Converters\PercentConverter.cs" />
     <Compile Include="Models\DTO\InvoicePartyListView.cs" />
     <Compile Include="Models\DTO\InvoicesListView.cs" />
     <Compile Include="Models\DTO\OrderItemCarriersListView.cs" />
@@ -166,7 +173,7 @@
     <Compile Include="Models\DTO\ClientsListView.cs" />
     <Compile Include="Models\DTO\CountriesListView.cs" />
     <Compile Include="Models\DTO\GrowersListView.cs" />
-    <Compile Include="Models\DTO\InvoiceReportItemsListView.cs" />
+    <Compile Include="Models\DTO\InvoiceItemsListView.cs" />
     <Compile Include="Models\DTO\KeyAndValue.cs" />
     <Compile Include="Models\DTO\OrderItemsListView.cs" />
     <Compile Include="Models\DTO\OrdersListView.cs" />
@@ -175,6 +182,7 @@
     <Compile Include="Models\DTO\WeightReportListView.cs" />
     <Compile Include="Models\Extensions\HasIsActive..cs" />
     <Compile Include="Models\Extensions\InvoicePartyRoles.cs" />
+    <Compile Include="Models\Extensions\InvoiceStatuses.cs" />
     <Compile Include="Models\Extensions\OrderStatuses.cs" />
     <Compile Include="Models\Extensions\StringExtensions.cs" />
     <Compile Include="Models\Growers.cs">
@@ -197,8 +205,10 @@
     </Compile>
     <Compile Include="Models\Parameters\CarrierTypeParameter.cs" />
     <Compile Include="Models\Parameters\ImageWindowParameter.cs" />
+    <Compile Include="Models\Parameters\InvoiceParameter.cs" />
     <Compile Include="Models\Parameters\NewOrderItemCarrierWindowParameter.cs" />
     <Compile Include="Models\Parameters\OrderItemCarrierParameter.cs" />
+    <Compile Include="Models\Parameters\OrderSelectionResult.cs" />
     <Compile Include="Models\PaymentMethods.cs">
       <DependentUpon>PotplantsModel.tt</DependentUpon>
     </Compile>
@@ -238,6 +248,9 @@
     <Compile Include="Models\Extensions\IHasIsActive.cs" />
     <Compile Include="ViewModels\Abstract\NewItemViewModelBase.cs" />
     <Compile Include="ViewModels\Abstract\NewItemViewModel.cs" />
+    <Compile Include="ViewModels\AddViewModels\NewInvoicePerOrderViewModel.cs" />
+    <Compile Include="ViewModels\AddViewModels\NewInvoicePerPeriodViewModel.cs" />
+    <Compile Include="ViewModels\AddViewModels\NewInvoiceViewModel.cs" />
     <Compile Include="ViewModels\AddViewModels\NewOrderItemViewModel.cs" />
     <Compile Include="ViewModels\AddViewModels\NewOrderViewModel.cs" />
     <Compile Include="ViewModels\Events\WindowRequestEventArgs.cs" />
@@ -282,12 +295,23 @@
     <Compile Include="ViewModels\Events\SelectedItemEventArgs.cs" />
     <Compile Include="ViewModels\Windows\EditCarrierAddonsViewModel.cs" />
     <Compile Include="ViewModels\Windows\EditCarrierTypeViewModel.cs" />
+    <Compile Include="ViewModels\Windows\EditInvoiceViewModel.cs" />
     <Compile Include="ViewModels\Windows\ImageWindowViewModel.cs" />
     <Compile Include="ViewModels\Abstract\IParameterReceiver.cs" />
     <Compile Include="Services\IWindowService.cs" />
     <Compile Include="Services\WindowService.cs" />
+    <Compile Include="ViewModels\Windows\InvoicePreviewViewModel.cs" />
     <Compile Include="ViewModels\Windows\NewOrderItemCarrierViewModel.cs" />
     <Compile Include="ViewModels\WorkspaceViewModel.cs" />
+    <Compile Include="Views\AddViews\NewInvoicePerOrderView.xaml.cs">
+      <DependentUpon>NewInvoicePerOrderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddViews\NewInvoicePerPeriodView.xaml.cs">
+      <DependentUpon>NewInvoicePerPeriodView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddViews\NewInvoiceView.xaml.cs">
+      <DependentUpon>NewInvoiceView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AddViews\NewOrderItemView.xaml.cs">
       <DependentUpon>NewOrderItemView.xaml</DependentUpon>
     </Compile>
@@ -407,8 +431,14 @@
     <Compile Include="Views\Windows\EditCarrierTypeView.xaml.cs">
       <DependentUpon>EditCarrierTypeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Windows\EditInvoiceView.xaml.cs">
+      <DependentUpon>EditInvoiceView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Windows\ImageWindowView.xaml.cs">
       <DependentUpon>ImageWindowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\InvoicePreviewView.xaml.cs">
+      <DependentUpon>InvoicePreviewView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Windows\NewOrderItemCarrierView.xaml.cs">
       <DependentUpon>NewOrderItemCarrierView.xaml</DependentUpon>
@@ -448,11 +478,24 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AddViews\NewInvoicePerOrderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddViews\NewInvoicePerPeriodView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddViews\NewInvoiceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AddViews\NewOrderItemView.xaml">
       <SubType>Designer</SubType>
@@ -614,7 +657,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Windows\EditInvoiceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Windows\ImageWindowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Windows\InvoicePreviewView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -634,6 +685,21 @@
       <DependentUpon>PotplantsModel.edmx</DependentUpon>
       <LastGenOutput>PotplantsModel.cs</LastGenOutput>
     </Content>
+    <Resource Include="screenshots\carriers.png" />
+    <Resource Include="screenshots\edit_draft-invoice_general.png" />
+    <Resource Include="screenshots\edit_draft-invoice_invoiceitems_deletion.png" />
+    <Resource Include="screenshots\edit_draft-invoice_invoice_items.png" />
+    <Resource Include="screenshots\invoice_document_preview.png" />
+    <Resource Include="screenshots\invoice_document_preview2.png" />
+    <Resource Include="screenshots\main.png" />
+    <Resource Include="screenshots\new_invoice_client_details.png" />
+    <Resource Include="screenshots\new_invoice_finances.png" />
+    <Resource Include="screenshots\new_invoice_general.png" />
+    <Resource Include="screenshots\new_invoice_invoice_items.png" />
+    <Resource Include="screenshots\new_invoice_order_selection.png" />
+    <Resource Include="screenshots\products_catalog.png" />
+    <Resource Include="screenshots\product_edit.png" />
+    <Content Include="sqlscripts\script.sql" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\left-arrow.png" />
@@ -645,6 +711,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

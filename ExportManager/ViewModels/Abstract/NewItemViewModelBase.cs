@@ -77,20 +77,6 @@ namespace ExportManager.ViewModels.Abstract
         {
             Added?.Invoke();
         }
-        //protected void OpenNewTab<T>(Action refreshEvent) where T: WorkspaceViewModel, new()
-        //{
-        //    var viewModel = new T();
-        //    if(viewModel is NewItemViewModelBase newItemViewModel)
-        //    {
-        //        void handler()
-        //        {
-        //            refreshEvent();
-        //            newItemViewModel.Added -= handler;
-        //        }
-        //        newItemViewModel.Added += handler;
-        //    }
-        //    OnRequestOpen(viewModel);
-        //}
         #endregion
         #region  Validation 
         protected string[] ValidatedFields;
