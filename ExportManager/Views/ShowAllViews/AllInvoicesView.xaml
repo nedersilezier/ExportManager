@@ -6,7 +6,21 @@
              xmlns:local="clr-namespace:ExportManager.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <DataGrid AutoGenerateColumns="True" ItemsSource="{Binding List, IsAsync=True}" SelectedItem="{Binding SelectedItem}" IsReadOnly="True">
-
+    <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding List, IsAsync=True}" SelectedItem="{Binding SelectedItem}" IsReadOnly="True">
+        <DataGrid.Columns>
+            <DataGridTextColumn Header="ID" Binding="{Binding InvoiceId}" Width="40"/>
+            <DataGridTextColumn Header="Invoice No" Binding="{Binding InvoiceNo}" Width="150"/>
+            <DataGridTextColumn Header="Invoiced at" Binding="{Binding InvoiceDate}" Width="120"/>
+            <DataGridTextColumn Header="Payment date" Binding="{Binding PaymentDate}" Width="120"/>
+            <DataGridTextColumn Header="Buyer" Binding="{Binding Buyer.Name}" Width="200"/>
+            <DataGridTextColumn Header="Payment method" Binding="{Binding PaymentMethod}" Width="150"/>
+            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
+            <DataGridTextColumn Header="Approved" Binding="{Binding IsApprovedString}" Width="60"/>
+            <DataGridTextColumn Header="Net" Binding="{Binding TotalNet}" Width="100"/>
+            <DataGridTextColumn Header="Tax" Binding="{Binding TotalTax}" Width="100"/>
+            <DataGridTextColumn Header="Gross" Binding="{Binding TotalGross}" Width="200"/>
+            <DataGridTextColumn Header="Storage" Binding="{Binding TotalStorage}" Width="150"/>
+            <DataGridTextColumn Header="Transport" Binding="{Binding TotalTransport}" Width="150"/>
+        </DataGrid.Columns>
     </DataGrid>
 </local:AllViewBase>
